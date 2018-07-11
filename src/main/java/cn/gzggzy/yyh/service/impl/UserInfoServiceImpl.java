@@ -38,6 +38,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public UserInfo selectUserByUserName(String userName) {
 		logger.info("按姓名查询人员");
+		System.out.println(userName);
 		return userInfoDao.selectUserByUserName(userName);
 	}
 

@@ -2,6 +2,8 @@ package cn.gzggzy.yyh.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import cn.gzggzy.yyh.model.UserInfo;
 
 public interface UserInfoDao {
@@ -10,6 +12,6 @@ public interface UserInfoDao {
 	
 	List<UserInfo> selectUsers();
 	
-	UserInfo selectUserByUserName(String userName);
+	UserInfo selectUserByUserName(@Param("userName") String userName);
 	
 }

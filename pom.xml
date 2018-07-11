@@ -87,6 +87,14 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<!-- 热部署组件 -->
+	    <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-devtools</artifactId>
+	        <optional>true</optional>
+	        <scope>true</scope>
+	    </dependency>
 	</dependencies>
 
 	<build>
@@ -94,6 +102,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+	                <fork>true</fork><!-- fork:如果没有该配置，这个devtools不会起作用，即应用不会restart -->
+	            </configuration>
 			</plugin>
 		</plugins>
 	</build>
