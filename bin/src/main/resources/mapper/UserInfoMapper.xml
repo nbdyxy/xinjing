@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gzggzy.yyh.dao.UserInfoDao" >
+  <sql id="BASE_TABLE">
+    user_info
+  </sql>
+
+  <sql id="BASE_COLUMN">
+    ADMIN_ID,USERNAME,PASSWORD,FIRST_LOGIN_TIME,LAST_LOGIN_TIME,LOGIN_COUNT,LAST_LOGIN_IP,IS_ENABLE,CREATE_TIME,THIRD_PARTY_ENABLE
+  </sql>
+
+  <insert id="insert" parameterType="cn.gzggzy.yyh.model.UserInfo">
+    INSERT INTO
+      <include refid="BASE_TABLE"/>
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      ADMIN_ID,USERNAME,PASSWORD,CREATE_TIME,THIRD_PARTY_ENABLE
+    </trim>
+    <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+      #{ADMIN_ID, jdbcType=VARCHAR},#{USERNAME, jdbcType=VARCHAR},#{PASSWORD, jdbcType=VARCHAR},
+      #{CREATE_TIME, jdbcType=DATE},#{THIRD_PARTY_ENABLE, jdbcType=INTEGER}
+    </trim>
+  </insert>
+
+  <select id="selectUsers" resultType="cn.gzggzy.yyh.model.UserInfo">
+      SELECT
+        <include refid="BASE_COLUMN"/>
+      FROM
+        <include refid="BASE_TABLE"/>
+  </select>
+  
+  <select id="selectUserByUserName" resultType="cn.gzggzy.yyh.model.UserInfo" parameterType="java.lang.String">
+      SELECT
+        <include refid="BASE_COLUMN"/>
+      FROM
+        <include refid="BASE_TABLE"/>
+	  WHERE
+	  	USERNAME = #{userName}
+  </select>
+
+
+</mapper>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>共修登录</title>
+    
+	<link rel="stylesheet" type="text/css" media="all" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    	body {
+    		max-width: 768px;
+    		min-width: 320px;
+    		margin: 0 auto;
+    		display: block;
+    		font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', SimSun, 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+    		font-size: 18px;
+    		/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif";*/
+    	}
+    	.header {
+    		 background-color: #f7ebde;
+    	}
+		.logo {
+			height: 300px;
+			width: 100%;
+			text-align: center; 
+			vertical-align: middle;
+		}
+		.logo_mid {
+			display: block; 
+			max-width: 100%; 
+			height: 90px; 
+			margin:0 auto;
+		}
+    	.title {
+ 			background-size: 100% 100%;
+			background-position: center;
+			border-radius: 5px;
+			margin: 0 auto;
+			height: 90px;
+			width: 100%;
+		}
+		.my-activity {
+			height: 30px;
+			font-size: 20px;
+			width: 100%;
+		}
+    	.nav-header {
+    		top: 0;
+    		height: 60px;
+		    margin-bottom: 0;
+		    border-width: 0;
+		    border-radius: 0;
+		    transition-property: color, background-color, box-shadow;
+		    transition-duration: .25s;
+		    transition-timing-function: ease-in-out;
+		    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+		    z-index: 10;
+		    background-color: #e2bb86;
+		    color: black;
+		    position: relative;
+    	}
+    	.my-nav {
+    		list-style: none;
+    		padding-left: 0;
+		    margin-bottom: 0;
+		    background-color: #f3ebe0;
+    	}
+    	.my-nav li {
+    		float: left;
+    		line-height: 60px;
+    		font-size: 20px;
+    		text-align: center;
+    		border-radius: 5px;
+    	}
+    	.my-nav li a {
+    		text-decoration: none;
+    		color: black;
+    	}
+    	.my-nav .active {
+		    background-color: #82350c;
+		    color: #fff;
+    	}
+    	.my-nav .active a{
+		    color: #fff;
+    	}
+    	.content {
+    		 background-color: #f7ebde;
+    	}
+    	.figure {
+			background-size: 100% 100%;
+			background-position: center;
+			border-radius: 5px;
+			margin: 0 auto;
+			background-color: #f7ebde;
+			padding: 10px;
+		}
+		.my-panel {
+			border: 1px solid #bbb6b6; 
+			border-radius: 5px; 
+			margin-bottom: 10px;
+		} 
+		.my-panel-title {
+			margin-bottom: 5px; 
+			padding-left: 15px; 
+			font-size: 20px; 
+			line-height: 36px; 
+			border-bottom: 1px solid #bbb6b6;
+		}
+		.container {
+			width: 100%;
+		}
+		.my-col-left {
+			padding: 2px 0; 
+			text-align: left;
+		}
+		.my-col-center {
+			padding: 2px 0; 
+			text-align: center;
+		}
+		.my-col-right {
+			padding: 2px 0; 
+			text-align: right;
+		}
+		.progress {
+			background-color: rgba(255, 255, 255, 0);
+		}
+		.my-divider {
+			margin: 0 auto; 
+			width: 98%; 
+			border: .5px dashed grey; 
+			opacity: .52;
+		}
+		.my-row {
+			width: 100%; 
+			margin: 5px 0; 
+			text-align: center;
+		}
+		.form-control, input {
+			background-color: rgba(0, 0, 0, 0);
+			font-size: 18px;
+		}
+		.input-group-addon {
+			background-color: rgba(0, 0, 0, 0);
+		}
+		a {
+			text-decoration: none;
+			background-color: transparent;
+		}
+		.footer {
+    		height: 50px;
+    		zoom: 1;
+			background-repeat: no-repeat;
+    		background-position: center 0;
+			background-image: url(../static/images/zongzhi_min.png);
+			background-color: #f7ebde;
+    	}
+		@media (max-width:1024px) {
+			.logo {
+				height: 300px;
+			}
+			.my-table {
+				font-size: 20px;
+			}
+			.password-help {
+				font-size: 18px;
+			}
+		}
+		@media (max-width:768px) {
+			.logo {
+				height: 260px;
+			}
+			.my-table {
+				font-size: 20px;
+			}
+			.password-help {
+				font-size: 15px;
+			}
+		}
+		@media (max-width:500px) {
+			.logo {
+				height: 180px;
+			}
+			.my-table {
+				font-size: 15px;
+			}
+			.password-help {
+				font-size: 13px;
+			}
+		}
+		.hide {
+			display: none;
+		}
+    </style>
+  </head>
+  <body>
+  	<div class="header">
+	  	<div class="info">
+			<div class="logo">
+				此处背景图待补充
+			</div>
+			<div class="title"> 
+	  			<img class="img-responsive logo_mid" src="../static/images/pingtai.png" alt="共修平台">
+	  		</div>
+	  		<marquee scrolldelay="220" class="my-activity">第五次百万《心经》共修活动</marquee >
+			<!-- <div class="my-activity"></div> -->
+	  	</div>
+	  	<nav class="nav-header">
+			<ul class="my-nav">
+				<li id="jianjie"><a href="index.html" th:href="@{./index.html}">简介</a></li>
+				<li id="dongtai"><a href="dongtai.html" th:href="@{./dongtai.html}">动态</a></li>
+				<li id="huixiang"><a href="huixiang.html" th:href="@{./huixiang.html}">回向</a></li>
+				<li id="gongxiu" class="active"><a href="gongxiu.html" th:href="@{./gongxiu.html}">共修</a></li>
+			</ul>
+	  	</nav>
+  	</div>
+	<div class="content">
+		<div class="figure">
+			/*
+			<div style="border: 1px solid #bbb6b6; margin: 0 auto; border-radius: 5px; padding: 10px; margin-bottom: 10px; width: 100%;">
+			*/
+			<div class="my-panel">
+				<div class="input-group" style="margin-bottom: 10px;">
+					<span class="input-group-addon glyphicon glyphicon-user" aria-hidden="true"></span>
+					<input type="text" class="form-control" placeholder="请输入您的法名" aria-describedby="basic-addon1">
+				</div>
+				<div class="input-group" style="margin-bottom: 10px;">
+					<span class="input-group-addon glyphicon glyphicon-lock" aria-hidden="true"></span>
+					<input type="password" class="form-control" placeholder="请输入您的密码" aria-describedby="basic-addon1">
+				</div>
+				<div>
+					<button type="button" class="btn btn-block" onclick="javascript:login()" style="font-size: 18px; background-color: #d4875f;"><b>登录</b></button>
+				</div>
+				<div class="container password-help" style="margin-top: 10px; width: 100%;">
+					<div class="col-xs-6" style="padding: 2px 0; text-align: left;"><span>没有账号？</span><a href="#" style="text-decoration: none; color: #a94442;">立即注册</a></div>
+					<div class="col-xs-6" style="padding: 2px 0; text-align: right;"><a href="#" style="text-decoration: none; color: #a94442;">忘记密码</a></div>				
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer"></div>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+	    function login() {
+	    	window.location.href = "gongxiu_personally.html";
+		}
+    	$(function(){
+    		/* function dynamic_page() {
+    			var width = $("body").width();
+    			var height = $(window).height();
+        		var length = $(".my-nav").children("li").length;
+        		var avg_width = width / length;
+        		var header_height = $(".header").height();
+        		var figure_height = $(".figure").height();
+        		var cal_height = height - header_height;
+        		console.log("cal_height:" + cal_height);
+        		console.log("figure_height:" + figure_height);
+        		figure_height = cal_height > figure_height ? cal_height : figure_height;
+        		console.log("height:" + height);
+        		$(".my-nav").children("li").css("width", avg_width + "px");
+        		//$(".figure").css("height", figure_height + "px");
+    		} */
+    		function dynamic_page() {
+    			var width = $("body").width();
+    			var height = $(window).height();
+        		var length = $(".my-nav").children("li").length;
+        		var avg_width = width / length;
+        		var header_height = $(".header").height();
+        		var figure_height = $(".figure").height() + 10;
+        		var cal_height = height - header_height - 50;
+        		figure_height = cal_height > figure_height ? cal_height : figure_height;
+        		console.log("height:" + height);
+        		$(".my-nav").children("li").css("width", avg_width + "px");
+        		$(".figure").css("height", figure_height + "px");
+    		}
+    		
+    		dynamic_page();
+    		$(window).resize(function() {
+    			dynamic_page();
+   			});
+    		window.onscroll=function(){
+				console.log($(window).scrollTop());
+				console.log($(".content").offset().top);
+				var top = $(".content").offset().top - $(window).scrollTop();
+				var isFixed =  top <= 70 ? true : false;
+				console.log(isFixed);
+				if(isFixed) {
+					$(".nav-header").css("position", "fixed");
+					$(".content").css("margin-top", "60px");
+					
+				} else {
+					$(".nav-header").css("position", "relative");
+					$(".content").css("margin-top", "0px");
+				}
+			};
+    		
+    	});
+    </script>
+  </body>
+</html>
