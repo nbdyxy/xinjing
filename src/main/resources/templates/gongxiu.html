@@ -53,7 +53,7 @@
 		}
     	.nav-header {
     		top: 0;
-    		height: 60px;
+    		min-height: 60px;
 		    margin-bottom: 0;
 		    border-width: 0;
 		    border-radius: 0;
@@ -153,14 +153,48 @@
 			text-decoration: none;
 			background-color: transparent;
 		}
+		.modal-open {
+			overflow: inherit;
+			padding-right: 0px !important;
+		}
+		.modal-header {
+			padding: 15px;
+			border-bottom: 1px solid #cc3d3d;
+			background-color: #f5580d;
+			border-radius: 5px;
+			color: #fff;
+		}
+		#dailyValue {
+			width: 50%; 
+			text-align: center; 
+			background-color: rgba(0, 0, 0, 0); 
+			border: none; 
+			border-bottom: 1px solid #ff7500;
+		}
+		#dailyConfirm {
+			background-color: #4d89d4; 
+			border-color: #4d89d4;
+		}
 		.footer {
-    		height: 50px;
-    		zoom: 1;
+			height: 50px;
+			bottom: 0;
+			zoom: 1;
 			background-repeat: no-repeat;
-    		background-position: center 0;
+			background-position: center 0;
 			background-image: url(../static/images/zongzhi_min.png);
 			background-color: #f7ebde;
-    	}
+		}
+		.list-group-item {
+			background-color: rgba(255, 255, 255, 0) !important;
+			border: 1px solid #d6a218;
+		}
+		.badge {
+			background-color: #d29133;
+		}
+		.fold {
+			position: absolute;
+			top: -9999px;
+		}
 		@media (max-width:1024px) {
 			.logo {
 				height: 300px;
@@ -222,9 +256,9 @@
   	</div>
 	<div class="content">
 		<div class="figure">
-			/*
+			<!--
 			<div style="border: 1px solid #bbb6b6; margin: 0 auto; border-radius: 5px; padding: 10px; margin-bottom: 10px; width: 100%;">
-			*/
+			-->
 			<div class="my-panel">
 				<div class="input-group" style="margin-bottom: 10px;">
 					<span class="input-group-addon glyphicon glyphicon-user" aria-hidden="true"></span>

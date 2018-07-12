@@ -1,17 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>共修回向</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="all" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}"/>
 
-    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
-    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -23,8 +20,37 @@
     		margin: 0 auto;
     		display: block;
     		font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', SimSun, 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
+    		font-size: 18px;
     		/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif";*/
     	}
+    	.header {
+    		 background-color: #f7ebde;
+    	}
+		.logo {
+			height: 300px;
+			width: 100%;
+			text-align: center; 
+			vertical-align: middle;
+		}
+		.logo_mid {
+			display: block; 
+			max-width: 100%; 
+			height: 90px; 
+			margin:0 auto;
+		}
+    	.title {
+ 			background-size: 100% 100%;
+			background-position: center;
+			border-radius: 5px;
+			margin: 0 auto;
+			height: 90px;
+			width: 100%;
+		}
+		.my-activity {
+			height: 30px;
+			font-size: 20px;
+			width: 100%;
+		}
     	.nav-header {
     		top: 0;
     		min-height: 60px;
@@ -61,100 +87,173 @@
 		    background-color: #82350c;
 		    color: #fff;
     	}
-    	
     	.my-nav .active a{
 		    color: #fff;
     	}
-    	.first {
-			position:fixed;
-			top: 0;
-			left: 0;
-			width:100%;
-			height:100%;
-			min-width: 1000px;
-			z-index:-10;
-			zoom: 1;
-			background-color: #fff;
-			background-repeat: no-repeat;
-			background-size: cover;
-			-webkit-background-size: cover;
-			-o-background-size: cover;
-			background-position: center 0;
-			background-image: url(../static/images/700-NQRACY.png);
+    	.content {
+    		 background-color: #f7ebde;
     	}
     	.figure {
-			/* background: url(../static/images/bg.png) no-repeat; */
 			background-size: 100% 100%;
 			background-position: center;
 			border-radius: 5px;
 			margin: 0 auto;
+			background-color: #f7ebde;
+			padding: 10px;
 		}
-		.logo {
-			height: 300px;
+		.my-panel {
+			border: 1px solid #bbb6b6; 
+			border-radius: 5px; 
+			margin-bottom: 10px;
+		} 
+		.my-panel-title {
+			margin-bottom: 5px; 
+			padding-left: 15px; 
+			font-size: 20px; 
+			line-height: 36px; 
+			border-bottom: 1px solid #bbb6b6;
+		}
+		.container {
 			width: 100%;
 		}
-		.title {
-			height: 90px;
-			width: 100%;
+		.my-col-left {
+			padding: 2px 0; 
+			text-align: left;
 		}
-		.my-activity {
-			height: 30px;
-			font-size: 20px;
-			width: 100%;
+		.my-col-center {
+			padding: 2px 0; 
+			text-align: center;
+		}
+		.my-col-right {
+			padding: 2px 0; 
+			text-align: right;
+		}
+		.progress {
+			background-color: rgba(255, 255, 255, 0);
+		}
+		.my-divider {
+			margin: 0 auto; 
+			width: 98%; 
+			border: .5px dashed grey; 
+			opacity: .52;
+		}
+		.my-row {
+			width: 100%; 
+			margin: 5px 0; 
+			text-align: center;
+		}
+		.form-control, input {
+			background-color: rgba(0, 0, 0, 0);
+			font-size: 18px;
+		}
+		.input-group-addon {
+			background-color: rgba(0, 0, 0, 0);
+		}
+		a {
+			text-decoration: none;
+			background-color: transparent;
+		}
+		.modal-open {
+			overflow: inherit;
+			padding-right: 0px !important;
+		}
+		.modal-header {
+			padding: 15px;
+			border-bottom: 1px solid #cc3d3d;
+			background-color: #f5580d;
+			border-radius: 5px;
+			color: #fff;
+		}
+		#dailyValue {
+			width: 50%; 
+			text-align: center; 
+			background-color: rgba(0, 0, 0, 0); 
+			border: none; 
+			border-bottom: 1px solid #ff7500;
+		}
+		#dailyConfirm {
+			background-color: #4d89d4; 
+			border-color: #4d89d4;
+		}
+		.footer {
+			height: 50px;
+			bottom: 0;
+			zoom: 1;
+			background-repeat: no-repeat;
+			background-position: center 0;
+			background-image: url(../static/images/zongzhi_min.png);
+			background-color: #f7ebde;
+		}
+		.list-group-item {
+			background-color: rgba(255, 255, 255, 0) !important;
+			border: 1px solid #d6a218;
+		}
+		.badge {
+			background-color: #d29133;
+		}
+		.fold {
+			position: absolute;
+			top: -9999px;
 		}
 		@media (max-width:1024px) {
 			.logo {
 				height: 300px;
+			}
+			.my-table {
+				font-size: 20px;
+			}
+			.password-help {
+				font-size: 18px;
 			}
 		}
 		@media (max-width:768px) {
 			.logo {
 				height: 260px;
 			}
+			.my-table {
+				font-size: 20px;
+			}
+			.password-help {
+				font-size: 15px;
+			}
 		}
 		@media (max-width:500px) {
 			.logo {
 				height: 180px;
 			}
+			.my-table {
+				font-size: 15px;
+			}
+			.password-help {
+				font-size: 13px;
+			}
 		}
-		.footer {
-    		height: 50px;
-    		zoom: 1;
-			background-repeat: no-repeat;
-			/* background-size: cover;
-			-webkit-background-size: cover;
-			-o-background-size: cover; */
-    		background-position: center 0;
-			background-image: url(../static/images/zongzhi_min.png);
-			background-color: #f7ebde;
-    	}
 		.hide {
 			display: none;
 		}
     </style>
   </head>
   <body>
-  	<div class="header" style="background-color: #f7ebde;">
+  	<div class="header">
 	  	<div class="info">
 			<div class="logo hide"></div>
 			<div class="title"> 
-	  			<img class="img-responsive logo_mid" style="display: block; max-width: 100%; height: 90px; margin:0 auto;" src="../static/images/pingtai.png" alt="">
+	  			<img class="img-responsive logo_mid" src="../static/images/pingtai.png" alt="共修平台">
 	  		</div>
 	  		<marquee scrolldelay="220" class="my-activity">第五次百万《心经》共修活动</marquee >
-			<!-- <div class="my-activity"></div> -->
 	  	</div>
 	  	<nav class="nav-header">
 			<ul class="my-nav">
-				<li id="jianjie"><a href="index.html">简介</a></li>
-				<li id="dongtai"><a href="dongtai.html">动态</a></li>
-				<li id="huixiang" class="active"><a href="huixiang.html">回向</a></li>
-				<li id="gongxiu"><a href="gongxiu.html">共修</a></li>
+				<li id="jianjie"><a href="index.html" th:href="@{./index.html}">简介</a></li>
+				<li id="dongtai"><a href="dongtai.html" th:href="@{./dongtai.html}">动态</a></li>
+				<li id="huixiang" class="active"><a href="huixiang.html"  th:href="@{./huixiang.html}">回向</a></li>
+				<li id="gongxiu"><a href="gongxiu.html" th:href="@{./gongxiu.html}">共修</a></li>
 			</ul>
 	  	</nav>
   	</div>
-	<div class="content" style="background-color: #f7ebde;">
-		<div class="figure" style="font-size: 16px; padding: 10px;">
-			<div style="border: 1px solid #bbb6b6; border-radius: 5px; margin-bottom: 10px;">
+	<div class="content">
+		<div class="figure">
+			<div class="my-panel">
 				<div style="padding: 10px; font-size: 18px;">
 					<p>愿以此共修功德，回向</p>
 
@@ -171,13 +270,13 @@
 					<p><span style="color: red;">现在者</span>违缘消除，福慧增长，同证菩提！</p>
 				</div>
 			</div>
-			<div style="border: 1px solid #bbb6b6; border-radius: 5px; margin-bottom: 10px;">
-				<div style="margin-bottom: 5px; padding-left: 15px; font-size: 20px; line-height: 36px; border-bottom: 1px solid #bbb6b6;">并以此共修功德，专伸回向</div>
+			<div class="my-panel">
+				<div class="my-panel-title">并以此共修功德，专伸回向</div>
 				<div style="padding: 10px; font-size: 18px;">
 					全体出家师父法体安康、泰然自在，早证无上正等正觉，广度众生；法学师父早日康复，广度众生； 张镕喻、张文鑫、陶玉玲、冯嘉濠、郭绪炎、罗大可、郭绪辉、周自强、殷杰荣、刘思利、刘华、 梁志祥、陈享狄、陈再尔、郭建伟、郭翎娟、卢亮、卢姿羽、郭群、蒋攀、余胜利、余越、黄妙云、 周涛、周小力阖家、林敏英、王晨晓、樊桃英、林芷馨、许俞正、覃军、许燕珊、许欣怡、梁启文、 曾志雯、曾永辉、曾心怡、陈永文、王庆治、觉芹阖家家庭和睦、善缘护助、善愿成就、福慧增长； 蒋利平、史桂花、周文英、江美琪、尹罕牛、李永晖、陈佳铃、金晨、张常修、魏秀英、徐仲兰、 梁桂芳、谢少飞、王桂余、许细平、田淑芹、张丽维、张庆卓、纪连会、姚志艳、陈旭玲、吴明慧、 许东丽、吴伟琪、许炎昆、张秋菊、佃泽惠、汪丽华、肖甲东、张丽萍、焦红、孔繁秀、刘墨文、王珍香、 潘智选、李光、梁惠莲、古生辉、朱桂华、陈福申、梁玉英、沈炎卿、李洪旺、梁如意、潘国成、吕崇添、 李非、唐日明、李光远病苦尽除、解怨释结、吉祥安康、福寿绵长、善根增长；王抚顺、魏发荣、梁锡康、 常雁、蔡业鸿、唐芳、伍卫明、王臻、张炳光、雷奕量、周红叶、许婷、李润哲、何洪泉、王淑芝离苦得乐、 蒙佛接引、往生净土、早日成佛！南无阿弥陀佛！南无阿弥陀佛！南无阿弥陀佛！
 				</div>
 			</div>
-			<div style="border: 1px solid #bbb6b6; border-radius: 5px; margin-bottom: 10px;">
+			<div class="my-panel">
 				<div style="padding: 10px; font-size: 18px; color: red;">
 					<p>南无本师释迦牟尼佛</p>
 
