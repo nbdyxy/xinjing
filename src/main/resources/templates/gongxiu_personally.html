@@ -238,16 +238,16 @@
 		<div class="info">
 			<div class="logo hide"></div>
 			<div class="title">
-				<img class="img-responsive logo_mid" src="../static/images/pingtai.png" alt="共修平台">
+				<img class="img-responsive logo_mid" src="../static/images/pingtai.png" th:src="@{/images/pingtai.png}" alt="共修平台">
 			</div>
 			<marquee scrolldelay="220" class="my-activity">第五次百万《心经》共修活动</marquee>
 		</div>
 		<nav class="nav-header">
 			<ul class="my-nav">
-				<li id="jianjie"><a href="index.html" th:href="@{./index.html}">简介</a></li>
-				<li id="dongtai"><a href="dongtai.html" th:href="@{./dongtai.html}">动态</a></li>
-				<li id="huixiang"><a href="huixiang.html" th:href="@{./huixiang.html}">回向</a></li>
-				<li id="gongxiu" class="active"><a href="gongxiu_personally.html" th:href="@{./gongxiu.html}">共修</a></li>
+				<li id="jianjie"><a href="index.html" th:href="@{./index}">简介</a></li>
+				<li id="dongtai"><a href="dongtai.html" th:href="@{./dongtai}">动态</a></li>
+				<li id="huixiang"><a href="huixiang.html" th:href="@{./huixiang}">回向</a></li>
+				<li id="gongxiu" class="active"><a href="gongxiu_personally.html" th:href="@{./gongxiu}">共修</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -369,7 +369,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="footer"></div>
+	<div class="footer" th:attr="style='background:url('+@{/images/zongzhi_min.png}+');background-color:#f7ebde; background-repeat: no-repeat; background-position: center 0'"></div>
 	<!-- Modal -->
 	<div class="modal fade" id="dailyModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">

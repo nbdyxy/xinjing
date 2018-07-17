@@ -2,9 +2,14 @@ package cn.gzggzy.yyh.model;
 
 import java.sql.Date;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 public class UserInfo {
 	
 	private String ADMIN_ID;
+	@NotNull
+	@Size(min=2, max=30)
 	private String USERNAME;
 	private String PASSWORD;
 	private Date FIRST_LOGIN_TIME;
