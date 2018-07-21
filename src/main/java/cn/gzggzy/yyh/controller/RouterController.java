@@ -3,6 +3,8 @@ package cn.gzggzy.yyh.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import cn.gzggzy.yyh.model.UserInfo;
+
 @Controller
 public class RouterController {
 	
@@ -22,8 +24,8 @@ public class RouterController {
 		return "huixiang";
 	}
 	
-	@GetMapping("/gongxiu")
-	public String gongxiu() {
+	@GetMapping("/login")
+	public String gongxiu(UserInfo userInfo) {
 		return "gongxiu";
 	}
 	

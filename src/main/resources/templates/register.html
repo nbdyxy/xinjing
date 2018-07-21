@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>共修登录</title>
-    
-	<link rel="stylesheet" type="text/css" media="all" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <title>共修动态</title>
 
+	<link rel="stylesheet" type="text/css" media="all" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+	
     <!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -236,52 +236,129 @@
   <body>
   	<div class="header">
 	  	<div class="info">
-			<div class="logo">
-				此处背景图待补充
-			</div>
+			<div class="logo hide"></div>
 			<div class="title"> 
 	  			<img class="img-responsive logo_mid" src="../static/images/pingtai.png" th:src="@{/images/pingtai.png}" alt="共修平台">
 	  		</div>
 	  		<marquee scrolldelay="220" class="my-activity">第五次百万《心经》共修活动</marquee >
-			<!-- <div class="my-activity"></div> -->
 	  	</div>
 	  	<nav class="nav-header">
 			<ul class="my-nav">
 				<li id="jianjie"><a href="index.html" th:href="@{./index}">简介</a></li>
-				<li id="dongtai"><a href="dongtai.html" th:href="@{./dongtai}">动态</a></li>
+				<li id="dongtai" class="active"><a href="dongtai.html" th:href="@{./dongtai}">动态</a></li>
 				<li id="huixiang"><a href="huixiang.html" th:href="@{./huixiang}">回向</a></li>
-				<li id="gongxiu" class="active"><a href="gongxiu.html" th:href="@{./gongxiu}">共修</a></li>
+				<li id="gongxiu"><a href="gongxiu.html" th:href="@{./gongxiu}">共修</a></li>
 			</ul>
 	  	</nav>
   	</div>
 	<div class="content">
 		<div class="figure">
-			<!--
-			<div style="border: 1px solid #bbb6b6; margin: 0 auto; border-radius: 5px; padding: 10px; margin-bottom: 10px; width: 100%;">
-			-->
-			<form action="#" th:action="@{/login}" th:object="${userInfo}" method="post">
-				<div class="alert alert-danger alert-dismissible" role="alert" th:if="${#fields.hasErrors('*')}">
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				  <div th:each="err : ${#fields.errors('*')}" th:text="${err}"></div>
+			<div class="my-panel">
+				<div class="my-panel-title">平台动态</div>
+				<div class="container">
+					<div class="col-xs-6 my-col-left">注册人数</div>
+					<div class="col-xs-6 my-col-right">2891人</div>
+					<div class="col-xs-6 my-col-left">参加人数</div>
+					<div class="col-xs-6 my-col-right">2619 人</div>
+					<div class="col-xs-6 my-col-left">本年周次</div>
+					<div class="col-xs-6 my-col-right">第 14 周</div>
+					<div class="col-xs-6 my-col-left">本日报数</div>
+					<div class="col-xs-6 my-col-right">810 遍</div>
+					<div class="col-xs-6 my-col-left">本周汇总</div>
+					<div class="col-xs-6 my-col-right">2006 遍</div>
+					<div class="col-xs-6 my-col-left">本月汇总</div>
+					<div class="col-xs-6 my-col-right">9156 遍</div>
+					<div class="col-xs-6 my-col-left">本年总计</div>
+					<div class="col-xs-6 my-col-right">29256 遍</div>
 				</div>
-				<div class="my-panel" style="padding: 10px;">
-						<div class="input-group" style="margin-bottom: 10px;">
-							<span class="input-group-addon glyphicon glyphicon-user" aria-hidden="true"></span>
-							<input type="text" th:field="*{username}" class="form-control" placeholder="请输入您的法名" aria-describedby="basic-addon1">
+			</div>
+			<div class="my-panel">
+				<div class="my-panel-title">第5次百万《心经》共修活动</div>
+				<div class="container">
+					<div class="col-xs-6 my-col-left">注册人数</div>
+					<div class="col-xs-6 my-col-right">2891人</div>
+					<div class="col-xs-6 my-col-left">参加人数</div>
+					<div class="col-xs-6 my-col-right">2619 人</div>
+					<div class="col-xs-6 my-col-left">本年周次</div>
+					<div class="col-xs-6 my-col-right">第 14 周</div>
+					<div class="col-xs-6 my-col-left">本日报数</div>
+					<div class="col-xs-6 my-col-right">810 遍</div>
+					<div class="col-xs-6 my-col-left">本周汇总</div>
+					<div class="col-xs-6 my-col-right">2006 遍</div>
+					<div class="col-xs-6 my-col-left">本月汇总</div>
+					<div class="col-xs-6 my-col-right">
+						<div class="progress">
+						  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%; font-size: 18px;">
+						  60%
+						  </div>
 						</div>
-						<div class="input-group" style="margin-bottom: 10px;">
-							<span class="input-group-addon glyphicon glyphicon-lock" aria-hidden="true"></span>
-							<input type="password" th:field="*{password}" class="form-control" placeholder="请输入您的密码" aria-describedby="basic-addon1">
+					</div>
+					<div class="col-xs-6 my-col-left">本年总计</div>
+					<div class="col-xs-6 my-col-right">
+						<div class="progress">
+						  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%; font-size: 18px;" >
+						  60%
+						  </div>
 						</div>
-						<div>
-							<button type="submit" class="btn btn-block" style="font-size: 18px; background-color: #d4875f;"><b>登录</b></button>
-						</div>
-					<div class="container password-help" style="margin-top: 10px; width: 100%;">
-						<div class="col-xs-6" style="padding: 2px 0; text-align: left;"><span>没有账号？</span><a href="#" style="text-decoration: none; color: #a94442;">立即注册</a></div>
-						<div class="col-xs-6" style="padding: 2px 0; text-align: right;"><a href="#" style="text-decoration: none; color: #a94442;">忘记密码</a></div>				
 					</div>
 				</div>
-			</form>
+			</div>
+			<div class="my-panel">
+				<div class="my-panel-title">最新动态</div>
+				<div class="container" style="margin: 5px 0;">
+					<div class="col-xs-4 my-col-left" style="font-weight: bold;">用户名</div>
+					<div class="col-xs-4 my-col-center" style="font-weight: bold;">遍数</div>
+					<div class="col-xs-4 my-col-right" style="font-weight: bold;">时间</div>
+				</div>
+				<div class="my-divider"></div>
+				<div class="container my-table">
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">李**</div>
+						<div class="col-xs-4 my-col-center">20</div>
+						<div class="col-xs-4 my-col-right">21:25</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">王**</div>
+						<div class="col-xs-4 my-col-center">12</div>
+						<div class="col-xs-4 my-col-right">21:08</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">李**</div>
+						<div class="col-xs-4 my-col-center">26</div>
+						<div class="col-xs-4 my-col-right">20:57</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">陈**</div>
+						<div class="col-xs-4 my-col-center">19</div>
+						<div class="col-xs-4 my-col-right">20:31</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">庄**</div>
+						<div class="col-xs-4 my-col-center">28</div>
+						<div class="col-xs-4 my-col-right">16:39</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">章**</div>
+						<div class="col-xs-4 my-col-center">12</div>
+						<div class="col-xs-4 my-col-right">15:24</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">林**</div>
+						<div class="col-xs-4 my-col-center">8</div>
+						<div class="col-xs-4 my-col-right">10:08</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">雷**</div>
+						<div class="col-xs-4 my-col-center">16</div>
+						<div class="col-xs-4 my-col-right">06:31</div>
+					</div>
+					<div class="row my-row">
+						<div class="col-xs-4 my-col-left">郑**</div>
+						<div class="col-xs-4 my-col-center">2891人</div>
+						<div class="col-xs-4 my-col-right">06/26 20:08</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="footer" th:attr="style='background:url('+@{/images/zongzhi_min.png}+');background-color:#f7ebde; background-repeat: no-repeat; background-position: center 0'"></div>
@@ -289,27 +366,10 @@
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
     <script type="text/javascript">
-	    function login() {
-	    	window.location.href = "/gongxiu_personally";
-		}
-    	$(function(){
-    		/* function dynamic_page() {
-    			var width = $("body").width();
-    			var height = $(window).height();
-        		var length = $(".my-nav").children("li").length;
-        		var avg_width = width / length;
-        		var header_height = $(".header").height();
-        		var figure_height = $(".figure").height();
-        		var cal_height = height - header_height;
-        		console.log("cal_height:" + cal_height);
-        		console.log("figure_height:" + figure_height);
-        		figure_height = cal_height > figure_height ? cal_height : figure_height;
-        		console.log("height:" + height);
-        		$(".my-nav").children("li").css("width", avg_width + "px");
-        		//$(".figure").css("height", figure_height + "px");
-    		} */
-    		function dynamic_page() {
+		$(function(){
+			function dynamic_page() {
     			var width = $("body").width();
     			var height = $(window).height();
         		var length = $(".my-nav").children("li").length;
@@ -322,12 +382,11 @@
         		$(".my-nav").children("li").css("width", avg_width + "px");
         		$(".figure").css("height", figure_height + "px");
     		}
-    		
-    		dynamic_page();
-    		$(window).resize(function() {
-    			dynamic_page();
-   			});
-    		window.onscroll=function(){
+			dynamic_page();
+			$(window).resize(function() {
+				dynamic_page();
+			});
+			window.onscroll=function(){
 				console.log($(window).scrollTop());
 				console.log($(".content").offset().top);
 				var top = $(".content").offset().top - $(window).scrollTop();
@@ -342,8 +401,8 @@
 					$(".content").css("margin-top", "0px");
 				}
 			};
-    		
-    	});
-    </script>
+			
+		});
+	</script>
   </body>
 </html>

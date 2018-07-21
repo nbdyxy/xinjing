@@ -5,10 +5,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import cn.gzggzy.yyh.dao.UserInfoDao;
 import cn.gzggzy.yyh.model.UserInfo;
+import cn.gzggzy.yyh.redis.CacheExpire;
 import cn.gzggzy.yyh.service.UserInfoService;
 
 @Service
@@ -38,8 +40,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public UserInfo selectUserByUserName(String userName) {
 		logger.info("按姓名查询人员");
-		System.out.println(userName);
 		return userInfoDao.selectUserByUserName(userName);
+	}
+	
+	@Override
+	@Cacheable(value = "userinfo", key = "#password")
+	@CacheExpire(expire = 600)
+	public UserInfo login(String userName, String password) {
+		return userInfoDao.login(userName, password);
 	}
 
 }

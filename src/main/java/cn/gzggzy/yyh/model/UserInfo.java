@@ -1,85 +1,119 @@
 package cn.gzggzy.yyh.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotBlank;
 
-public class UserInfo {
+public class UserInfo implements Serializable {
 	
-	private String ADMIN_ID;
-	@NotNull
-	@Size(min=2, max=30)
-	private String USERNAME;
-	private String PASSWORD;
-	private Date FIRST_LOGIN_TIME;
-	private Date LAST_LOGIN_TIME;
-	private Integer LOGIN_COUNT;
-	private String LAST_LOGIN_IP;
-	private Integer IS_ENABLE;
-	private Date CREATE_TIME;
-	private Integer THIRD_PARTY_ENABLE;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private String user_id;
+	@NotBlank(message="{user.name.notBlank}")
+	private String username;
+	@NotBlank(message="{user.password.notBlank}")
+	private String password;
+	private Date first_login_time;
+	private Date last_login_time;
+	private Integer login_count;
+	private String last_login_ip;
+	private Integer is_enable;
+	private Date create_time;
+	private Integer third_party_enable;
 	
 	
-	public String getADMIN_ID() {
-		return ADMIN_ID;
+	
+	public UserInfo(String user_id, String username, String password, Date first_login_time,
+			Date last_login_time, Integer login_count, String last_login_ip, Integer is_enable, Date create_time,
+			Integer third_party_enable) {
+		super();
+		this.user_id = user_id;
+		this.username = username;
+		this.password = password;
+		this.first_login_time = first_login_time;
+		this.last_login_time = last_login_time;
+		this.login_count = login_count;
+		this.last_login_ip = last_login_ip;
+		this.is_enable = is_enable;
+		this.create_time = create_time;
+		this.third_party_enable = third_party_enable;
 	}
-	public void setADMIN_ID(String aDMIN_ID) {
-		ADMIN_ID = aDMIN_ID;
+	
+	public String getUser_id() {
+		return user_id;
 	}
-	public String getUSERNAME() {
-		return USERNAME;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
-	public void setUSERNAME(String uSERNAME) {
-		USERNAME = uSERNAME;
+	public String getUsername() {
+		return username;
 	}
-	public String getPASSWORD() {
-		return PASSWORD;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	public void setPASSWORD(String pASSWORD) {
-		PASSWORD = pASSWORD;
+	public String getPassword() {
+		return password;
 	}
-	public Date getFIRST_LOGIN_TIME() {
-		return FIRST_LOGIN_TIME;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-	public void setFIRST_LOGIN_TIME(Date fIRST_LOGIN_TIME) {
-		FIRST_LOGIN_TIME = fIRST_LOGIN_TIME;
+	public Date getFirst_login_time() {
+		return first_login_time;
 	}
-	public Date getLAST_LOGIN_TIME() {
-		return LAST_LOGIN_TIME;
+	public void setFirst_login_time(Date first_login_time) {
+		this.first_login_time = first_login_time;
 	}
-	public void setLAST_LOGIN_TIME(Date lAST_LOGIN_TIME) {
-		LAST_LOGIN_TIME = lAST_LOGIN_TIME;
+	public Date getLast_login_time() {
+		return last_login_time;
 	}
-	public Integer getLOGIN_COUNT() {
-		return LOGIN_COUNT;
+	public void setLast_login_time(Date last_login_time) {
+		this.last_login_time = last_login_time;
 	}
-	public void setLOGIN_COUNT(Integer lOGIN_COUNT) {
-		LOGIN_COUNT = lOGIN_COUNT;
+	public Integer getLogin_count() {
+		return login_count;
 	}
-	public String getLAST_LOGIN_IP() {
-		return LAST_LOGIN_IP;
+	public void setLogin_count(Integer login_count) {
+		this.login_count = login_count;
 	}
-	public void setLAST_LOGIN_IP(String lAST_LOGIN_IP) {
-		LAST_LOGIN_IP = lAST_LOGIN_IP;
+	public String getLast_login_ip() {
+		return last_login_ip;
 	}
-	public Integer getIS_ENABLE() {
-		return IS_ENABLE;
+	public void setLast_login_ip(String last_login_ip) {
+		this.last_login_ip = last_login_ip;
 	}
-	public void setIS_ENABLE(Integer iS_ENABLE) {
-		IS_ENABLE = iS_ENABLE;
+	public Integer getIs_enable() {
+		return is_enable;
 	}
-	public Date getCREATE_TIME() {
-		return CREATE_TIME;
+	public void setIs_enable(Integer is_enable) {
+		this.is_enable = is_enable;
 	}
-	public void setCREATE_TIME(Date cREATE_TIME) {
-		CREATE_TIME = cREATE_TIME;
+	public Date getCreate_time() {
+		return create_time;
 	}
-	public Integer getTHIRD_PARTY_ENABLE() {
-		return THIRD_PARTY_ENABLE;
+	public void setCreate_time(Date create_time) {
+		this.create_time = create_time;
 	}
-	public void setTHIRD_PARTY_ENABLE(Integer tHIRD_PARTY_ENABLE) {
-		THIRD_PARTY_ENABLE = tHIRD_PARTY_ENABLE;
+	public Integer getThird_party_enable() {
+		return third_party_enable;
 	}
+	public void setThird_party_enable(Integer third_party_enable) {
+		this.third_party_enable = third_party_enable;
+	}
+	
+	@Override
+	public String toString() {
+		return "UserInfo{" +
+                "user_id=" + user_id +
+                ", username=" + username +
+                ", password='" + password + '\'' +
+                ", last_login_ip='" + last_login_ip + '\'' +
+                ", login_count='" + login_count + '\'' +
+                '}';
+	}
+	
 	
 }
