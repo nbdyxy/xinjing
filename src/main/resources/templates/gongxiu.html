@@ -259,7 +259,7 @@
 			<!--
 			<div style="border: 1px solid #bbb6b6; margin: 0 auto; border-radius: 5px; padding: 10px; margin-bottom: 10px; width: 100%;">
 			-->
-			<form action="#" th:action="@{/login}" th:object="${userInfo}" method="post">
+			<form action="#" th:action="@{/user/login}" th:object="${userInfo}" method="post">
 				<div class="alert alert-danger alert-dismissible" role="alert" th:if="${#fields.hasErrors('*')}">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				  <div th:each="err : ${#fields.errors('*')}" th:text="${err}"></div>
@@ -277,7 +277,7 @@
 							<button type="submit" class="btn btn-block" style="font-size: 18px; background-color: #d4875f;"><b>登录</b></button>
 						</div>
 					<div class="container password-help" style="margin-top: 10px; width: 100%;">
-						<div class="col-xs-6" style="padding: 2px 0; text-align: left;"><span>没有账号？</span><a href="#" style="text-decoration: none; color: #a94442;">立即注册</a></div>
+						<div class="col-xs-6" style="padding: 2px 0; text-align: left;"><span>没有账号？</span><a href="register.html" th:href="@{/register}" style="text-decoration: none; color: #a94442;">立即注册</a></div>
 						<div class="col-xs-6" style="padding: 2px 0; text-align: right;"><a href="#" style="text-decoration: none; color: #a94442;">忘记密码</a></div>				
 					</div>
 				</div>

@@ -13,11 +13,14 @@
     INSERT INTO
       <include refid="BASE_TABLE"/>
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      user_id,username,password,create_time,third_party_enable
+      <include refid="BASE_COLUMN"/>
     </trim>
     <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
-      #{user_id, jdbcType=VARCHAR},#{username, jdbcType=VARCHAR},#{password, jdbcType=VARCHAR},
-      #{create_time, jdbcType=DATE},#{third_party_enable, jdbcType=INTEGER}
+      #{user_id, jdbcType=VARCHAR}, #{username, jdbcType=VARCHAR}, #{password, jdbcType=VARCHAR},
+      #{first_login_time, jdbcType=DATE}, #{last_login_time, jdbcType=DATE}, 
+      #{login_count, jdbcType=INTEGER}, #{last_login_ip, jdbcType=VARCHAR}, 
+      #{is_enable, jdbcType=INTEGER}, #{create_time, jdbcType=DATE},
+      #{third_party_enable, jdbcType=INTEGER}
     </trim>
   </insert>
 

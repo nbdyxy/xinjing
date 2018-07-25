@@ -1,7 +1,7 @@
 package cn.gzggzy.yyh.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 
@@ -11,7 +11,6 @@ public class UserInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 	private String user_id;
 	@NotBlank(message="{user.name.notBlank}")
 	private String username;
@@ -26,6 +25,9 @@ public class UserInfo implements Serializable {
 	private Integer third_party_enable;
 	
 	
+	public UserInfo() {
+		super();
+	}
 	
 	public UserInfo(String user_id, String username, String password, Date first_login_time,
 			Date last_login_time, Integer login_count, String last_login_ip, Integer is_enable, Date create_time,

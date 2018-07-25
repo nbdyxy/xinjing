@@ -2,11 +2,12 @@ package cn.gzggzy.yyh.service;
 
 import java.util.List;
 
+import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
 
 public interface UserInfoService {
 	
-	int insert(UserInfo userInfo);
+	int insert(String uid, RegisterUserInfo RegisterUserInfo);
 	
 	List<UserInfo> selectUsers();
 	

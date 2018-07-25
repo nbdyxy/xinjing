@@ -2,14 +2,12 @@ package cn.gzggzy.yyh.controller;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -36,6 +34,10 @@ public class LoginController {
 	@Autowired
 	private Configuration configuration;
 	
+	public static void main(String[] args) {
+		System.out.println(DESUtils.encrypt("余颜宏", "B37A18ABD807EC9BE2E3F328"));
+	}
+	
 	@PostMapping("/login")
 	public String login(@Valid UserInfo userInfo, BindingResult bindingResult) {
 		String username = userInfo.getUsername();
@@ -53,12 +55,12 @@ public class LoginController {
 			UserInfo userInfoModel = userInfoService.login(username, password);
 			if (null != userInfoModel) {
 				log.info("key: {}", configuration.getKey());
-				String userid = userInfoModel.getUser_id();
-				String uuid = UUID.randomUUID().toString().replace("-", "");
-				String loginid = DESUtils.encrypt(userid + uuid, configuration.getKey());
-				tokenUtil.createToken(loginid);//此部分可缓存必要的用户共修信息
+				String uid = userInfoModel.getUser_id();
+				String randomId = UUID.randomUUID().toString().replace("-", "");
+				String loginid = DESUtils.encrypt(randomId, configuration.getKey());
+				tokenUtil.createToken(loginid, uid);//此部分可缓存必要的用户共修信息
 				CookieUtil.setCookie(configuration.getLoginCookieName(), 6000, loginid);
-				return "redirect:/gongxiu_personally";
+				return "redirect:/user/"+loginid;
 			} else {
 				ObjectError error = new ObjectError("login", "用户名或密码错误");
 				bindingResult.addError(error);
@@ -67,7 +69,5 @@ public class LoginController {
 		}
 		
 	}
-	
-	
 	
 }

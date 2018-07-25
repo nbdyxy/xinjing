@@ -22,21 +22,16 @@ public class LoginFilter {
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	
-	public String checkLogin(BindingResult bindingResult) {
+	public String checkLogin() {
 		String loginCookieVaule = CookieUtil.getCookie(configuration.getLoginCookieName());
 		log.info("loginCookieVaule: {}", loginCookieVaule);
 		if (null != loginCookieVaule) {
-			long ttl = redisTemplate.getExpire("token::" + loginCookieVaule);
-			log.info("TTL: {}", ttl);
-			if (ttl > 0) {
-				return "redirect:gongxiu_personally";
-			} else {
-				ObjectError error = new ObjectError("login", "登录信息过期，请重新登录");
-				bindingResult.addError(error);
-				return "gongxiu";
-			}
+			String key = "token::" + loginCookieVaule;
+			String uid = redisTemplate.opsForValue().get(key);
+			log.info("uid: {}", uid);
+			return uid;
 		}
-		return "gongxiu";
+		return null;
 	}
 	
 }
