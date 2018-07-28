@@ -33,14 +33,14 @@ public class RouterController {
 	
 	@GetMapping("/login")
 	public String gongxiu(UserInfo userInfo, BindingResult bindingResult) {
-		String secu_uid = loginFilter.checkLogin();
-		if (null != secu_uid) {
+		String[] loginInfo = loginFilter.checkLogin();
+		if (null != loginInfo[1]) {
 			StringBuilder sb = new StringBuilder("redirect:/user/");
-			sb.append(secu_uid);
+			sb.append(loginInfo[0]);
 			return sb.toString(); 
 		}
-		ObjectError error = new ObjectError("register", "用户登录信息过期，请重新登录");
-		bindingResult.addError(error);
+//		ObjectError error = new ObjectError("register", "用户登录信息过期，请重新登录");
+//		bindingResult.addError(error);
 		return "gongxiu";
 	}
 	

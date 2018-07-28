@@ -228,6 +228,85 @@
 				font-size: 13px;
 			}
 		}
+		.mod_aside_v2 {
+		    position: fixed;
+		    z-index: 10;
+		    right: 0;
+		}
+		.mod_aside_v2_mask {
+		    position: fixed;
+		    left: 0;
+		    right: 0;
+		    top: 0;
+		    bottom: 0;
+		    background: rgba(0,0,0,.3);
+		    opacity: 0;
+		    display: none;
+		    transition: opacity .3s;
+		}
+		.mod_aside_v2_nav {
+		    position: absolute;
+		    bottom: 0;
+		    right: 0;
+		    width: 260px;
+		    padding: 15px 0 5px;
+		    background: #fff;
+		    border-radius: 4px 0 0 4px;
+		    height: 102px;
+		    z-index: 1;
+		    transform: translate3d(100%,0,0);
+		    transition: transform .3s,-webkit-transform .3s;
+		}
+		.mod_aside_v2_nav_btn {
+		    width: 55px;
+		    height: 60px;
+		    background: rgba(0,0,0,.7);
+		    position: absolute;
+		    left: -55px;
+		    top: 50%;
+		    margin-top: -20px;
+		    border-radius: 4px 0 0 4px;
+		}
+		.mod_aside_v2_nav_btn:before {
+		    content: "";
+		    position: absolute;
+		    left: 2px;
+		    top: 50%;
+		    width: 20px;
+		    height: 20px;
+		    margin-top: -10px;
+/* 		    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAABGdBT…Rn09psIeQEkmOWuEpBkAwt7ItkXPCyGk4Uv/IVnvmNeQF/yATH2rqnlQAAAABJRU5ErkJggg==) no-repeat 0 0;
+ */		    background-size: 100%;
+		}
+		.mod_aside_v2_nav_btn i {
+		    color: #fff;
+		    font-size: 18px;
+		    width: 2.2em;
+		    line-height: 1.3em;
+		    position: absolute;
+		    top: 50%;
+		    left: 15px;
+		    transform: translateY(-50%);
+		}
+		em, i {
+		    font-style: normal;
+		}
+		.mod_aside_v2_nav_item {
+		    float: left;
+		    width: 50%;
+		    text-align: center;
+		    padding: 5px 0;
+		    position: relative;
+		    text-decoration: none;
+		    color: #333;
+		}
+		.mod_aside_v2_nav_item img {
+		    display: block;
+		    width: 24px;
+		    height: 24px;
+		    margin: 0 auto;
+		    fill: #666;
+		}
 		.hide {
 			display: none;
 		}
@@ -244,10 +323,10 @@
 		</div>
 		<nav class="nav-header">
 			<ul class="my-nav">
-				<li id="jianjie"><a href="index.html" th:href="@{./index}">简介</a></li>
-				<li id="dongtai"><a href="dongtai.html" th:href="@{./dongtai}">动态</a></li>
-				<li id="huixiang"><a href="huixiang.html" th:href="@{./huixiang}">回向</a></li>
-				<li id="gongxiu" class="active"><a href="gongxiu_personally.html" th:href="@{./login}">共修</a></li>
+				<li id="jianjie"><a href="index.html" th:href="@{/index}">简介</a></li>
+				<li id="dongtai"><a href="dongtai.html" th:href="@{/dongtai}">动态</a></li>
+				<li id="huixiang"><a href="huixiang.html" th:href="@{/huixiang}">回向</a></li>
+				<li id="gongxiu" class="active"><a href="gongxiu_personally.html" th:href="@{/login}">共修</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -368,8 +447,25 @@
 				</button>
 			</div>
 		</div>
+		<!-- <div class="userButton" style="position: fixed; bottom: 35px; right: 10px; z-index: 9;">
+			<img class="img-responsive" src="../static/images/lotus_orange.png" th:src="@{/images/lotus_orange.png}" alt="共修平台">
+		</div> -->
 	</div>
 	<div class="footer" th:attr="style='background:url('+@{/images/zongzhi_min.png}+');background-color:#f7ebde; background-repeat: no-repeat; background-position: center 0'"></div>
+	<div class="mod_aside_v2" style="bottom: 80px;" id="moreAct">
+		<div class="mod_aside_v2_mask"></div>
+		<div class="mod_aside_v2_nav">
+			<div class="mod_aside_v2_nav_btn"><i>我的信息</i></div>
+		   
+			<a href="/logout" th:href="@{/logout}" class="mod_aside_v2_nav_item">
+				<img src="../static/images/user-silhouette.png" th:src="@{/images/user-silhouette.png}"><span>个人资料</span>
+			</a>
+			<a href="/logout" th:href="@{/logout}" class="mod_aside_v2_nav_item">
+				<img src="../static/images/logout.png" th:src="@{/images/logout.png}"><span>退出登录</span>
+			</a>
+		
+		</div>
+	</div>
 	<!-- Modal -->
 	<div class="modal fade" id="dailyModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">
@@ -497,7 +593,6 @@
 			$("#dailyConfirm").click(function() {
 				var stageValue = $("#dailyValue").val();
 				console.log(stageValue);
-	
 				var figure_height = $(".content").height();
 				console.log("daily:" + figure_height);
 				if (stageValue) {
@@ -531,6 +626,31 @@
 				}
 			});
 			/*报数按钮 end*/
+			
+			$(".mod_aside_v2_nav_btn").click(function() {
+				var className = $(".mod_aside_v2_nav i").attr("class");
+				if (typeof(className) == "undefined") {
+					$(".mod_aside_v2_nav i").text("收起");
+					$(".mod_aside_v2_nav i").attr("class", "unfold");
+					$(".mod_aside_v2_nav").css("-webkit-transform", "translate3d(0,0,0)")
+						.css("transform", "translate3d(0,0,0)");
+					$(".mod_aside_v2_mask").css("opacity", "1")
+						.css("display", "block");
+				} else {
+					console.log(className);
+					$(".mod_aside_v2_nav i").text("我的信息");
+					$(".mod_aside_v2_nav i").removeAttr("class");
+					$(".mod_aside_v2_nav").css("-webkit-transform", "")
+						.css("transform", "");
+					$(".mod_aside_v2_mask").css("opacity", "0")
+						.css("display", "none");
+				}
+				/*
+				mod_aside_v2_mask opcity 1 dispaly: none
+				mod_aside_v2_nav -webkit-transform: translate3d(0,0,0);
+			    transform: translate3d(0,0,0);
+				*/
+			});
 		});
 	</script>
   </body>

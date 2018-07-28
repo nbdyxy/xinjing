@@ -3,7 +3,6 @@ package cn.gzggzy.yyh.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +66,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@CacheExpire(expire = 600)
 	public UserInfo login(String userName, String password) {
 		return userInfoDao.login(userName, password);
+	}
+
+	@Override
+	@Cacheable(value = "username", key = "#usernameList", unless="#result == null")
+	@CacheExpire(expire = 6000)
+	public List<String> selectAllUserName(String usernameList) {
+		return userInfoDao.selectAllUserName();
 	}
 
 }

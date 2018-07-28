@@ -228,6 +228,9 @@
 				font-size: 13px;
 			}
 		}
+		.error {
+			color: red;
+		}
 		.hide {
 			display: none;
 		}
@@ -260,25 +263,33 @@
 			<div style="border: 1px solid #bbb6b6; margin: 0 auto; border-radius: 5px; padding: 10px; margin-bottom: 10px; width: 100%;">
 			-->
 			<form action="#" th:action="@{/user/add}" th:object="${registerUserInfo}" method="post">
-				<div class="alert alert-danger alert-dismissible" role="alert" th:if="${#fields.hasErrors('*')}">
+				<!-- <div class="alert alert-danger alert-dismissible" role="alert" th:if="${#fields.hasErrors('*')}">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				  <div th:each="err : ${#fields.errors('*')}" th:text="${err}"></div>
-				</div>
+				</div> -->
 				<div class="my-panel" style="padding: 10px;">
+						<div th:errors="*{username}" class="error"></div>
+						<div id="username-page-error" class="error"></div>
 						<div class="input-group" style="margin-bottom: 10px;">
 							<span class="input-group-addon glyphicon glyphicon-user" aria-hidden="true"></span>
 							<input type="text" th:field="*{username}" class="form-control" placeholder="请输入您的法名" aria-describedby="basic-addon1">
 						</div>
+						<div th:errors="*{password}" class="error"></div>
+						<div id="password-page-error" class="error"></div>
 						<div class="input-group" style="margin-bottom: 10px;">
 							<span class="input-group-addon glyphicon glyphicon-lock" aria-hidden="true"></span>
 							<input type="password" th:field="*{password}" class="form-control" placeholder="请输入您的密码" aria-describedby="basic-addon1">
 						</div>
+						<div th:errors="*{confirmpassword}" class="error"></div>
+						<div id="confirmpassword-page-error" class="error"></div>
 						<div class="input-group" style="margin-bottom: 10px;">
 							<span class="input-group-addon glyphicon glyphicon-lock" aria-hidden="true"></span>
 							<input type="password" th:field="*{confirmpassword}" class="form-control" placeholder="请确认您的密码" aria-describedby="basic-addon1">
 						</div>
+						<div th:if="${#fields.hasErrors('confirmpassword')}" th:errors="*{confirmpassword}">
+						</div>
 						<div>
-							<button type="submit" class="btn btn-block" style="font-size: 18px; background-color: #d4875f;"><b>注册</b></button>
+							<button id="register" type="submit" class="btn btn-block"  disabled="disabled" style="font-size: 18px; background-color: #d4875f;"><b>注册</b></button>
 						</div>
 					<div class="container password-help" style="margin-top: 10px; width: 100%;">
 						<div class="col-xs-6" style="padding: 2px 0; text-align: left;"><span>已有账号？</span><a href="register.html" th:href="@{/login}" style="text-decoration: none; color: #a94442;">立即登录</a></div>
@@ -297,21 +308,6 @@
 	    	window.location.href = "/gongxiu_personally";
 		}
     	$(function(){
-    		/* function dynamic_page() {
-    			var width = $("body").width();
-    			var height = $(window).height();
-        		var length = $(".my-nav").children("li").length;
-        		var avg_width = width / length;
-        		var header_height = $(".header").height();
-        		var figure_height = $(".figure").height();
-        		var cal_height = height - header_height;
-        		console.log("cal_height:" + cal_height);
-        		console.log("figure_height:" + figure_height);
-        		figure_height = cal_height > figure_height ? cal_height : figure_height;
-        		console.log("height:" + height);
-        		$(".my-nav").children("li").css("width", avg_width + "px");
-        		//$(".figure").css("height", figure_height + "px");
-    		} */
     		function dynamic_page() {
     			var width = $("body").width();
     			var height = $(window).height();
@@ -345,7 +341,73 @@
 					$(".content").css("margin-top", "0px");
 				}
 			};
+    		var usernameFlag = 0, passwordFlag = 0, confirmpasswordFlag = 0;
     		
+    		function checkFlag(usernameFlag, passwordFlag, confirmpasswordFlag) {
+    			if (1 == usernameFlag && 1 == passwordFlag && 1 == confirmpasswordFlag) {
+    				$("#register").removeAttr("disabled");
+    			} else {
+    				$("#register").attr("disabled", "disabled");
+    			}
+    			
+    		}
+    		
+			$("#username").keyup(function() {
+				var username = $(this).val().trim();
+				console.log('username: ' + username);
+				if (null != username && "" != username) {
+					if (username.length >= 2) {
+						$.ajax({
+							url: '/user/checkname/' + username,
+							method: 'POST',
+							dataType: 'JSON',
+							success: function(data) {
+								if (!data) {
+									$("#username-page-error").text("该用户名已被注册，请更换！");
+								} else {
+									$("#username-page-error").text("");
+									usernameFlag = 1;
+									checkFlag(usernameFlag, passwordFlag, confirmpasswordFlag);
+								}
+							}
+						});
+					} else {
+						$("#username-page-error").text("用户名位数必须在2-20位之间！");
+					}
+				}
+			});
+			$("#password").keyup(function() {
+				var password = $(this).val().trim();
+				var confirmpassword = $("#confirmpassword").val().trim();
+				console.log(password);
+				if (null != password && "" != password) {
+					if (password.length < 6 || password.length > 20) {
+						$("#password-page-error").text("密码位数必须在6-20间！");
+					} else {
+						$("#password-page-error").text("");
+						passwordFlag = 1;
+						checkFlag(usernameFlag, passwordFlag, confirmpasswordFlag);
+					}
+				} else {
+					$("#password-page-error").text("密码不能为空");
+				}
+			});
+			
+			$("#confirmpassword").keyup(function() {
+				var password = $("#password").val().trim();
+				var confirmpassword = $(this).val().trim();
+				console.log(confirmpassword);
+				if (null == confirmpassword) {
+					$("#confirmpassword-page-error").text("密码不能为空");
+				} else if (password.length >= 6 && confirmpassword != password) {
+					$("#confirmpassword-page-error").text("两次输入的密码不一致");
+				} else {
+					$("#confirmpassword-page-error").text("");
+					confirmpasswordFlag = 1;
+					checkFlag(usernameFlag, passwordFlag, confirmpasswordFlag);
+				}
+			});
+			
     	});
     </script>
   </body>

@@ -11,6 +11,8 @@ public interface UserInfoService {
 	
 	List<UserInfo> selectUsers();
 	
+	List<String> selectAllUserName(String usernameList);
+	
 	UserInfo selectUserByUserName(String userName);
 	
 	UserInfo login(String userName, String password);

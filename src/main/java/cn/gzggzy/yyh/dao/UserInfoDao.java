@@ -12,6 +12,8 @@ public interface UserInfoDao {
 	
 	List<UserInfo> selectUsers();
 	
+	List<String> selectAllUserName();
+	
 	UserInfo selectUserByUserName(@Param("userName") String userName);
 	
 	UserInfo login(@Param("userName") String userName, @Param("password") String password);

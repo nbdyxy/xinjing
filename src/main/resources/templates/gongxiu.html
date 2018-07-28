@@ -247,10 +247,10 @@
 	  	</div>
 	  	<nav class="nav-header">
 			<ul class="my-nav">
-				<li id="jianjie"><a href="index.html" th:href="@{./index}">简介</a></li>
-				<li id="dongtai"><a href="dongtai.html" th:href="@{./dongtai}">动态</a></li>
-				<li id="huixiang"><a href="huixiang.html" th:href="@{./huixiang}">回向</a></li>
-				<li id="gongxiu" class="active"><a href="gongxiu.html" th:href="@{./login}">共修</a></li>
+				<li id="jianjie"><a href="index.html" th:href="@{/index}">简介</a></li>
+				<li id="dongtai"><a href="dongtai.html" th:href="@{/dongtai}">动态</a></li>
+				<li id="huixiang"><a href="huixiang.html" th:href="@{/huixiang}">回向</a></li>
+				<li id="gongxiu" class="active"><a href="gongxiu.html" th:href="@{/login}">共修</a></li>
 			</ul>
 	  	</nav>
   	</div>
@@ -259,7 +259,7 @@
 			<!--
 			<div style="border: 1px solid #bbb6b6; margin: 0 auto; border-radius: 5px; padding: 10px; margin-bottom: 10px; width: 100%;">
 			-->
-			<form action="#" th:action="@{/user/login}" th:object="${userInfo}" method="post">
+			<form action="#" th:action="@{/login}" th:object="${userInfo}" method="post">
 				<div class="alert alert-danger alert-dismissible" role="alert" th:if="${#fields.hasErrors('*')}">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				  <div th:each="err : ${#fields.errors('*')}" th:text="${err}"></div>

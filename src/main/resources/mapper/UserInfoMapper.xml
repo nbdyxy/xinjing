@@ -31,6 +31,13 @@
         <include refid="BASE_TABLE"/>
   </select>
   
+  <select id="selectAllUserName" resultType="java.lang.String">
+      SELECT
+        username
+      FROM
+        <include refid="BASE_TABLE"/>
+  </select>
+  
   <select id="selectUserByUserName" resultType="cn.gzggzy.yyh.model.UserInfo" parameterType="java.lang.String">
       SELECT
         <include refid="BASE_COLUMN"/>

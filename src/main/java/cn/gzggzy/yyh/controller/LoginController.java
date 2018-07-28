@@ -1,16 +1,19 @@
 package cn.gzggzy.yyh.controller;
 
 import java.util.List;
-import java.util.UUID;
+
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import cn.gzggzy.yyh.config.Configuration;
@@ -34,17 +37,16 @@ public class LoginController {
 	@Autowired
 	private Configuration configuration;
 	
-	public static void main(String[] args) {
-		System.out.println(DESUtils.encrypt("余颜宏", "B37A18ABD807EC9BE2E3F328"));
-	}
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
+	
+//	public static void main(String[] args) {
+//		System.out.println(DESUtils.encrypt("余颜宏", "B37A18ABD807EC9BE2E3F328"));
+//	}
 	
 	@PostMapping("/login")
 	public String login(@Valid UserInfo userInfo, BindingResult bindingResult) {
-		String username = userInfo.getUsername();
-		String password = userInfo.getPassword();
-		log.info("userName: {}", username);
-		log.info("password: {}",  password);
-		log.info("result: {}",  bindingResult.hasErrors());
+		log.info("userInfo: {}", userInfo.toString());
 		List<ObjectError> errors = bindingResult.getAllErrors();
 		for(ObjectError error : errors) {
 			log.info(error.toString());
@@ -52,15 +54,16 @@ public class LoginController {
 		if (bindingResult.hasErrors()) {
 			return "gongxiu";
 		} else {
+			String username = userInfo.getUsername();
+			String password = DESUtils.encrypt(userInfo.getPassword(), configuration.getKey());
 			UserInfo userInfoModel = userInfoService.login(username, password);
 			if (null != userInfoModel) {
 				log.info("key: {}", configuration.getKey());
 				String uid = userInfoModel.getUser_id();
-				String randomId = UUID.randomUUID().toString().replace("-", "");
-				String loginid = DESUtils.encrypt(randomId, configuration.getKey());
-				tokenUtil.createToken(loginid, uid);//此部分可缓存必要的用户共修信息
-				CookieUtil.setCookie(configuration.getLoginCookieName(), 6000, loginid);
-				return "redirect:/user/"+loginid;
+				String randomId = RandomStringUtils.randomAlphanumeric(8);
+				tokenUtil.createToken(randomId, uid);//此部分可缓存必要的用户共修信息
+				CookieUtil.setCookie(configuration.getLoginCookieName(), 6000, randomId);
+				return "redirect:/user/"+randomId;
 			} else {
 				ObjectError error = new ObjectError("login", "用户名或密码错误");
 				bindingResult.addError(error);
@@ -70,4 +73,14 @@ public class LoginController {
 		
 	}
 	
+	@GetMapping("/logout")
+	public String loginOut(UserInfo userInfo) {
+		String randomId = CookieUtil.getCookie(configuration.getLoginCookieName());
+		if (null != randomId) {
+			boolean deleteResult = redisTemplate.delete(randomId);
+			log.info("{} delete redis result {}.", randomId, deleteResult);
+		}
+		CookieUtil.setCookie(configuration.getLoginCookieName(), 0, "");
+		return "redirect:/login";
+	}
 }

@@ -5,8 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 
 import cn.gzggzy.yyh.config.Configuration;
 import cn.gzggzy.yyh.util.CookieUtil;
@@ -22,16 +20,18 @@ public class LoginFilter {
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	
-	public String checkLogin() {
+	public String[] checkLogin() {
+		String[] arr = new String[2];
 		String loginCookieVaule = CookieUtil.getCookie(configuration.getLoginCookieName());
 		log.info("loginCookieVaule: {}", loginCookieVaule);
 		if (null != loginCookieVaule) {
+			arr[0] = loginCookieVaule;
 			String key = "token::" + loginCookieVaule;
 			String uid = redisTemplate.opsForValue().get(key);
 			log.info("uid: {}", uid);
-			return uid;
+			arr[1] = uid;
 		}
-		return null;
+		return arr;
 	}
 	
 }
