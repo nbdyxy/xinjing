@@ -18,10 +18,15 @@ import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.alibaba.fastjson.parser.ParserConfig;
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 
 @Configuration
 //如果 application.properties、application.yml 中没有 spring.redis.host 配置，则不初始化这些 Bean
@@ -54,7 +59,19 @@ public class TedisAutoConfiguration extends CachingConfigurerSupport {
         // 设置key序列化类，否则key前面会多了一些乱码
         template.setKeySerializer(serializer);
         template.setHashKeySerializer(serializer);
-
+//        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<Object>(
+//				Object.class);
+//		ObjectMapper om = new ObjectMapper();
+//		om.setVisibility(PropertyAccessor.ALL, Visibility.ANY);
+//	    om.enableDefaultTyping(DefaultTyping.NON_FINAL);
+//		jackson2JsonRedisSerializer.setObjectMapper(om);
+		// 配置redisTemplate
+//		RedisSerializer<?> stringSerializer = new StringRedisSerializer();
+//		template.setKeySerializer(stringSerializer);// key序列化
+//		template.setValueSerializer(jackson2JsonRedisSerializer);// value序列化
+//		template.setHashKeySerializer(stringSerializer);// Hash key序列化
+//		template.setHashValueSerializer(jackson2JsonRedisSerializer);// Hash value序列化
+		
         // fastjson serializer
         GenericFastJsonRedisSerializer fastSerializer = TedisCacheManager.FASTJSON_SERIALIZER;
         template.setValueSerializer(fastSerializer);
@@ -113,6 +130,7 @@ public class TedisAutoConfiguration extends CachingConfigurerSupport {
     @Bean
     @Override
     public CacheManager cacheManager() {
+    	log.info("cacheManager");
         // 初始化一个RedisCacheWriter
         RedisCacheWriter cacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory);
 

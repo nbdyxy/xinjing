@@ -247,12 +247,12 @@
 		.mod_aside_v2_nav {
 		    position: absolute;
 		    bottom: 0;
-		    right: 0;
-		    width: 260px;
+		    right: 200px;
+		    width: 102px;
 		    padding: 15px 0 5px;
 		    background: #fff;
 		    border-radius: 4px 0 0 4px;
-		    height: 102px;
+		    height: 260px;
 		    z-index: 1;
 		    transform: translate3d(100%,0,0);
 		    transition: transform .3s,-webkit-transform .3s;
@@ -293,7 +293,7 @@
 		}
 		.mod_aside_v2_nav_item {
 		    float: left;
-		    width: 50%;
+		    width: 33%;
 		    text-align: center;
 		    padding: 5px 0;
 		    position: relative;
@@ -332,6 +332,14 @@
 	</div>
 	<div class="content">
 		<div class="figure">
+			<div class="row my-row">
+				<div class="col-xs-8 col-xs-offset-4 my-col-right">
+					<span th:text="${userInfo.username}">用户名</span>
+					<a href="/logout" th:href="@{/logout}">
+						<span>退出登录</span>
+					</a>
+				</div>
+			</div>
 			<div class="my-panel">
 				<div class="my-panel-title">个人动态</div>
 				<div class="container">
@@ -447,25 +455,31 @@
 				</button>
 			</div>
 		</div>
-		<!-- <div class="userButton" style="position: fixed; bottom: 35px; right: 10px; z-index: 9;">
+		<!-- 
+		<div class="userButton" style="position: fixed; bottom: 35px; right: 10px; z-index: 9;">
 			<img class="img-responsive" src="../static/images/lotus_orange.png" th:src="@{/images/lotus_orange.png}" alt="共修平台">
-		</div> -->
+		</div>
+		<div class="mod_aside_v2" style="bottom: 80px;">
+			<div class="mod_aside_v2_mask"></div>
+			<div class="mod_aside_v2_nav">
+				<div class="mod_aside_v2_nav_btn"><i>我的信息</i></div>
+			   
+				<a href="/logout" th:href="@{/logout}" class="mod_aside_v2_nav_item">
+					<img src="../static/images/user-silhouette.png" th:src="@{/images/user-silhouette.png}"><span>个人资料</span>
+				</a>
+				<a href="/logout" th:href="@{/logout}" class="mod_aside_v2_nav_item">
+					<img src="../static/images/lock.png" th:src="@{/images/lock.png}"><span>修改密码</span>
+				</a>
+				<a href="/logout" th:href="@{/logout}" class="mod_aside_v2_nav_item">
+					<img src="../static/images/logout.png" th:src="@{/images/logout.png}"><span>退出登录</span>
+				</a>
+			
+			</div>
+		</div>
+		 -->
 	</div>
 	<div class="footer" th:attr="style='background:url('+@{/images/zongzhi_min.png}+');background-color:#f7ebde; background-repeat: no-repeat; background-position: center 0'"></div>
-	<div class="mod_aside_v2" style="bottom: 80px;" id="moreAct">
-		<div class="mod_aside_v2_mask"></div>
-		<div class="mod_aside_v2_nav">
-			<div class="mod_aside_v2_nav_btn"><i>我的信息</i></div>
-		   
-			<a href="/logout" th:href="@{/logout}" class="mod_aside_v2_nav_item">
-				<img src="../static/images/user-silhouette.png" th:src="@{/images/user-silhouette.png}"><span>个人资料</span>
-			</a>
-			<a href="/logout" th:href="@{/logout}" class="mod_aside_v2_nav_item">
-				<img src="../static/images/logout.png" th:src="@{/images/logout.png}"><span>退出登录</span>
-			</a>
-		
-		</div>
-	</div>
+	
 	<!-- Modal -->
 	<div class="modal fade" id="dailyModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel">

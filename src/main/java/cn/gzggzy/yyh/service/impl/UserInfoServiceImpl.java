@@ -55,6 +55,22 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoDao.selectUsers();
 	}
 
+
+	@Override
+	@Cacheable(value = "user", key = "#usernameList", unless="#result == null")
+	@CacheExpire(expire = 6000)
+	public List<String> selectAllUserName(String usernameList) {
+		return userInfoDao.selectAllUserName();
+	}
+	
+	@Override
+	@Cacheable(value = "user", key = "#uid", unless="#result == null")
+	@CacheExpire(expire = 6000)
+	public UserInfo selectUserById(String uid) {
+		logger.info("按uid查询人员: {}", uid);
+		return userInfoDao.selectUserById(uid);
+	}
+	
 	@Override
 	public UserInfo selectUserByUserName(String userName) {
 		logger.info("按姓名查询人员");
@@ -62,17 +78,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 	
 	@Override
-	@Cacheable(value = "userinfo", key = "#password", unless="#result == null")
+	@Cacheable(value = "user", key = "#password", unless="#result == null")
 	@CacheExpire(expire = 600)
 	public UserInfo login(String userName, String password) {
 		return userInfoDao.login(userName, password);
 	}
 
-	@Override
-	@Cacheable(value = "username", key = "#usernameList", unless="#result == null")
-	@CacheExpire(expire = 6000)
-	public List<String> selectAllUserName(String usernameList) {
-		return userInfoDao.selectAllUserName();
-	}
 
 }

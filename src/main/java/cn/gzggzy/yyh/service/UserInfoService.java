@@ -13,6 +13,8 @@ public interface UserInfoService {
 	
 	List<String> selectAllUserName(String usernameList);
 	
+	UserInfo selectUserById(String uid);
+	
 	UserInfo selectUserByUserName(String userName);
 	
 	UserInfo login(String userName, String password);

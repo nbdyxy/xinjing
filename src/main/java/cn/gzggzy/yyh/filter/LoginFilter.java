@@ -28,6 +28,10 @@ public class LoginFilter {
 			arr[0] = loginCookieVaule;
 			String key = "token::" + loginCookieVaule;
 			String uid = redisTemplate.opsForValue().get(key);
+			if (null != uid) {
+				//解决序列化造成的redis缓存字符串带双引号的问题
+				uid = uid.replace("\"", "");
+			}
 			log.info("uid: {}", uid);
 			arr[1] = uid;
 		}

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,11 +78,14 @@ public class UserInfoController {
 	}
 	
 	@GetMapping("/{randomId}")
-	public String userDetailInfo(@ModelAttribute("randomId") String randomId, UserInfo userInfo, BindingResult bindingResult) {
+	public String userDetailInfo(Model model, @ModelAttribute("randomId") String randomId, UserInfo userInfo, BindingResult bindingResult) {
 		log.info("randomId: {}", randomId);
 		String[] loginInfo = loginFilter.checkLogin();
 		if (null != loginInfo[1]) {
 			log.info("uid: {}, 用户登录信息校验通过.", loginInfo[1]);
+			userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
+			log.info("userInfo: {}", userInfo);
+			model.addAttribute("userInfo", userInfo);
 			return "gongxiu_personally";
 		}
 		log.info("用户登录信息过期.");
