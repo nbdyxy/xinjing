@@ -17,6 +17,8 @@ public interface UserInfoService {
 	
 	UserInfo selectUserByUserName(String userName);
 	
-	UserInfo login(String userName, String password);
+	UserInfo login(String userName, String password, String randomId);
+	
+	int updateUserInfo(UserInfo userInfo);
 	
 }

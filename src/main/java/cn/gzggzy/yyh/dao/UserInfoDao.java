@@ -20,4 +20,6 @@ public interface UserInfoDao {
 	
 	UserInfo login(@Param("userName") String userName, @Param("password") String password);
 	
+	int updateUserInfo(@Param("userInfo") UserInfo userInfo); 
+	
 }

@@ -2,7 +2,6 @@ package cn.gzggzy.yyh.controller;
 
 import java.util.List;
 
-
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -56,11 +55,11 @@ public class LoginController {
 		} else {
 			String username = userInfo.getUsername();
 			String password = DESUtils.encrypt(userInfo.getPassword(), configuration.getKey());
-			UserInfo userInfoModel = userInfoService.login(username, password);
+			String randomId = RandomStringUtils.randomAlphanumeric(8);
+			UserInfo userInfoModel = userInfoService.login(username, password, randomId);
 			if (null != userInfoModel) {
 				log.info("key: {}", configuration.getKey());
 				String uid = userInfoModel.getUser_id();
-				String randomId = RandomStringUtils.randomAlphanumeric(8);
 				tokenUtil.createToken(randomId, uid);//此部分可缓存必要的用户共修信息
 				CookieUtil.setCookie(configuration.getLoginCookieName(), 6000, randomId);
 				return "redirect:/user/"+randomId;

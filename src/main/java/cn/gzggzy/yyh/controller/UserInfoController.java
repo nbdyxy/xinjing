@@ -94,6 +94,12 @@ public class UserInfoController {
 		return "redirect:/login";
 	}
 	
+//	@ResponseBody
+//	@PostMapping
+//	public UserInfo updatePassword() {
+//		
+//	}
+	
 	@ResponseBody
 	@GetMapping("/findAll")
 	public List<UserInfo> findAllUser() {
@@ -111,6 +117,16 @@ public class UserInfoController {
 			}
 		}
 		return true;
+	}
+	
+	@ResponseBody
+	@PostMapping("/updateUserInfo")
+	public UserInfo updateUserInfo(UserInfo userInfo) {
+		int result = userInfoService.updateUserInfo(userInfo);
+		if ( 1 == result) {
+			return userInfo;
+		}
+		return null;
 	}
 	
 	
