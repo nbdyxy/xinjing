@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,16 +69,15 @@ public class UserInfoController {
 					String randomId = RandomStringUtils.randomAlphabetic(8);
 					tokenUtil.createToken(randomId, uid);//此部分可缓存必要的用户共修信息
 					CookieUtil.setCookie(configuration.getLoginCookieName(), 6000, randomId);
-					return "redirect:/user/"+randomId;
+					return "redirect:/user";
 				}
 			}
 		}
 		return "/register";
 	}
 	
-	@GetMapping("/{randomId}")
-	public String userDetailInfo(Model model, @ModelAttribute("randomId") String randomId, UserInfo userInfo, BindingResult bindingResult) {
-		log.info("randomId: {}", randomId);
+	@GetMapping
+	public String userDetailInfo(Model model, UserInfo userInfo, BindingResult bindingResult) {
 		String[] loginInfo = loginFilter.checkLogin();
 		if (null != loginInfo[1]) {
 			log.info("uid: {}, 用户登录信息校验通过.", loginInfo[1]);
@@ -87,6 +85,22 @@ public class UserInfoController {
 			log.info("userInfo: {}", userInfo);
 			model.addAttribute("userInfo", userInfo);
 			return "gongxiu_personally";
+		}
+		log.info("用户登录信息过期.");
+		ObjectError error = new ObjectError("register", "用户登录信息过期，请重新登录");
+		bindingResult.addError(error);
+		return "redirect:/login";
+	}
+	
+	@GetMapping("/info")
+	public String personInfo(Model model, UserInfo userInfo, BindingResult bindingResult) {
+		String[] loginInfo = loginFilter.checkLogin();
+		if (null != loginInfo[1]) {
+			log.info("uid: {}, 用户登录信息校验通过.", loginInfo[1]);
+			userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
+			log.info("userInfo: {}", userInfo);
+			model.addAttribute("userInfo", userInfo);
+			return "person_info";
 		}
 		log.info("用户登录信息过期.");
 		ObjectError error = new ObjectError("register", "用户登录信息过期，请重新登录");

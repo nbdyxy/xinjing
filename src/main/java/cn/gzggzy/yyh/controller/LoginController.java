@@ -62,7 +62,7 @@ public class LoginController {
 				String uid = userInfoModel.getUser_id();
 				tokenUtil.createToken(randomId, uid);//此部分可缓存必要的用户共修信息
 				CookieUtil.setCookie(configuration.getLoginCookieName(), 6000, randomId);
-				return "redirect:/user/"+randomId;
+				return "redirect:/user";
 			} else {
 				ObjectError error = new ObjectError("login", "用户名或密码错误");
 				bindingResult.addError(error);

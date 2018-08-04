@@ -3,7 +3,6 @@ package cn.gzggzy.yyh.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import cn.gzggzy.yyh.filter.LoginFilter;
@@ -35,9 +34,7 @@ public class RouterController {
 	public String gongxiu(UserInfo userInfo, BindingResult bindingResult) {
 		String[] loginInfo = loginFilter.checkLogin();
 		if (null != loginInfo[1]) {
-			StringBuilder sb = new StringBuilder("redirect:/user/");
-			sb.append(loginInfo[0]);
-			return sb.toString(); 
+			return "redirect:/user"; 
 		}
 //		ObjectError error = new ObjectError("register", "用户登录信息过期，请重新登录");
 //		bindingResult.addError(error);
