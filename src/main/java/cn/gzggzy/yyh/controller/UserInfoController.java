@@ -25,6 +25,7 @@ import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.util.CookieUtil;
+import cn.gzggzy.yyh.util.DESUtils;
 import cn.gzggzy.yyh.util.TokenUtil;
 
 @Controller
@@ -108,12 +109,6 @@ public class UserInfoController {
 		return "redirect:/login";
 	}
 	
-//	@ResponseBody
-//	@PostMapping
-//	public UserInfo updatePassword() {
-//		
-//	}
-	
 	@ResponseBody
 	@GetMapping("/findAll")
 	public List<UserInfo> findAllUser() {
@@ -136,6 +131,11 @@ public class UserInfoController {
 	@ResponseBody
 	@PostMapping("/updateUserInfo")
 	public UserInfo updateUserInfo(UserInfo userInfo) {
+		String[] loginInfo = loginFilter.checkLogin();
+		if (null != loginInfo[1]) {
+			userInfo.setUser_id(loginInfo[1]);
+		}
+		log.info("UserInfo: {}", userInfo);
 		int result = userInfoService.updateUserInfo(userInfo);
 		if ( 1 == result) {
 			return userInfo;
@@ -143,6 +143,51 @@ public class UserInfoController {
 		return null;
 	}
 	
+	@ResponseBody
+	@PostMapping("/updatePassword")
+	public String updatePassword(String oldpassword, String password, String confirmpassword) {
+		String[] loginInfo = loginFilter.checkLogin();
+		
+//			log.info("uid: {}, 用户登录信息校验通过.", loginInfo[1]);
+//			userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
+//			log.info("userInfo: {}", userInfo);
+//			model.addAttribute("userInfo", userInfo);
+//			return "person_info";
+		String result = "密码不符合规则！";
+		log.info("oldpassword: {} - password: {} - confirmpassword: {}", oldpassword, password, confirmpassword);
+		/*对参数进行正则校验，检验规则长度 6-20，只能包含英文字母、数字、英文特殊字符*/
+		String regStr = "^([0-9a-zA-Z/^/$/.//,;:'!@#%&/*/|/?/+/(/)/[/]/{/}]{6,20}+)$";
+		//校验登录状态
+		if (null != loginInfo[1]) { 
+			if (null != oldpassword && null != password && null != confirmpassword) {
+				if (oldpassword.matches(regStr) && password.matches(regStr) && confirmpassword.matches(regStr)) {
+					//检验后两次密码是否一致
+					if (password.equals(confirmpassword)) {
+						//检验旧密码是否正确
+						UserInfo userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
+						String en_oldpassword = DESUtils.encrypt(oldpassword, configuration.getKey());
+						String en_password = DESUtils.encrypt(password, configuration.getKey());
+						if (en_oldpassword.equals(userInfo.getPassword())) {
+							UserInfo newUserInfo = new UserInfo();
+							newUserInfo.setUser_id(loginInfo[1].replace("\"", ""));
+							newUserInfo.setPassword(en_password);
+							int count = userInfoService.updateUserInfo(newUserInfo);
+							if (count == 1) {
+								result = "密码修改成功！";
+							} else {
+								result = "密码修改异常，请联系管理员！";
+							}
+						} else {
+							result = "请检查原密码是否输入正确！";
+						}
+					} else {
+						result = "两次输入的密码不一致！";
+					}
+				}
+			}
+		}
+		return result;
+	}
 	
 	@ResponseBody
 	@GetMapping("/findSingle")

@@ -230,6 +230,7 @@
 		}
 		.error {
 			color: red;
+			font-weight: bold;
 		}
 		.hide {
 			display: none;
@@ -353,7 +354,7 @@
     		}
     		
 			$("#username").keyup(function() {
-				var username = $(this).val().trim();
+				var username = $(this).val();
 				var reg = /^[\u4e00-\u9fa5_a-zA-Z0-9]{2,20}$/;
 				console.log(reg.test(username));
 				console.log('username: ' + username);
@@ -380,8 +381,8 @@
 				}
 			});
 			function password(el) {
-				var password = $(el).val().trim();
-				var confirmpassword = $("#confirmpassword").val().trim();
+				var password = $(el).val();
+				var confirmpassword = $("#confirmpassword").val();
 				console.log(password);
 				if (null != password && "" != password) {
 					if (password.length < 6 || password.length > 20) {
@@ -408,8 +409,8 @@
 			});
 			
 			function confirmpassword(el) {
-				var password = $("#password").val().trim();
-				var confirmpassword = $(el).val().trim();
+				var password = $("#password").val();
+				var confirmpassword = $(el).val();
 				console.log(confirmpassword);
 				if (null == confirmpassword) {
 					$("#confirmpassword-page-error").text("密码不能为空");

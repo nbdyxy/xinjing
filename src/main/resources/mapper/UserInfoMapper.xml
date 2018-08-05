@@ -93,10 +93,8 @@
       		third_party_enable = #{userInfo.third_party_enable}
       	</if>
       </set>
-      FROM
-        <include refid="BASE_TABLE"/>
 	  <where>
-	  	user_id = #{userInfo.uid}
+	  	user_id = #{userInfo.user_id}
 	  </where>
   </update>
   

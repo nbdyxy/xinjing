@@ -195,6 +195,16 @@
 			position: absolute;
 			top: -9999px;
 		}
+		.btn-disabled {
+			background-color: #455a6b;
+		}
+		.btn-active {
+			background-color: #52a3e8;
+		}
+		.error {
+			color: red;
+			font-weight: bold;
+		}
 		@media (max-width:1024px) {
 			.logo {
 				height: 300px;
@@ -337,26 +347,50 @@
 			    <div class="row my-row">
 					<div class="col-xs-2 my-col-left">法名</div>
 					<div class="col-xs-10 my-col-right username-text">
-						<span th:text="${userInfo.username}">用户名</span>
-						<button type="button" class="btn btn-danger btn-xs username-text-button" style="font-size: 15px; background-color: #efab5b; border-color: #d67a00;;">编辑</button>
+						<span th:text="${userInfo.username}">法名</span>
+						<button type="button" class="btn btn-danger btn-xs username-text-button" style="font-size: 15px; color: #fff;">修改</button>
 					</div>
-					<!-- <div class="col-xs-2 my-col-right username-text">
-					</div> -->
 					<div class="col-xs-10 my-col-right username-edit hide">
 						<input th:field="${userInfo.username}" value="用户名" style="border: 0px; border-bottom: 1px solid #bda0a0; width: 50%; text-align: center;"/>
-						<button type="button" class="btn btn-danger btn-xs username-edit-commit" style="font-size: 15px; background-color: #efab5b; border-color: #d67a00;">修改</button>
+						<button type="button" class="btn btn-xs btn-disabled username-edit-commit" style="font-size: 15px; color: #fff;" disabled="disabled">确认</button>
 						<button type="button" class="btn btn-danger btn-xs username-edit-cancel" style="font-size: 15px;">取消</button>
 					</div>
-					<!-- <div class="col-xs-4 my-col-right username-edit hide" style="float: left;">
-					</div> -->
 				</div>
+				<div id="username-page-error" class="error"></div>
 			  </li>
 			  <li class="list-group-item">
 			    <div class="row my-row">
 					<div class="col-xs-6 my-col-left">密码</div>
-					<div class="col-xs-4 my-col-right"></div>
-					<div class="col-xs-2 my-col-right">
-						<button type="button" class="btn btn-danger btn-xs daily-commit2" style="font-size: 15px; background-color: #efab5b; border-color: #d67a00;;">修改</button>
+					<div class="col-xs-2 my-col-right"></div>
+					<div class="col-xs-4 my-col-right password-text">
+						<button type="button" class="btn btn-danger btn-xs password-text-button" style="font-size: 15px;">修改</button>
+					</div>
+					<div class="col-xs-4 my-col-right password-edit hide">
+						<button type="button" class="btn btn-xs btn-disabled password-edit-commit" style="font-size: 15px; color: #fff;" disabled="disabled">确认</button>
+						<button type="button" class="btn btn-danger btn-xs password-edit-cancel" style="font-size: 15px;">取消</button>
+					</div>
+				</div>
+			  </li>
+			  <li class="list-group-item password-edit-input passwordFold fold">
+			    <div class="row my-row">
+					<div class="col-xs-5 my-col-right">原密码：</div>
+					<div class="col-xs-6 my-col-left">
+						<input type="password" id="oldpassword" style="border: 0px; border-bottom: 1px solid #bda0a0; width: 80%; text-align: center;"/>
+						<div id="oldpassword-page-error" class="error"></div>
+					</div>
+				</div>
+			    <div class="row my-row">
+					<div class="col-xs-5 my-col-right">新密码：</div>
+					<div class="col-xs-6 my-col-left">
+						<input type="password" id="password" style="border: 0px; border-bottom: 1px solid #bda0a0; width: 80%; text-align: center;"/>
+						<div id="password-page-error" class="error"></div>
+					</div>
+				</div>
+			    <div class="row my-row">
+					<div class="col-xs-5 my-col-right">确认密码：</div>
+					<div class="col-xs-6 my-col-left">
+						<input type="password" id="confirmpassword" style="border: 0px; border-bottom: 1px solid #bda0a0; width: 80%; text-align: center;"/>
+						<div id="confirmpassword-page-error" class="error"></div>
 					</div>
 				</div>
 			  </li>
@@ -368,7 +402,7 @@
 			  </li>
 			</ul>
 			<div>
-				<a  href="gongxiu_personally.html" th:href="@{/login}"
+				<a href="gongxiu_personally.html" th:href="@{/login}"
 					class="btn btn-primary btn-block daily-commit"
 					style="background-color: #efab5b; border-color: #efab5b; font-size: 18px; margin-bottom: 5px;">
 					<b>返回共修</b>
@@ -394,9 +428,113 @@
 				console.log("todayNumber is null!");
 			}
 		}
+	    
+	    /*判断用户名是否符合规则 begin*/
+	    var reg = /^[\u4e00-\u9fa5_a-zA-Z0-9]{2,20}$/;
+	    var checkUsernameRequest = null;
+		function checkUsername(username, el) {
+			console.log(el);
+			var result = false;
+			var el = el == null ? $("#username-page-error") : $(el);
+			console.log(el);
+			if (!reg.test(username)) {
+				el.text("用户名仅支持2-20位中英文、数字和下划线,且不能有空格！");
+			} else  {
+				if (null != checkRequest) {
+					checkRequest.abort();
+				}
+				checkUsernameRequest = $.ajax({
+					url: '/user/checkname/' + username,
+					type: 'POST',
+					dataType: 'JSON',
+					async: false,
+					success: function(data) {
+						if (!data) {
+							el.text("该用户名已被注册，请更换！");
+						} else {
+							el.text("");
+							result = true;
+						}
+						checkUsernameRequest = null;
+					}
+				});
+			}
+			return result;
+		}
+		/*判断用户名是否符合规则 end*/
+		
+		/*判断密码是否符合规则 begin*/
+		var oldpasswordFlag = 0, passwordFlag = 0, confirmpasswordFlag = 0;
+		function checkFlag(oldpasswordFlag, passwordFlag, confirmpasswordFlag) {
+   			if (1 == oldpasswordFlag && 1 == passwordFlag && 1 == confirmpasswordFlag) {
+   				$(".password-edit-commit").removeAttr("disabled");
+   				$(".password-edit-commit").removeClass("btn-disabled");
+   				$(".password-edit-commit").addClass("btn-active");
+   			} else {
+   				$(".password-edit-commit").attr("disabled", "disabled");
+   				$(".password-edit-commit").removeClass("btn-active");
+   				$(".password-edit-commit").addClass("btn-disabled");
+   			}
+   			
+   		}
+		function oldpassword(el) {
+			var oldpassword = $(el).val();
+			if (null != oldpassword && "" != oldpassword) {
+				if (oldpassword.length < 6 || oldpassword.length > 20) {
+					$("#oldpassword-page-error").text("密码位数必须在6-20间！");
+					oldpasswordFlag = 0;
+				} else {
+					$("#oldpassword-page-error").text("");
+					oldpasswordFlag = 1;
+				}
+			} else {
+				$("#oldpassword-page-error").text("旧密码不能为空");
+				oldpasswordFlag = 0;
+			}
+			checkFlag(oldpasswordFlag, passwordFlag, confirmpasswordFlag);
+		}
+		
+		function password(el) {
+			var password = $(el).val();
+			var confirmpassword = $("#confirmpassword").val();
+			console.log(password);
+			if (null != password && "" != password) {
+				if (password.length < 6 || password.length > 20) {
+					$("#password-page-error").text("密码位数必须在6-20间！");
+					passwordFlag = 0;
+				} else {
+					$("#password-page-error").text("");
+					passwordFlag = 1;
+				}
+			} else {
+				$("#password-page-error").text("新密码不能为空");
+				passwordFlag = 0;
+			}
+			checkFlag(oldpasswordFlag, passwordFlag, confirmpasswordFlag);
+		}
+		
+		function confirmpassword(el) {
+			var password = $("#password").val();
+			var confirmpassword = $(el).val();
+			console.log(confirmpassword);
+			if (null == confirmpassword) {
+				$("#confirmpassword-page-error").text("密码不能为空");
+				confirmpasswordFlag = 0;
+			} else if (password.length >= 6 && confirmpassword != password) {
+				$("#confirmpassword-page-error").text("两次输入的密码不一致");
+				confirmpasswordFlag = 0;
+			} else {
+				$("#confirmpassword-page-error").text("");
+				confirmpasswordFlag = 1;
+			}
+			checkFlag(oldpasswordFlag, passwordFlag, confirmpasswordFlag);
+		}
+		/*判断密码是否符合规则 end*/
+		
 		$(function(){
 			$('[data-toggle="popover"]').popover();
-			function dynamic_page() {
+			var passwordFold = false;
+			function dynamic_page(height) {
     			var width = $("body").width();
     			var height = $(window).height();
         		var length = $(".my-nav").children("li").length;
@@ -404,7 +542,13 @@
         		var header_height = $(".header").height();
         		var figure_height = $(".figure").height() + 20;
         		var cal_height = height - header_height - 50;
-        		figure_height = cal_height > figure_height ? cal_height : figure_height;
+        		var passwordEdit = $(".passwordFold").height();
+        		var list_height = $(".list-group").height(); 
+        		console.log(passwordFold);
+        		if (passwordFold) {
+        			list_height += passwordEdit;
+        		}
+        		figure_height = cal_height > list_height ? cal_height : list_height;
         		console.log("height: " + height);
         		console.log("header_height: " + header_height);
         		console.log("figure_height: " + figure_height);
@@ -523,21 +667,126 @@
 			/*报数按钮 end*/
 			
 			/*编辑用户名begin*/
+			var oldUsername, newUsername;
 			$(".username-text-button").click(function() {
 				$(".username-text").addClass("hide");
 				$(".username-edit").removeClass("hide");
+				oldUsername = $("#username").val();
 				$("#username").focus();
+				console.log(oldUsername);
+			});
+			
+			$("#username").keyup(function() {
+				newUsername = $(this).val();
+				if (oldUsername != newUsername) {
+					if (checkUsername(newUsername)) {
+						console.log("true");
+						$(".username-edit-commit").removeAttr("disabled", "disabled");
+						$(".username-edit-commit").removeClass("btn-disabled");
+						$(".username-edit-commit").addClass("btn-active");
+					} else {
+						console.log("false");
+						$(".username-edit-commit").attr("disabled", "disabled");
+						$(".username-edit-commit").removeClass("btn-active");
+						$(".username-edit-commit").addClass("btn-disabled");
+					}
+				} else {
+					console.log("other");
+					$(".username-edit-commit").attr("disabled", "disabled");
+					$(".username-edit-commit").removeClass("btn-active");
+					$(".username-edit-commit").addClass("btn-disabled");
+				}
 			});
 			
 			$(".username-edit-commit").click(function() {
+				newUsername = $("#username").val();
+				$.ajax({
+					url: "/user/updateUserInfo",
+					type: "POST",
+					dataType: "JSON",
+					data: { username: newUsername },
+					success: function(data) {
+						console.log(data);
+					},
+					error: function(data) {
+						console.log(data);	
+					}
+				});
 				
 			});
 			
 			$(".username-edit-cancel").click(function() {
 				$(".username-edit").addClass("hide");
 				$(".username-text").removeClass("hide");
+				$("#username").attr("value", oldUsername);
 			});
 			/*编辑用户名end*/
+			
+			/*编辑密码begin*/
+			$(".password-text-button").click(function(){
+				$(".password-text").addClass("hide");
+				$(".password-edit").removeClass("hide");
+				$(".password-edit-input").removeClass("fold");
+				passwordFold = true;
+				dynamic_page();
+			});
+			$(".password-edit-commit").click(function(){
+				var oldpassword = $("#oldpassword").val();
+				var password = $("#password").val();
+				var confirmpassword = $("#confirmpassword").val();
+				console.log(oldpassword + "-" + password + "-" + confirmpassword);
+				$.ajax({
+					url: "/user/updatePassword",
+					type: "POST",
+					dataType: "JSON",
+					data: {oldpassword: oldpassword, password: password, confirmpassword: confirmpassword},
+					success: function(data) {
+						console.log(data);
+					},
+					error: function(data) {
+						console.log(data);	
+					}
+				});
+			});
+			$(".password-edit-cancel").click(function(){
+				$(".password-text").removeClass("hide");
+				$(".password-edit").addClass("hide");
+				$(".password-edit-input").addClass("fold");
+				$("input[type='password']").val("");
+				passwordFold = false;
+				dynamic_page();
+			});
+			
+			$("#oldpassword").keyup(function() {
+				oldpassword(this);
+			});
+			$("#oldpassword").blur(function() {
+				oldpassword(this);
+			});
+			$("#oldpassword").focus(function() {
+				oldpassword(this);
+			});
+			
+			$("#password").keyup(function() {
+				password(this);
+			});
+			$("#password").blur(function() {
+				password(this);
+			});
+			$("#password").focus(function() {
+				password(this);
+			});
+			
+			$("#confirmpassword").keyup(function() {
+				confirmpassword(this);
+			});
+			$("#confirmpassword").focus(function() {
+				confirmpassword(this);
+			});
+			$("#confirmpassword").blur(function() {
+				confirmpassword(this);
+			});
+			/*编辑密码end*/
 			
 			$(".mod_aside_v2_nav_btn").click(function() {
 				var className = $(".mod_aside_v2_nav i").attr("class");
