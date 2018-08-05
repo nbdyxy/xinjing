@@ -59,7 +59,12 @@ public class UserInfoController {
 		} else {
 			String password = registerUserInfo.getPassword();
 			String confirmpassword = registerUserInfo.getConfirmpassword();
-			if (!password.equals(confirmpassword)) {
+			String regex = "^([\\u4E00-\\u9FA50-9a-zA-Z_]{2,20}+)$";
+			if (!registerUserInfo.getUsername().matches(regex)) {
+				ObjectError error = new ObjectError("register", "法名仅支持2-20位中英文、数字和下划线,且不能有空格！");
+				bindingResult.addError(error);
+				return "/register";
+			}else if (!password.equals(confirmpassword)) {
 				ObjectError error = new ObjectError("register", "两次输入的密码不一致");
 				bindingResult.addError(error);
 				return "/register";
@@ -147,12 +152,6 @@ public class UserInfoController {
 	@PostMapping("/updatePassword")
 	public String updatePassword(String oldpassword, String password, String confirmpassword) {
 		String[] loginInfo = loginFilter.checkLogin();
-		
-//			log.info("uid: {}, 用户登录信息校验通过.", loginInfo[1]);
-//			userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
-//			log.info("userInfo: {}", userInfo);
-//			model.addAttribute("userInfo", userInfo);
-//			return "person_info";
 		String result = "密码不符合规则！";
 		log.info("oldpassword: {} - password: {} - confirmpassword: {}", oldpassword, password, confirmpassword);
 		/*对参数进行正则校验，检验规则长度 6-20，只能包含英文字母、数字、英文特殊字符*/
@@ -196,5 +195,10 @@ public class UserInfoController {
 		UserInfo info = userInfoService.selectUserByUserName(userName);
 		return info;
 	}
+	
+//	public static void main(String[] args) {
+//		String reg = "^([\\u4E00-\\u9FA50-9a-zA-Z_]{2,20}+)$";
+//		System.out.println("余颜宏".matches(reg));
+//	}
 	
 }

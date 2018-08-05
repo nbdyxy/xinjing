@@ -438,10 +438,10 @@
 			var el = el == null ? $("#username-page-error") : $(el);
 			console.log(el);
 			if (!reg.test(username)) {
-				el.text("用户名仅支持2-20位中英文、数字和下划线,且不能有空格！");
+				el.text("法名仅支持2-20位中英文、数字和下划线,且不能有空格！");
 			} else  {
-				if (null != checkRequest) {
-					checkRequest.abort();
+				if (null != checkUsernameRequest) {
+					checkUsernameRequest.abort();
 				}
 				checkUsernameRequest = $.ajax({
 					url: '/user/checkname/' + username,
@@ -450,7 +450,7 @@
 					async: false,
 					success: function(data) {
 						if (!data) {
-							el.text("该用户名已被注册，请更换！");
+							el.text("该法名已被注册，请更换！");
 						} else {
 							el.text("");
 							result = true;
@@ -531,31 +531,38 @@
 		}
 		/*判断密码是否符合规则 end*/
 		
+		/*动态计算页面高度*/
+		var passwordFold = false;
+		function dynamic_page(height) {
+   			var width = $("body").width();
+   			var height = $(window).height();
+       		var length = $(".my-nav").children("li").length;
+       		var avg_width = width / length;
+       		var header_height = $(".header").height();
+       		var figure_height = $(".figure").height() + 20;
+       		var cal_height = height - header_height - 50;
+       		console.log("figure_height: " + figure_height);
+       		var passwordEdit = $(".passwordFold").height();
+       		var list_height = $(".list-group").height(); 
+       		console.log(passwordFold);
+       		if (passwordFold) {
+       			list_height += passwordEdit;
+       		}
+       		figure_height = cal_height > list_height ? cal_height : list_height;
+       		console.log("height: " + height);
+       		console.log("header_height: " + header_height);
+       		console.log("figure_height: " + figure_height);
+       		console.log("cal_height: " + cal_height);
+       		$(".my-nav").children("li").css("width", avg_width + "px");
+       		if (cal_height > list_height) {
+	       		$(".figure").css("height", cal_height + "px");
+       		} else {
+       			$(".figure").css("height", "");
+       		}
+   		}
 		$(function(){
 			$('[data-toggle="popover"]').popover();
-			var passwordFold = false;
-			function dynamic_page(height) {
-    			var width = $("body").width();
-    			var height = $(window).height();
-        		var length = $(".my-nav").children("li").length;
-        		var avg_width = width / length;
-        		var header_height = $(".header").height();
-        		var figure_height = $(".figure").height() + 20;
-        		var cal_height = height - header_height - 50;
-        		var passwordEdit = $(".passwordFold").height();
-        		var list_height = $(".list-group").height(); 
-        		console.log(passwordFold);
-        		if (passwordFold) {
-        			list_height += passwordEdit;
-        		}
-        		figure_height = cal_height > list_height ? cal_height : list_height;
-        		console.log("height: " + height);
-        		console.log("header_height: " + header_height);
-        		console.log("figure_height: " + figure_height);
-        		console.log("cal_height: " + cal_height);
-        		$(".my-nav").children("li").css("width", avg_width + "px");
-        		$(".figure").css("height", figure_height + "px");
-    		}
+			
 			dynamic_page();
 			$(window).resize(function() {
 				dynamic_page();
@@ -666,7 +673,7 @@
 			});
 			/*报数按钮 end*/
 			
-			/*编辑用户名begin*/
+			/*编辑法名begin*/
 			var oldUsername, newUsername;
 			$(".username-text-button").click(function() {
 				$(".username-text").addClass("hide");
@@ -718,9 +725,10 @@
 			$(".username-edit-cancel").click(function() {
 				$(".username-edit").addClass("hide");
 				$(".username-text").removeClass("hide");
-				$("#username").attr("value", oldUsername);
+				$("#username").val(oldUsername);
+				$("#username-page-error").text("");
 			});
-			/*编辑用户名end*/
+			/*编辑法名end*/
 			
 			/*编辑密码begin*/
 			$(".password-text-button").click(function(){
@@ -753,6 +761,10 @@
 				$(".password-edit").addClass("hide");
 				$(".password-edit-input").addClass("fold");
 				$("input[type='password']").val("");
+				console.log($(".my-row .error").length);
+				$(".my-row .error").each(function(){
+					$(this).text("");
+				});
 				passwordFold = false;
 				dynamic_page();
 			});

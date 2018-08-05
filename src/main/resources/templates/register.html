@@ -365,7 +365,7 @@
 						dataType: 'JSON',
 						success: function(data) {
 							if (!data) {
-								$("#username-page-error").text("该用户名已被注册，请更换！");
+								$("#username-page-error").text("该法名已被注册，请更换！");
 								usernameFlag = 0;
 							} else {
 								$("#username-page-error").text("");
@@ -375,7 +375,7 @@
 						}
 					});
 				} else {
-					$("#username-page-error").text("用户名仅支持2-20位中英文、数字和下划线,且不能有空格！");
+					$("#username-page-error").text("法名仅支持2-20位中英文、数字和下划线,且不能有空格！");
 					usernameFlag = 0;
 					checkFlag(usernameFlag, passwordFlag, confirmpasswordFlag);
 				}
