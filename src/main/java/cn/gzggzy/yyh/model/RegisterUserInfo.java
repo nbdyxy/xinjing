@@ -2,7 +2,6 @@ package cn.gzggzy.yyh.model;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class RegisterUserInfo implements Serializable {

@@ -23,6 +23,7 @@ import cn.gzggzy.yyh.config.Configuration;
 import cn.gzggzy.yyh.filter.LoginFilter;
 import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
+import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.util.CookieUtil;
 import cn.gzggzy.yyh.util.DESUtils;
@@ -122,20 +123,20 @@ public class UserInfoController {
 	
 	@PostMapping("/checkname/{username}")
 	@ResponseBody
-	public boolean checkname(@PathVariable("username") String username) {
+	public RestResponseHashMap checkname(@PathVariable("username") String username) {
 		log.info("username: {}", username);
 		List<String> usernameList = userInfoService.selectAllUserName("usernameList");
 		for (String name : usernameList) {
 			if (name.equals(username)) {
-				return false;
+				return RestResponseHashMap.success("校验完成", false);
 			}
 		}
-		return true;
+		return RestResponseHashMap.success("校验完成", true);
 	}
 	
 	@ResponseBody
 	@PostMapping("/updateUserInfo")
-	public UserInfo updateUserInfo(UserInfo userInfo) {
+	public RestResponseHashMap updateUserInfo(UserInfo userInfo) {
 		String[] loginInfo = loginFilter.checkLogin();
 		if (null != loginInfo[1]) {
 			userInfo.setUser_id(loginInfo[1]);
@@ -143,14 +144,14 @@ public class UserInfoController {
 		log.info("UserInfo: {}", userInfo);
 		int result = userInfoService.updateUserInfo(userInfo);
 		if ( 1 == result) {
-			return userInfo;
+			return RestResponseHashMap.success("更新完成", userInfo);
 		}
-		return null;
+		return RestResponseHashMap.error("更新失败", null);
 	}
 	
 	@ResponseBody
 	@PostMapping("/updatePassword")
-	public String updatePassword(String oldpassword, String password, String confirmpassword) {
+	public RestResponseHashMap updatePassword(String oldpassword, String password, String confirmpassword) {
 		String[] loginInfo = loginFilter.checkLogin();
 		String result = "密码不符合规则！";
 		log.info("oldpassword: {} - password: {} - confirmpassword: {}", oldpassword, password, confirmpassword);
@@ -185,7 +186,7 @@ public class UserInfoController {
 				}
 			}
 		}
-		return result;
+		return RestResponseHashMap.success(result, null);
 	}
 	
 	@ResponseBody

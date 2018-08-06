@@ -317,12 +317,52 @@
 		    margin: 0 auto;
 		    fill: #666;
 		}
+		
+		.dialog {
+			position: fixed;
+			width: 180px;
+			height: 70px;
+			top: 50%;
+			margin-top: -35px;
+			left: 50%;
+			margin-left: -90px;
+			background: rgba(0, 0, 0, .7);
+			border-radius: 10px;
+			text-align: center;
+			vertical-align: top;
+			z-index: 999;
+		}
+		
+		.dialog .dialog-wrap {
+			display: table;
+			width: 100%;
+			height: 100%;
+		}
+		
+		.dialog .dialog-mid {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		
+		.dialog .warn {
+			color: #fff;
+			font-size: 18px;
+			vertical-align: middle;
+		}
+		
 		.hide {
 			display: none;
 		}
     </style>
   </head>
   <body>
+  	<div class="dialog hide" id="tips">
+		<div class="dialog-wrap">
+			<div class="dialog-mid">
+				<span class="warn"></span>
+			</div>
+		</div>
+	</div>
 	<div class="header">
 		<div class="info">
 			<div class="logo hide"></div>
@@ -351,7 +391,7 @@
 						<button type="button" class="btn btn-danger btn-xs username-text-button" style="font-size: 15px; color: #fff;">修改</button>
 					</div>
 					<div class="col-xs-10 my-col-right username-edit hide">
-						<input th:field="${userInfo.username}" value="用户名" style="border: 0px; border-bottom: 1px solid #bda0a0; width: 50%; text-align: center;"/>
+						<input th:field="${userInfo.username}" value="法名" style="border: 0px; border-bottom: 1px solid #bda0a0; width: 50%; text-align: center;"/>
 						<button type="button" class="btn btn-xs btn-disabled username-edit-commit" style="font-size: 15px; color: #fff;" disabled="disabled">确认</button>
 						<button type="button" class="btn btn-danger btn-xs username-edit-cancel" style="font-size: 15px;">取消</button>
 					</div>
@@ -449,13 +489,18 @@
 					dataType: 'JSON',
 					async: false,
 					success: function(data) {
-						if (!data) {
-							el.text("该法名已被注册，请更换！");
-						} else {
-							el.text("");
-							result = true;
+						if ("200" == data.code) {
+							if (!data.content) {
+								el.text("该法名已被注册，请更换！");
+							} else {
+								el.text("");
+								result = true;
+							}
+							checkUsernameRequest = null;
 						}
-						checkUsernameRequest = null;
+					},
+					error: function() {
+						console.log("系统异常，请联系管理员！");
 					}
 				});
 			}
@@ -714,9 +759,19 @@
 					data: { username: newUsername },
 					success: function(data) {
 						console.log(data);
+						$(".warn").text(data.message);
+						$("#tips").removeClass("hide");
+						setTimeout(function() {
+							$("#tips").addClass("hide");
+						}, 2000);
+						if ("200" == data.code) {
+							$(".username-edit").addClass("hide");
+							$(".username-text").removeClass("hide");
+							$(".username-text span").text(data.content.username);
+						}
 					},
-					error: function(data) {
-						console.log(data);	
+					error: function() {
+						console.log("系统异常，请联系管理员！");
 					}
 				});
 				
@@ -749,10 +804,27 @@
 					dataType: "JSON",
 					data: {oldpassword: oldpassword, password: password, confirmpassword: confirmpassword},
 					success: function(data) {
-						console.log(data);
+						console.log(data.message);
+						$(".warn").text(data.message);
+						$("#tips").removeClass("hide");
+						setTimeout(function() {
+							$("#tips").addClass("hide");
+						}, 2000);
+						if ("200" == data.code) {
+							$(".password-text").removeClass("hide");
+							$(".password-edit").addClass("hide");
+							$(".password-edit-input").addClass("fold");
+							$("input[type='password']").val("");
+							console.log($(".my-row .error").length);
+							$(".my-row .error").each(function(){
+								$(this).text("");
+							});
+							passwordFold = false;
+							dynamic_page();
+						}
 					},
-					error: function(data) {
-						console.log(data);	
+					error: function() {
+						console.log("系统异常，请联系管理员！");
 					}
 				});
 			});
