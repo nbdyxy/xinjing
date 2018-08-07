@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import cn.gzggzy.yyh.config.Configuration;
 import cn.gzggzy.yyh.model.UserInfo;
+import cn.gzggzy.yyh.service.LoginService;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.util.CookieUtil;
 import cn.gzggzy.yyh.util.DESUtils;
-import cn.gzggzy.yyh.util.TokenUtil;
 
 @Controller
 public class LoginController {
@@ -31,17 +31,13 @@ public class LoginController {
 	private UserInfoService userInfoService;
 	
 	@Autowired
-	private TokenUtil tokenUtil;
+	private LoginService loginService;
 	
 	@Autowired
 	private Configuration configuration;
 	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
-	
-//	public static void main(String[] args) {
-//		System.out.println(DESUtils.encrypt("余颜宏", "B37A18ABD807EC9BE2E3F328"));
-//	}
 	
 	@PostMapping("/login")
 	public String login(@Valid UserInfo userInfo, BindingResult bindingResult) {
@@ -56,11 +52,11 @@ public class LoginController {
 			String username = userInfo.getUsername();
 			String password = DESUtils.encrypt(userInfo.getPassword(), configuration.getKey());
 			String randomId = RandomStringUtils.randomAlphanumeric(8);
-			UserInfo userInfoModel = userInfoService.login(username, password, randomId);
+			UserInfo userInfoModel = loginService.login(username, password, randomId);
 			if (null != userInfoModel) {
 				log.info("key: {}", configuration.getKey());
-				String uid = userInfoModel.getUser_id();
-				tokenUtil.createToken(randomId, uid);//此部分可缓存必要的用户共修信息
+//				String uid = userInfoModel.getUser_id();
+//				tokenUtil.createToken(randomId, uid);//此部分可缓存必要的用户共修信息
 				CookieUtil.setCookie(configuration.getLoginCookieName(), 6000, randomId);
 				return "redirect:/user";
 			} else {

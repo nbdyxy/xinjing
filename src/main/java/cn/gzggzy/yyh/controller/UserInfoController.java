@@ -1,6 +1,7 @@
 package cn.gzggzy.yyh.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -81,14 +82,14 @@ public class UserInfoController {
 			}
 		}
 		return "/register";
+		
 	}
 	
 	@GetMapping
 	public String userDetailInfo(Model model, UserInfo userInfo, BindingResult bindingResult) {
-		String[] loginInfo = loginFilter.checkLogin();
-		if (null != loginInfo[1]) {
-			log.info("uid: {}, 用户登录信息校验通过.", loginInfo[1]);
-			userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
+		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
+		if (0 != userInfoRedis.size()) {
+			userInfo = (UserInfo) userInfoRedis.get("userInfo");
 			log.info("userInfo: {}", userInfo);
 			model.addAttribute("userInfo", userInfo);
 			return "gongxiu_personally";
@@ -100,18 +101,14 @@ public class UserInfoController {
 	}
 	
 	@GetMapping("/info")
-	public String personInfo(Model model, UserInfo userInfo, BindingResult bindingResult) {
-		String[] loginInfo = loginFilter.checkLogin();
-		if (null != loginInfo[1]) {
-			log.info("uid: {}, 用户登录信息校验通过.", loginInfo[1]);
-			userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
-			log.info("userInfo: {}", userInfo);
+	public String personInfo(Model model, UserInfo userInfo) {
+		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
+		if (0 != userInfoRedis.size()) {
+			log.info("userInfo: {}, 用户登录信息校验通过.", userInfo);
+			userInfo = (UserInfo)userInfoRedis.get("userInfo");
 			model.addAttribute("userInfo", userInfo);
 			return "person_info";
 		}
-		log.info("用户登录信息过期.");
-		ObjectError error = new ObjectError("register", "用户登录信息过期，请重新登录");
-		bindingResult.addError(error);
 		return "redirect:/login";
 	}
 	
@@ -137,14 +134,14 @@ public class UserInfoController {
 	@ResponseBody
 	@PostMapping("/updateUserInfo")
 	public RestResponseHashMap updateUserInfo(UserInfo userInfo) {
-		String[] loginInfo = loginFilter.checkLogin();
-		if (null != loginInfo[1]) {
-			userInfo.setUser_id(loginInfo[1]);
-		}
-		log.info("UserInfo: {}", userInfo);
-		int result = userInfoService.updateUserInfo(userInfo);
-		if ( 1 == result) {
-			return RestResponseHashMap.success("更新完成", userInfo);
+		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
+		if (0 != userInfoRedis.size()) {
+			userInfo.setUser_id(((UserInfo)userInfoRedis.get("userInfo")).getUser_id());
+			log.info("UserInfo: {}", userInfo);
+			UserInfo result =  userInfoService.updateUserInfo(userInfo, userInfoRedis.get("randomId").toString());
+			if ( null != result) {
+				return RestResponseHashMap.success("更新完成", userInfo);
+			}
 		}
 		return RestResponseHashMap.error("更新失败", null);
 	}
@@ -152,27 +149,28 @@ public class UserInfoController {
 	@ResponseBody
 	@PostMapping("/updatePassword")
 	public RestResponseHashMap updatePassword(String oldpassword, String password, String confirmpassword) {
-		String[] loginInfo = loginFilter.checkLogin();
+		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
 		String result = "密码不符合规则！";
 		log.info("oldpassword: {} - password: {} - confirmpassword: {}", oldpassword, password, confirmpassword);
 		/*对参数进行正则校验，检验规则长度 6-20，只能包含英文字母、数字、英文特殊字符*/
 		String regStr = "^([0-9a-zA-Z/^/$/.//,;:'!@#%&/*/|/?/+/(/)/[/]/{/}]{6,20}+)$";
 		//校验登录状态
-		if (null != loginInfo[1]) { 
+		if (0 != userInfoRedis.size()) { 
 			if (null != oldpassword && null != password && null != confirmpassword) {
 				if (oldpassword.matches(regStr) && password.matches(regStr) && confirmpassword.matches(regStr)) {
 					//检验后两次密码是否一致
 					if (password.equals(confirmpassword)) {
 						//检验旧密码是否正确
-						UserInfo userInfo = userInfoService.selectUserById(loginInfo[1].replace("\"", ""));
+						UserInfo userInfo = (UserInfo) userInfoRedis.get("userInfo");
+						String randomId = userInfoRedis.get("randomId").toString();
 						String en_oldpassword = DESUtils.encrypt(oldpassword, configuration.getKey());
 						String en_password = DESUtils.encrypt(password, configuration.getKey());
 						if (en_oldpassword.equals(userInfo.getPassword())) {
 							UserInfo newUserInfo = new UserInfo();
-							newUserInfo.setUser_id(loginInfo[1].replace("\"", ""));
+							newUserInfo.setUser_id(userInfo.getUser_id());
 							newUserInfo.setPassword(en_password);
-							int count = userInfoService.updateUserInfo(newUserInfo);
-							if (count == 1) {
+							UserInfo updateResult = userInfoService.updateUserInfo(newUserInfo, randomId);
+							if (null != updateResult) {
 								result = "密码修改成功！";
 							} else {
 								result = "密码修改异常，请联系管理员！";
@@ -195,11 +193,7 @@ public class UserInfoController {
 		System.out.println(userName);
 		UserInfo info = userInfoService.selectUserByUserName(userName);
 		return info;
+		
 	}
-	
-//	public static void main(String[] args) {
-//		String reg = "^([\\u4E00-\\u9FA50-9a-zA-Z_]{2,20}+)$";
-//		System.out.println("余颜宏".matches(reg));
-//	}
 	
 }

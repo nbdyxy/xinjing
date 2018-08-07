@@ -1,5 +1,6 @@
 package cn.gzggzy.yyh.service.impl;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -65,8 +66,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 	
 	@Override
-	@Cacheable(value = "user", key = "#uid", unless="#result == null")
-	@CacheExpire(expire = 6000)
 	public UserInfo selectUserById(String uid) {
 		logger.info("按uid查询人员: {}", uid);
 		return userInfoDao.selectUserById(uid);
@@ -86,10 +85,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	@CacheEvict(cacheNames = "user", key = "#randomId")
-	public int updateUserInfo(UserInfo userInfo) {
-		return userInfoDao.updateUserInfo(userInfo);
+	@CachePut(cacheNames = "user", key="#randomId", unless="#result == null")
+	public UserInfo updateUserInfo(UserInfo userInfo, String randomId) {
+		//更新数据库的用户信息
+		int update = userInfoDao.updateUserInfo(userInfo);
+		if (1 == update) {
+			//获取最新的用户信息
+			String uid = userInfo.getUser_id();
+			userInfo = userInfoDao.selectUserById(uid);
+			return userInfo;
+		}
+		return null;
 	}
-
-
+	
 }

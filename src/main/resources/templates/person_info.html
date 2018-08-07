@@ -437,9 +437,15 @@
 			  <li class="list-group-item">
 			    <div class="row my-row">
 					<div class="col-xs-6 my-col-left">注册时间</div>
-					<div class="col-xs-6 my-col-right">2018-08-04</div>
+					<div class="col-xs-6 my-col-right" th:text="${userInfo.create_time}">2018-08-04</div>
 				</div>
 			  </li>
+			  <!-- <li class="list-group-item">
+			    <div class="row my-row">
+					<div class="col-xs-6 my-col-left">上次登录IP</div>
+					<div class="col-xs-6 my-col-right">2018-08-04</div>
+				</div>
+			  </li> -->
 			</ul>
 			<div>
 				<a href="gongxiu_personally.html" th:href="@{/login}"

@@ -19,6 +19,6 @@ public interface UserInfoService {
 	
 	UserInfo login(String userName, String password, String randomId);
 	
-	int updateUserInfo(UserInfo userInfo);
+	UserInfo updateUserInfo(UserInfo userInfo, String randomId);
 	
 }

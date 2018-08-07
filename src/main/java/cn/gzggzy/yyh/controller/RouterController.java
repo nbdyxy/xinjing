@@ -1,5 +1,7 @@
 package cn.gzggzy.yyh.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -32,8 +34,8 @@ public class RouterController {
 	
 	@GetMapping("/login")
 	public String gongxiu(UserInfo userInfo, BindingResult bindingResult) {
-		String[] loginInfo = loginFilter.checkLogin();
-		if (null != loginInfo[1]) {
+		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
+		if (0 != userInfoRedis.size()) {
 			return "redirect:/user"; 
 		}
 //		ObjectError error = new ObjectError("register", "用户登录信息过期，请重新登录");
