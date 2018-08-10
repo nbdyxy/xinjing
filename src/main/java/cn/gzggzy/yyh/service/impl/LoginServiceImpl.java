@@ -28,8 +28,8 @@ public class LoginServiceImpl implements LoginService {
 			int login_count = userInfo.getLogin_count() + 1;
 			userInfo.setLogin_count(login_count);
 			userInfo.setLast_login_ip("192.168.70.11");
-			userInfo.setCreate_time(date);
-			userInfo.setFirst_login_time(date);
+//			userInfo.setCreate_time(date);
+//			userInfo.setFirst_login_time(date);
 			userInfo.setLast_login_time(date);
 			System.out.println(userInfo);
 			System.out.println(userInfo.getCreate_time());

@@ -22,12 +22,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.gzggzy.yyh.config.Configuration;
 import cn.gzggzy.yyh.filter.LoginFilter;
+import cn.gzggzy.yyh.model.PersonalCountOff;
 import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
+import cn.gzggzy.yyh.service.PersonalCountOffService;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.util.CookieUtil;
 import cn.gzggzy.yyh.util.DESUtils;
+import cn.gzggzy.yyh.util.DateUtil;
 import cn.gzggzy.yyh.util.TokenUtil;
 
 @Controller
@@ -38,6 +41,9 @@ public class UserInfoController {
 	
 	@Autowired
 	private UserInfoService userInfoService;
+	
+	@Autowired
+	private PersonalCountOffService personalCountOffService;
 	
 	@Autowired
 	private TokenUtil tokenUtil;
@@ -90,8 +96,13 @@ public class UserInfoController {
 		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
 		if (0 != userInfoRedis.size()) {
 			userInfo = (UserInfo) userInfoRedis.get("userInfo");
+			String randomId = userInfoRedis.get("randomId").toString();
+			String uid = userInfo.getUser_id();
+			List<PersonalCountOff> personalCountOffTopFive = personalCountOffService.handleTopFive(uid, randomId);
 			log.info("userInfo: {}", userInfo);
 			model.addAttribute("userInfo", userInfo);
+			model.addAttribute("personalCountOffTopFive", personalCountOffTopFive);
+			model.addAttribute("serverTime", DateUtil.toChar("yyyy-MM-dd"));
 			return "gongxiu_personally";
 		}
 		log.info("用户登录信息过期.");

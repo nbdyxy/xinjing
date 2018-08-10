@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gzggzy.yyh.dao.PersonalCountOffDao" >
+  <sql id="BASE_TABLE">
+    personal_countoff
+  </sql>
+
+  <sql id="BASE_COLUMN">
+    pid,uid,record_date,record_number
+  </sql>
+
+  <insert id="saveOrUpdate" parameterType="cn.gzggzy.yyh.model.PersonalCountOff">
+    INSERT INTO
+      <include refid="BASE_TABLE"/>
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <include refid="BASE_COLUMN"/>
+    </trim>
+    <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+      #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, #{record_date, jdbcType=DATE},#{record_number, jdbcType=INTEGER}
+    </trim>
+    ON DUPLICATE KEY UPDATE
+    	uid = #{uid, jdbcType=VARCHAR},
+    	record_date = #{record_date, jdbcType=DATE},
+    	record_number = #{record_number, jdbcType=INTEGER}
+    ;
+  </insert>
+	
+	
+  <select id="selectTopFive" resultType="cn.gzggzy.yyh.model.PersonalCountOff">
+  	SELECT 
+  		<include refid="BASE_COLUMN"/>
+  	FROM
+  		<include refid="BASE_TABLE"/>
+  	<where>
+  		<if test=" uid != null and uid != '' ">
+  			uid = #{uid}
+  		</if>
+  	</where>
+  	ORDER BY
+  		record_date
+  	DESC
+  	LIMIT
+  		0, 5
+  </select>	
+		
+  <select id="selectAll" resultType="cn.gzggzy.yyh.model.PersonalCountOff">
+  	SELECT 
+  		<include refid="BASE_COLUMN"/>
+  	FROM
+  		<include refid="BASE_TABLE"/>
+  </select>
+</mapper>
