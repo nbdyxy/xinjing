@@ -78,7 +78,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	
 	@Override
 	@Cacheable(value = "user", key = "#randomId", unless="#result == null")
-	@CacheExpire(expire = 600)
+	@CacheExpire(expire = 6000)
 	public UserInfo login(String userName, String password, String randomId) {
 		return userInfoDao.login(userName, password);
 	}

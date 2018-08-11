@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.gzggzy.yyh.filter.LoginFilter;
 import cn.gzggzy.yyh.model.PersonalCountOff;
@@ -27,6 +28,7 @@ public class PersonalCountOffController {
 	public LoginFilter loginFilter;
 	
 	@PostMapping("/countoff")
+	@ResponseBody
 	public RestResponseHashMap saveOrUpdate(PersonalCountOff personalCountOff) {
 		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
 		if (0 != userInfoRedis.size()) {

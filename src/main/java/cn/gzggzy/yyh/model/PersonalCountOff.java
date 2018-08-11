@@ -59,8 +59,8 @@ public class PersonalCountOff implements Serializable {
 		return "PersonalCountOff: ["
 				+ "pid= " + this.pid 
 				+ ", uid= " + this.uid
-				+ ", record_date" + DateUtil.toChar(this.record_date, "yyyy-MM-dd HH:mm:ss")
-				+ ", record_countoff" + this.record_number
+				+ ", record_date= " + DateUtil.toChar(this.record_date, "yyyy-MM-dd HH:mm:ss")
+				+ ", record_number= " + this.record_number
 				+ "]";
 	}
 }
