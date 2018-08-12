@@ -317,12 +317,51 @@
 			color: red;
 			font-weight: bold;
 		}
+		.dialog {
+			position: fixed;
+			width: 180px;
+			height: 70px;
+			top: 50%;
+			margin-top: -35px;
+			left: 50%;
+			margin-left: -90px;
+			background: rgba(0, 0, 0, .7);
+			border-radius: 10px;
+			text-align: center;
+			vertical-align: top;
+			z-index: 999;
+		}
+		
+		.dialog .dialog-wrap {
+			display: table;
+			width: 100%;
+			height: 100%;
+		}
+		
+		.dialog .dialog-mid {
+			display: table-cell;
+			vertical-align: middle;
+		}
+		
+		.dialog .warn {
+			color: #fff;
+			font-size: 18px;
+			vertical-align: middle;
+		}
+		
 		.hide {
 			display: none;
 		}
     </style>
   </head>
   <body>
+  	<div class="dialog hide" id="tips">
+		<div class="dialog-wrap">
+			<div class="dialog-mid">
+				<span class="warn"></span>
+			</div>
+		</div>
+	</div>
 	<div class="header">
 		<div class="info">
 			<div class="logo hide"></div>
@@ -342,22 +381,25 @@
 	</div>
 	<div class="content">
 		<div class="figure">
+			<label for="monthIndex" style="color: red;">按月份查看</label>
+			<select class="form-control" id="monthIndex">
+				<option th:each="m, mStat : ${monthIndex}" th:selected="${mStat.count} == 1" th:vaule="${mStat.count}" th:text="${m}">2018-07</option>
+			</select>
+			<br>
 			<div class="my-panel">
 				<div class="my-panel-title">历史报数记录</div>
 				<div class="container" style="margin: 5px 0;">
-					<div class="col-xs-6 my-col-left"
+					<div class="col-xs-5 my-col-left my-col-center"
 						style="font-weight: bold;">时间</div>
-					<div class="col-xs-3 my-col-center"
+					<div class="col-xs-5 col-xs-offset-2 my-col-center"
 						style="font-weight: bold;">遍数</div>
-					<div class="col-xs-3 my-col-right"></div>
 				</div>
 				<div class="my-divider"></div>
-				<div class="container number-record">
-					<div class="row my-row" th:each="p : ${personalCountOffAll}">
-						<div class="col-xs-6 my-col-left" th:text="${#dates.format(p.record_date, 'yyyy-MM-dd')}">2018-06-28</div>
-						<div class="col-xs-3 my-col-center" th:text="${p.record_number}">10</div>
-					</div>	
-					 
+				<div class="container number-record-history">
+					<div class="row my-row" th:each="p : ${perMonthRecord}">
+						<div class="col-xs-5 my-col-left my-col-center" th:text="${#dates.format(p.record_date, 'yyyy-MM-dd')}">2018-06-28</div>
+						<div class="col-xs-5 col-xs-offset-2 my-col-center" th:text="${p.record_number}">10</div>
+					</div>
 				</div>
 			</div>
 			<div>
@@ -377,17 +419,7 @@
 	<script
 		src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-    	var countoffReg = /^([1-9]\d{0,3})$/;
-		var todayNumber = $("#inputToday input").val();
-	    function commit() {
-			if (todayNumber) {
-				$("#dailyValue").val(todayNumber);
-			} else {
-				console.log("todayNumber is null!");
-			}
-		}
 		$(function(){
-			$('[data-toggle="popover"]').popover();
 			function dynamic_page() {
     			var width = $("body").width();
     			var height = $(window).height();
@@ -396,24 +428,29 @@
         		var header_height = $(".header").height();
         		var figure_height = $(".figure").height() + 20;
         		var cal_height = height - header_height - 50;
-        		figure_height = cal_height > figure_height ? cal_height : figure_height;
+        		/* figure_height = cal_height > figure_height ? cal_height : figure_height; */
         		console.log("height: " + height);
         		console.log("header_height: " + header_height);
         		console.log("figure_height: " + figure_height);
         		console.log("cal_height: " + cal_height);
         		$(".my-nav").children("li").css("width", avg_width + "px");
-        		$(".figure").css("height", figure_height + "px");
+        		if (figure_height > cal_height) {
+	        		$(".figure").css("height", "");
+        		} else {
+	        		$(".figure").css("height", cal_height + "px");
+        		}
+        		/* $(".figure").css("height", figure_height + "px"); */
     		}
 			dynamic_page();
 			$(window).resize(function() {
 				dynamic_page();
 			});
 			window.onscroll=function(){
-				console.log($(window).scrollTop());
-				console.log($(".content").offset().top);
+				/* console.log($(window).scrollTop());
+				console.log($(".content").offset().top); */
 				var top = $(".content").offset().top - $(window).scrollTop();
 				var isFixed =  top <= 70 ? true : false;
-				console.log(isFixed);
+				/* console.log(isFixed); */
 				if(isFixed) {
 					$(".nav-header").css("position", "fixed");
 					$(".content").css("margin-top", "60px");
@@ -423,135 +460,45 @@
 					$(".content").css("margin-top", "0px");
 				}
 			};
-			/*修改按钮 start*/
-			$("#changeToday").click(function() {
-				$("#changeToday").addClass("hide");
-				$("#updateToday").removeClass("hide");
-				$("#cancelToday").removeClass("hide");
-				$("#textToday").addClass("hide");
-				$("#inputToday").removeClass("hide");
-				$("#inputToday input").focus();
-			});
 			
-			$("#updateToday").click(function() {
-				todayNumber = $("#inputToday input").val();
-				console.log(todayNumber);
-				$("#textToday").text(todayNumber);
-				$("#updateToday").addClass("hide");
-				$("#cancelToday").addClass("hide");
-				$("#changeToday").removeClass("hide");
-				$("#cancelToday").addClass("hide");
-				$("#inputToday").addClass("hide");
-				$("#textToday").removeClass("hide");
-			});
-			
-			$("#cancelToday").click(function() {
-				$("#inputToday input").val(todayNumber);
-				$("#updateToday").addClass("hide");
-				$("#cancelToday").addClass("hide");
-				$("#changeToday").removeClass("hide");
-				$("#cancelToday").addClass("hide");
-				$("#inputToday").addClass("hide");
-				$("#textToday").removeClass("hide");
-			});
-			/*修改按钮 end*/
-			
-			/*报数按钮 start*/
-			$(".daily-commit3").click(function() {
-				console.log("commit: " + $(this).length);
-				console.log("todayNumber: " + todayNumber);
-				if (todayNumber) {
-					$("#dailyValue").val(todayNumber);
-				} else {
-					console.log("todayNumber is null!");
-				}
-			});
-			
-			$(".daily-commit2").click(function() {
-				console.log("commit2: " + $(this).length);
-				console.log("todayNumber: " + todayNumber);
-				if (todayNumber) {
-					$("#dailyValue").val(todayNumber);
-				} else {
-					console.log("todayNumber is null!");
-				}
-			});
-			
-			$("#dailyConfirm").click(function() {
-				var date = $("#serverTime").val();
+			$("#monthIndex").change(function() {
+				var date = $("#monthIndex option:selected").text();
 				console.log("date: " + date);
-				var stageValue = $("#dailyValue").val();
-				console.log(stageValue);
-				var figure_height = $(".content").height();
-				console.log("daily:" + figure_height);
-				if (stageValue) {
-					if (todayNumber) {
-						$("#inputToday input").val(stageValue);
-						console.log(todayNumber);
-						$("#textToday").text(stageValue);
-					} else {
-						var str = "<div class='row'  style='width: 100%; margin: 5px 0; text-align: center;'>" + 
-									"<div class='col-xs-6' style='padding: 2px 0; text-align: left;'>" +
-									date + 
-									"</div><div id='textToday' class='col-xs-4' style='padding: 2px 0; text-align: center;'>" +
-									stageValue + 
-									"</div>" +
-									"<div id='inputToday' class='col-xs-4 hide' style='padding: 2px 0; text-align: center;'>" +
-									"<input type='number' value='" + 
-									stageValue + 
-									"' style='width: 100%; text-align: center; background-color: rgba(0, 0, 0, 0); border: none; border-bottom: 1px solid #ff7500;'/>" +
-									"</div>" +
-									"<div class='col-xs-2' style='padding: 2px 0; text-align: right;'>" +
-										"<button type='button' onclick='javascript: commit();' class='btn btn-danger btn-xs daily-commit2' data-toggle='modal' data-target='#baoshuDialog' style='font-size: 15px; background-color: #efab5b; border-color: #d67a00; margin: 5px 5px 15px;'>修改</button>" +
-									"</div>" +
-									"</div>"
-						$(".number-record").prepend(str);
+				$.ajax({
+					url: "/personalcountoff/getPerMonthRecord",
+					method: "POST",
+					type: "JSON",
+					data: {date: date},
+					success: function(data) {
+						if (null == data.content) {
+							$(".number-record-history").html("没有记录");
+						} else {
+							/* 
+							<div class="row my-row" th:each="p : ${perMonthRecord}">
+								<div class="col-xs-5 my-col-left" th:text="${#dates.format(p.record_date, 'yyyy-MM-dd')}">2018-06-28</div>
+								<div class="col-xs-5 col-xs-offset-2 my-col-center" th:text="${p.record_number}">10</div>
+							</div>
+							 */
+							var str = "";
+							$.each(data.content, function(i, val) {
+								str += "<div class=\"row my-row\">" +
+									"<div class=\"col-xs-5 my-col-left my-col-center\">" + val.record_date.substr(0, 10) +
+									"</div><div class=\"col-xs-5 col-xs-offset-2 my-col-center\">" + val.record_number +
+									"</div></div>"
+							});
+							$(".number-record-history").html(str);
+						}
+					},
+					error: function() {
+						$(".warn").text("查询发生异常，请稍后重试");
+						$("#tips").removeClass("hide");
+						setTimeout(function() {
+							$("#tips").addClass("hide");
+						}, 2000);
 					}
-					$("#baoshuDialog").modal("hide");
-					todayNumber = stageValue;
-					$(".figure").css("height", figure_height + 30 + "px");
-
-				} else {
-					console.log('stageValue 不合法!');
-				}
+				});
 			});
 			
-			$("#dailyValue").keyup(function() {
-				if (countoffReg.test($(this).val())) {
-					$("#dailyConfirm").removeAttr("disabled").removeClass("btn-disabled").addClass("btn-active");
-					$(".error").text("");
-				} else {
-					$("#dailyConfirm").attr("disabled", "disabled").removeClass("btn-active").addClass("btn-disabled");
-					$(".error").text("请输入1-9999之间的正整数!");
-				}
-			});
-			
-			/*报数按钮 end*/
-			
-			$(".mod_aside_v2_nav_btn").click(function() {
-				var className = $(".mod_aside_v2_nav i").attr("class");
-				if (typeof(className) == "undefined") {
-					$(".mod_aside_v2_nav i").text("收起");
-					$(".mod_aside_v2_nav i").attr("class", "unfold");
-					$(".mod_aside_v2_nav").css("-webkit-transform", "translate3d(0,0,0)")
-						.css("transform", "translate3d(0,0,0)");
-					$(".mod_aside_v2_mask").css("opacity", "1")
-						.css("display", "block");
-				} else {
-					console.log(className);
-					$(".mod_aside_v2_nav i").text("我的信息");
-					$(".mod_aside_v2_nav i").removeAttr("class");
-					$(".mod_aside_v2_nav").css("-webkit-transform", "")
-						.css("transform", "");
-					$(".mod_aside_v2_mask").css("opacity", "0")
-						.css("display", "none");
-				}
-				/*
-				mod_aside_v2_mask opcity 1 dispaly: none
-				mod_aside_v2_nav -webkit-transform: translate3d(0,0,0);
-			    transform: translate3d(0,0,0);
-				*/
-			});
 		});
 	</script>
   </body>

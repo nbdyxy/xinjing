@@ -13,4 +13,8 @@ public interface PersonalCountOffDao {
 	List<PersonalCountOff> selectTopFive(@Param("uid") String uid);
 	
 	List<PersonalCountOff> selectAll(@Param("uid") String uid);
+	
+	List<String> selectHistoryMonthIndex(@Param("uid") String uid);
+	
+	List<PersonalCountOff> selectHistoryPerMonth(@Param("uid") String uid, @Param("date") String date);
 }

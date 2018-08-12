@@ -302,10 +302,15 @@
         		var header_height = $(".header").height();
         		var figure_height = $(".figure").height() + 10;
         		var cal_height = height - header_height - 50;
-        		figure_height = cal_height > figure_height ? cal_height : figure_height;
+        		/* figure_height = cal_height > figure_height ? cal_height : figure_height; */
         		console.log("height:" + height);
         		$(".my-nav").children("li").css("width", avg_width + "px");
-        		$(".figure").css("height", figure_height + "px");
+        		if (figure_height > cal_height) {
+	        		$(".figure").css("height", "");
+        		} else {
+	        		$(".figure").css("height", cal_height + "px");
+        		}
+        		/* $(".figure").css("height", figure_height + "px"); */
     		}
 			dynamic_page();
 			$(window).resize(function() {

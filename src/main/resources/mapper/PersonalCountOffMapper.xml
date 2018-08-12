@@ -48,5 +48,46 @@
   		<include refid="BASE_COLUMN"/>
   	FROM
   		<include refid="BASE_TABLE"/>
+	<where>
+		<if test=" uid != null and uid != '' ">
+			uid = #{uid}
+		</if>
+  	</where>
+  	ORDER BY
+  		record_date
+  	DESC
   </select>
+  
+  <select id="selectHistoryMonthIndex" resultType="java.lang.String">
+  	SELECT 
+  		DATE_FORMAT(record_date, '%Y-%m') date
+  	FROM
+  		<include refid="BASE_TABLE"/>
+	<where>
+		<if test=" uid != null and uid != '' ">
+			uid = #{uid}
+		</if>
+  	</where>
+  	GROUP BY
+  		date
+  	ORDER BY
+  		date
+  	DESC
+  </select>
+  
+  <select id="selectHistoryPerMonth" resultType="cn.gzggzy.yyh.model.PersonalCountOff">
+  	SELECT 
+  		<include refid="BASE_COLUMN"/>
+  	FROM
+  		<include refid="BASE_TABLE"/>
+  	<where>
+		uid = #{uid}
+	AND
+  		DATE_FORMAT(record_date, '%Y-%m') = #{date}
+  	</where>
+  	ORDER BY
+  		record_date
+  	DESC
+  </select>
+  
 </mapper>

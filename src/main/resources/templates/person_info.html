@@ -437,7 +437,19 @@
 			  <li class="list-group-item">
 			    <div class="row my-row">
 					<div class="col-xs-6 my-col-left">注册时间</div>
-					<div class="col-xs-6 my-col-right" th:text="${#dates.format(userInfo.create_time, 'yyyy-MM-dd HH:mm:ss')}">2018-08-04</div>
+					<div class="col-xs-6 my-col-right" th:text="${#dates.format(userInfo.create_time, 'yyyy-MM-dd')}">2018-08-04</div>
+				</div>
+			  </li>
+			  <li class="list-group-item">
+			    <div class="row my-row">
+					<div class="col-xs-6 my-col-left">上次登录时间</div>
+					<div class="col-xs-6 my-col-right" th:text="${#dates.format(userInfo.last_login_time, 'yyyy-MM-dd')}">2018-08-04</div>
+				</div>
+			  </li>
+			  <li class="list-group-item">
+			    <div class="row my-row">
+					<div class="col-xs-6 my-col-left">累计登录次数</div>
+					<div class="col-xs-6 my-col-right" th:text="${userInfo.login_count}">1</div>
 				</div>
 			  </li>
 			  <!-- <li class="list-group-item">
@@ -599,13 +611,14 @@
        		if (passwordFold) {
        			list_height += passwordEdit;
        		}
-       		figure_height = cal_height > list_height ? cal_height : list_height;
+       		/* figure_height = cal_height > list_height ? cal_height : list_height; */
        		console.log("height: " + height);
        		console.log("header_height: " + header_height);
        		console.log("figure_height: " + figure_height);
        		console.log("cal_height: " + cal_height);
+       		console.log("list_height: " + list_height);
        		$(".my-nav").children("li").css("width", avg_width + "px");
-       		if (cal_height > list_height) {
+       		if (cal_height > figure_height) {
 	       		$(".figure").css("height", cal_height + "px");
        		} else {
        			$(".figure").css("height", "");

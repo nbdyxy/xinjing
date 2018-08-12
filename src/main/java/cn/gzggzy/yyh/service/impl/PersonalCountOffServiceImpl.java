@@ -65,15 +65,23 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 		PersonalCountOff first = personalCountOffList.get(0);
 		first.setRecord_number(personalCountOff.getRecord_number());
 		first.setRecord_date(now);
-		System.out.println(first);
 		int flag = this.saveOrUpdate(first);
-		System.out.println(flag);
 		if (flag >= 1) {
 			personalCountOffList.set(0, first);
 			return personalCountOffList;
 		}
 		return null;
 		
+	}
+
+	@Override
+	public List<String> selectHistoryMonthIndex(String uid) {
+		return personalCountOffDao.selectHistoryMonthIndex(uid);
+	}
+
+	@Override
+	public List<PersonalCountOff> selectHistoryPerMonth(String uid, String date) {
+		return personalCountOffDao.selectHistoryPerMonth(uid, date);
 	}
 	
 }

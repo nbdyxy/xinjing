@@ -58,13 +58,27 @@ public class PersonalCountOffController {
 	public String selectAll(Model model) {
 		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
 		if (0 != userInfoRedis.size()) {
-			String randomId = userInfoRedis.get("randomId").toString();
 			String uid = ((UserInfo) userInfoRedis.get("userInfo")).getUser_id();
-			List<PersonalCountOff> personalCountOffAll = personalCountOffService.selectAll(uid, randomId);
-			model.addAttribute("personalCountOffAll", personalCountOffAll);
+			List<String> monthIndex = personalCountOffService.selectHistoryMonthIndex(uid);
+			List<PersonalCountOff> perMonthRecord = personalCountOffService.selectHistoryPerMonth(uid, monthIndex.get(0));
+			model.addAttribute("monthIndex", monthIndex);
+			model.addAttribute("perMonthRecord", perMonthRecord);
 			return "history";
 		}
 		return "redirect:/login";
 	}
 	
+	@PostMapping("/getPerMonthRecord")
+	@ResponseBody
+	public RestResponseHashMap getPerMonthRecord(String date) {
+		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
+		if (0 != userInfoRedis.size()) {
+			String uid = ((UserInfo) userInfoRedis.get("userInfo")).getUser_id();
+			List<PersonalCountOff> perMonthRecord = personalCountOffService.selectHistoryPerMonth(uid, date);
+			if (0 != perMonthRecord.size()) {
+				return RestResponseHashMap.success("查询成功", perMonthRecord);
+			}
+		}
+		return RestResponseHashMap.success("查询失败，请重试", null);
+	}
 }

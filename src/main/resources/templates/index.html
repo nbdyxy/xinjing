@@ -338,8 +338,8 @@
         		if (gdFold) {
         			list_height += gxgd + 35;
         		}
-        		figure_height = cal_height > list_height ? cal_height : list_height;
         		/*
+        		figure_height = cal_height > list_height ? cal_height : list_height;
         		console.log("jwnr:" + jwnr);
         		console.log("gxgd:" + gxgd);
         		console.log("figure_height:" + figure_height);
@@ -347,7 +347,12 @@
         		console.log("fold: " + (jwnr + list_height));
         		*/
         		$(".my-nav").children("li").css("width", avg_width + "px");
-        		$(".figure").css("height", figure_height + "px");
+        		if (list_height > cal_height) {
+	        		$(".figure").css("height", "");
+        		} else {
+	        		$(".figure").css("height", cal_height + "px");
+        		}
+        		/* $(".figure").css("height", figure_height + "px"); */
     		}
     		dynamic_page();
     		$(window).resize(function() {

@@ -15,4 +15,8 @@ public interface PersonalCountOffService {
 	List<PersonalCountOff> handleTopFive(String uid, String randomId);
 	
 	List<PersonalCountOff> updateTopFive(PersonalCountOff personalCountOff, String randomId, String uid);
+	
+	List<String> selectHistoryMonthIndex(String uid);
+	
+	List<PersonalCountOff> selectHistoryPerMonth(String uid, String date);
 }
