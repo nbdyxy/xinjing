@@ -42,17 +42,22 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 	public List<PersonalCountOff> handleTopFive(String uid, String randomId) {
 		List<PersonalCountOff> personalCountOffList = this.selectTopFive(uid);
 		Date nowDate = Calendar.getInstance().getTime();
-		String firstDate = DateUtil.toChar(personalCountOffList.get(0).getRecord_date(), "yyyy-MM-dd");
-		String today = DateUtil.toChar(nowDate, "yyyy-MM-dd");
-		//判断今天是否已经参与过报数
-		if (!firstDate.equals(today)) {
-			for (int i=4; i>=1; i--) {
-				PersonalCountOff personalCountOff = personalCountOffList.get(i-1);
-				personalCountOffList.set(i, personalCountOff);
+		int size = personalCountOffList.size();
+		String pid = UUID.randomUUID().toString();
+		PersonalCountOff tempFirst = new PersonalCountOff(pid, uid, nowDate, 0);
+		
+		if (0 != size) {
+			String firstDate = DateUtil.toChar(personalCountOffList.get(0).getRecord_date(), "yyyy-MM-dd");
+			String today = DateUtil.toChar(nowDate, "yyyy-MM-dd");
+			//判断今天是否已经参与过报数
+			if (!firstDate.equals(today)) {
+				personalCountOffList.add(0, tempFirst);
+				if (5 < personalCountOffList.size()) {
+					personalCountOffList.remove(5);
+				}
 			}
-			String pid = UUID.randomUUID().toString();
-			PersonalCountOff personalCountOff = new PersonalCountOff(pid, uid, nowDate, 0);
-			personalCountOffList.set(0, personalCountOff);
+		} else {
+			personalCountOffList.add(0, tempFirst);
 		}
 		return personalCountOffList;
 		

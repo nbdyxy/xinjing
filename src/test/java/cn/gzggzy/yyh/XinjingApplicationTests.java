@@ -51,7 +51,7 @@ public class XinjingApplicationTests {
 		int count = 0;
 		for (int i=0; i<20; i++) {
 			String pid = UUID.randomUUID().toString();
-			String uid = "09c18c679d2d41a0a29bb6f91df5010d";
+			String uid = "19eb1b0f6d6b4fc4b0682e08c4025f3d";
 			int record_number = random.nextInt(20);
 			c.add(Calendar.DAY_OF_YEAR, -1);
 			Date date = c.getTime();
@@ -59,10 +59,10 @@ public class XinjingApplicationTests {
 			model.setUid(uid);
 			model.setRecord_date(date);
 			model.setRecord_number(record_number);
-//			int result = personalCountOffService.saveOrUpdate(model);
-//			if (result == 1) {
-//				count ++;
-//			}
+			int result = personalCountOffService.saveOrUpdate(model);
+			if (result == 1) {
+				count ++;
+			}
 		}
 		System.out.println(count);
 	}

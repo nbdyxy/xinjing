@@ -41,5 +41,18 @@ public class LoginServiceImpl implements LoginService {
 		return null;
 	}
 	
+	public static void main(String[] args) {
+		Calendar c = Calendar.getInstance();
+		c.set(2018, 7, 1);
+		System.out.println(c.getTime());
+		int a = c.get(Calendar.DAY_OF_WEEK);
+		int b = c.get(Calendar.WEEK_OF_MONTH);
+		System.out.println(a);
+		System.out.println(b);
+		int year_week = c.getWeeksInWeekYear();
+		int firstDayOfWeek = c.getFirstDayOfWeek();
+		System.out.println(year_week);
+		System.out.println(firstDayOfWeek);
+	}
 
 }

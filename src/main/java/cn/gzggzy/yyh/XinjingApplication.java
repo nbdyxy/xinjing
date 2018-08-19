@@ -15,4 +15,5 @@ public class XinjingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(XinjingApplication.class, args);
 	}
+	
 }
