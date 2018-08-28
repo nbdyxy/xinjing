@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gzggzy.yyh.dao.YearlyStatisticDao" >
+  <sql id="BASE_TABLE">
+    yearly_statistic
+  </sql>
+
+  <sql id="BASE_COLUMN">
+    pid,uid,year,year_total,last_update_time,year_rank,is_activity
+  </sql>
+  
+  <insert id="saveOrUpdate" parameterType="cn.gzggzy.yyh.model.YearlyStatistic">
+    INSERT INTO
+      <include refid="BASE_TABLE"/>
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <include refid="BASE_COLUMN"/>
+    </trim>
+    <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+      #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, 
+      #{year, jdbcType=VARCHAR},#{year_total, jdbcType=INTEGER},
+      #{last_update_time, jdbcType=DATE},#{year_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER}
+    </trim>
+    ON DUPLICATE KEY UPDATE
+    	year_total = #{year_total, jdbcType=INTEGER},
+    	#{last_update_time, jdbcType=DATE}
+    ;
+  </insert>
+  
+  <select id="selectYearly" resultType="cn.gzggzy.yyh.model.YearlyStatistic">
+  	SELECT
+		*
+	FROM
+		yearly_statistic t
+	WHERE
+		t.uid = #{uid}
+	AND t.year = #{year}
+  </select>
+
+</mapper>

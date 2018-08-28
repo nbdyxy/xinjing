@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import cn.gzggzy.yyh.dao.PersonalCountOffDao;
 import cn.gzggzy.yyh.model.PersonalCountOff;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
-import cn.gzggzy.yyh.util.DateUtil;
+import cn.gzggzy.yyh.util.DateUtils;
 
 @Service
 public class PersonalCountOffServiceImpl implements PersonalCountOffService {
@@ -47,8 +47,8 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 		PersonalCountOff tempFirst = new PersonalCountOff(pid, uid, nowDate, 0);
 		
 		if (0 != size) {
-			String firstDate = DateUtil.toChar(personalCountOffList.get(0).getRecord_date(), "yyyy-MM-dd");
-			String today = DateUtil.toChar(nowDate, "yyyy-MM-dd");
+			String firstDate = DateUtils.parseDateToStr(personalCountOffList.get(0).getRecord_date(), "yyyy-MM-dd");
+			String today = DateUtils.parseDateToStr(nowDate, "yyyy-MM-dd");
 			//判断今天是否已经参与过报数
 			if (!firstDate.equals(today)) {
 				personalCountOffList.add(0, tempFirst);
@@ -64,12 +64,11 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 	}
 	
 	@CachePut(cacheNames="count", key="'topFive'.concat(#p1)", unless="#result == null")
-	public List<PersonalCountOff> updateTopFive(PersonalCountOff personalCountOff, String randomId, String uid) {
+	public List<PersonalCountOff> updateTopFive(PersonalCountOff personalCountOff, String randomId, String uid, Date date) {
 		List<PersonalCountOff> personalCountOffList = this.handleTopFive(uid, randomId);
-		Date now = Calendar.getInstance().getTime();
 		PersonalCountOff first = personalCountOffList.get(0);
 		first.setRecord_number(personalCountOff.getRecord_number());
-		first.setRecord_date(now);
+		first.setRecord_date(date);
 		int flag = this.saveOrUpdate(first);
 		if (flag >= 1) {
 			personalCountOffList.set(0, first);
@@ -88,5 +87,10 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 	public List<PersonalCountOff> selectHistoryPerMonth(String uid, String date) {
 		return personalCountOffDao.selectHistoryPerMonth(uid, date);
 	}
-	
+
+	@Override
+	public int weeklyStatisticByUID(String uid, String beginDate, String endDate) {
+		return personalCountOffDao.weeklyStatisticByUID(uid, beginDate, endDate);
+	}
+
 }

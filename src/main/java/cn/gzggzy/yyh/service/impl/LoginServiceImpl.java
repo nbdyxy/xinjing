@@ -2,6 +2,7 @@ package cn.gzggzy.yyh.service.impl;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -11,6 +12,7 @@ import cn.gzggzy.yyh.dao.UserInfoDao;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.redis.CacheExpire;
 import cn.gzggzy.yyh.service.LoginService;
+import cn.gzggzy.yyh.util.DateUtils;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -43,16 +45,35 @@ public class LoginServiceImpl implements LoginService {
 	
 	public static void main(String[] args) {
 		Calendar c = Calendar.getInstance();
-		c.set(2018, 7, 1);
+//		c.set(2018, 11, 31);
 		System.out.println(c.getTime());
+		System.out.println(c.getFirstDayOfWeek());
+		c.setFirstDayOfWeek(Calendar.MONDAY);
+		//每个星期的第几天
 		int a = c.get(Calendar.DAY_OF_WEEK);
+		//每个月的第几个星期
 		int b = c.get(Calendar.WEEK_OF_MONTH);
-		System.out.println(a);
-		System.out.println(b);
-		int year_week = c.getWeeksInWeekYear();
+		//每年的第几个星期
+		int year_week = c.get(Calendar.WEEK_OF_YEAR);
+		if (1 == a) {
+			a += 6;
+		} else {
+			a--;
+		}
+		System.out.println("每个星期的第几天: " + a);
+		System.out.println("每个月的第几个星期: " + b);
+		System.out.println("每年的第几个星期: " + year_week);
+		System.out.println(c.getActualMinimum(Calendar.DAY_OF_MONTH));
 		int firstDayOfWeek = c.getFirstDayOfWeek();
-		System.out.println(year_week);
 		System.out.println(firstDayOfWeek);
+		
+		c.set(2019, 0, 8);
+		System.out.println(c.getTime());
+		System.out.println(DateUtils.getFirstDayOfWeek(c.getTime()));
+		System.out.println(DateUtils.getLastDayOfWeek(c.getTime()));
+		System.out.println(DateUtils.getWeekthOfYear(c.getTime()));
+		System.out.println(DateUtils.getWeekthOfYear(c.getTime()));
+		System.out.println(c.get(Calendar.WEEK_OF_MONTH));
 	}
 
 }

@@ -1,5 +1,6 @@
 package cn.gzggzy.yyh.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,10 @@ public class PersonalCountOffController {
 		if (0 != userInfoRedis.size()) {
 			String randomId = userInfoRedis.get("randomId").toString();
 			String uid = ((UserInfo) userInfoRedis.get("userInfo")).getUser_id();
-			List<PersonalCountOff> personalCountOffList = personalCountOffService.updateTopFive(personalCountOff, randomId, uid);
+			Date date = new Date();
+			List<PersonalCountOff> personalCountOffList = personalCountOffService.updateTopFive(personalCountOff, randomId, uid, date);
+			//同步更新周度、月度、年度汇总表
+			
 			if (0 != personalCountOffList.size()) {
 				return RestResponseHashMap.success("报数成功", personalCountOffList);
 			}

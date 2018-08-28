@@ -1,5 +1,11 @@
 package cn.gzggzy.yyh.dao;
 
-public interface YearlyStatisticDao {
+import org.apache.ibatis.annotations.Param;
 
+import cn.gzggzy.yyh.model.YearlyStatistic;
+
+public interface YearlyStatisticDao {
+	
+	YearlyStatistic selectYearly(@Param("uid") String uid, @Param("year") int year);
+	
 }

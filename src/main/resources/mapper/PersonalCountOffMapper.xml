@@ -90,4 +90,18 @@
   	DESC
   </select>
   
+  <select id="weeklyStatisticByUID" resultType="java.lang.Integer">
+  	SELECT
+		SUM(t.record_number)
+	FROM
+		personal_countoff t
+	WHERE
+		t.uid = #{uid}
+	AND DATE_FORMAT(t.record_date, '%Y-%m-%d') &gt;= #{beginDate}
+	AND DATE_FORMAT(t.record_date, '%Y-%m-%d') &lt;= #{endDate}
+	GROUP BY
+		t.uid;
+  </select>
+  
+  
 </mapper>

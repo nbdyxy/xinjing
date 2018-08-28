@@ -1,5 +1,6 @@
 package cn.gzggzy.yyh.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,10 +28,11 @@ import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
+import cn.gzggzy.yyh.service.PersonalStatisticService;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.util.CookieUtil;
 import cn.gzggzy.yyh.util.DESUtils;
-import cn.gzggzy.yyh.util.DateUtil;
+import cn.gzggzy.yyh.util.DateUtils;
 import cn.gzggzy.yyh.util.TokenUtil;
 
 @Controller
@@ -44,6 +46,9 @@ public class UserInfoController {
 	
 	@Autowired
 	private PersonalCountOffService personalCountOffService;
+	
+	@Autowired
+	private PersonalStatisticService personalStatisticService;
 	
 	@Autowired
 	private TokenUtil tokenUtil;
@@ -99,10 +104,16 @@ public class UserInfoController {
 			String randomId = userInfoRedis.get("randomId").toString();
 			String uid = userInfo.getUser_id();
 			List<PersonalCountOff> personalCountOffTopFive = personalCountOffService.handleTopFive(uid, randomId);
+			Date date = new Date();
+			String dateStr = DateUtils.parseDateToStr(date, "yyyy-MM-dd");
+			//获取当前日期所在周、月、年的报数汇总
+			Map<String, Object> statisticMap = personalStatisticService.personalTotal(uid, date, dateStr);
 			log.info("userInfo: {}", userInfo);
+			log.info("weekly_total: {}", ((Map)statisticMap.get("ws_map")));
 			model.addAttribute("userInfo", userInfo);
 			model.addAttribute("personalCountOffTopFive", personalCountOffTopFive);
-			model.addAttribute("serverTime", DateUtil.toChar("yyyy-MM-dd"));
+			model.addAttribute("statisticMap", statisticMap);
+			model.addAttribute("serverTime", dateStr);
 			return "gongxiu_personally";
 		}
 		log.info("用户登录信息过期.");

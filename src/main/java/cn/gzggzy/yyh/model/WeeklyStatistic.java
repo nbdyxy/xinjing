@@ -1,5 +1,9 @@
 package cn.gzggzy.yyh.model;
 
+import java.util.Date;
+
+import cn.gzggzy.yyh.util.DateUtils;
+
 public class WeeklyStatistic {
 	
 	private String pid;
@@ -9,6 +13,7 @@ public class WeeklyStatistic {
 	private int year_week;
 	private int month_week;
 	private int week_total;
+	private Date last_update_time;
 	private int week_rank;
 	private int is_activity;
 	
@@ -54,6 +59,12 @@ public class WeeklyStatistic {
 	public void setWeek_total(int week_total) {
 		this.week_total = week_total;
 	}
+	public Date getLast_update_time() {
+		return last_update_time;
+	}
+	public void setLast_update_time(Date last_update_time) {
+		this.last_update_time = last_update_time;
+	}
 	public int getWeek_rank() {
 		return week_rank;
 	}
@@ -77,6 +88,7 @@ public class WeeklyStatistic {
                 ", year_week='" + year_week +
                 ", month_week='" + month_week +
                 ", week_total='" + week_total +
+                ", last_update_time='" + DateUtils.parseDateToStr(last_update_time, "yyyy-MM-dd") +
                 ", week_rank='" + week_rank +
                 ", is_activity='" + is_activity +
                 '}';

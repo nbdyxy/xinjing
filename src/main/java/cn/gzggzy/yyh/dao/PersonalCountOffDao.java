@@ -17,4 +17,6 @@ public interface PersonalCountOffDao {
 	List<String> selectHistoryMonthIndex(@Param("uid") String uid);
 	
 	List<PersonalCountOff> selectHistoryPerMonth(@Param("uid") String uid, @Param("date") String date);
+	
+	int weeklyStatisticByUID(@Param("uid") String uid, @Param("beginDate") String beginDate, @Param("endDate") String endDate);
 }

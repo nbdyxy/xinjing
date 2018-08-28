@@ -3,7 +3,7 @@ package cn.gzggzy.yyh.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import cn.gzggzy.yyh.util.DateUtil;
+import cn.gzggzy.yyh.util.DateUtils;
 
 public class PersonalCountOff implements Serializable {
 
@@ -59,7 +59,7 @@ public class PersonalCountOff implements Serializable {
 		return "PersonalCountOff: ["
 				+ "pid= " + this.pid 
 				+ ", uid= " + this.uid
-				+ ", record_date= " + DateUtil.toChar(this.record_date, "yyyy-MM-dd HH:mm:ss")
+				+ ", record_date= " + DateUtils.parseDateToStr(this.record_date, "yyyy-MM-dd HH:mm:ss")
 				+ ", record_number= " + this.record_number
 				+ "]";
 	}
