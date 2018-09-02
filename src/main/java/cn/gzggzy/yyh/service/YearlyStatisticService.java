@@ -7,6 +7,7 @@ import cn.gzggzy.yyh.model.YearlyStatistic;
 
 public interface YearlyStatisticService {
 	
-	YearlyStatistic saveOrUpdate(String uid);
+	int saveOrUpdate(YearlyStatistic yearlyStatistic);
+	
 	YearlyStatistic selectYearly(String uid, Date date);
 }

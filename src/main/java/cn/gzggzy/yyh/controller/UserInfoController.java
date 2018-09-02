@@ -105,9 +105,9 @@ public class UserInfoController {
 			String uid = userInfo.getUser_id();
 			List<PersonalCountOff> personalCountOffTopFive = personalCountOffService.handleTopFive(uid, randomId);
 			Date date = new Date();
-			String dateStr = DateUtils.parseDateToStr(date, "yyyy-MM-dd");
+			String dateStr = DateUtils.parseDateToStr(date, "yyyyMMdd");
 			//获取当前日期所在周、月、年的报数汇总
-			Map<String, Object> statisticMap = personalStatisticService.personalTotal(uid, date, dateStr);
+			Map<String, Object> statisticMap = personalStatisticService.personalTotal(uid, randomId, date, dateStr);
 			log.info("userInfo: {}", userInfo);
 			log.info("weekly_total: {}", ((Map)statisticMap.get("ws_map")));
 			model.addAttribute("userInfo", userInfo);

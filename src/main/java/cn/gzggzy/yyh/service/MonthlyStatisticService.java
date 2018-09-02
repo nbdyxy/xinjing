@@ -7,6 +7,6 @@ import cn.gzggzy.yyh.model.MonthlyStatistic;
 
 public interface MonthlyStatisticService {
 	
-	MonthlyStatistic saveOrUpdate(String uid);
+	int saveOrUpdate(MonthlyStatistic monthlyStatistic);
 	MonthlyStatistic selectMonthly(String uid, Date date);
 }

@@ -1,6 +1,7 @@
 package cn.gzggzy.yyh.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,8 @@ import cn.gzggzy.yyh.model.PersonalCountOff;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
+import cn.gzggzy.yyh.service.StatisticService;
+import cn.gzggzy.yyh.util.DateUtils;
 
 @Controller
 @RequestMapping("/personalcountoff")
@@ -24,6 +27,9 @@ public class PersonalCountOffController {
 	
 	@Autowired
 	private PersonalCountOffService personalCountOffService;
+	
+	@Autowired
+	private StatisticService statisticService;
 	
 	@Autowired
 	public LoginFilter loginFilter;
@@ -35,12 +41,18 @@ public class PersonalCountOffController {
 		if (0 != userInfoRedis.size()) {
 			String randomId = userInfoRedis.get("randomId").toString();
 			String uid = ((UserInfo) userInfoRedis.get("userInfo")).getUser_id();
+			//获取之前缓存的状态用于更新的判断
+			List<PersonalCountOff> pcolBefore = personalCountOffService.handleTopFive(uid, randomId);
 			Date date = new Date();
+			String dateStr = DateUtils.parseDateToStr(date, "yyyyMMdd");
 			List<PersonalCountOff> personalCountOffList = personalCountOffService.updateTopFive(personalCountOff, randomId, uid, date);
-			//同步更新周度、月度、年度汇总表
-			
 			if (0 != personalCountOffList.size()) {
-				return RestResponseHashMap.success("报数成功", personalCountOffList);
+				//同步更新周度、月度、年度汇总表
+				Map<String, Object> statisticMap = statisticService.saveOrUpdateStatistic(pcolBefore.get(0), randomId, uid, date, dateStr, personalCountOff.getRecord_number());
+				Map<String, Object> resultMap = new HashMap<String, Object>();
+				resultMap.put("pcoList", personalCountOffList);
+				resultMap.put("statisticMap", statisticMap);
+				return RestResponseHashMap.success("报数成功", resultMap);
 			}
 		}
 		return RestResponseHashMap.success("报数失败", null);

@@ -3,6 +3,7 @@ package cn.gzggzy.yyh.service.impl;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -44,6 +45,8 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	public static void main(String[] args) {
+		String uuid = UUID.randomUUID().toString();
+		System.out.println(uuid);
 		Calendar c = Calendar.getInstance();
 //		c.set(2018, 11, 31);
 		System.out.println(c.getTime());

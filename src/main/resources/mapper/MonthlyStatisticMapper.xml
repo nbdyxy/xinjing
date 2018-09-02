@@ -6,7 +6,7 @@
   </sql>
 
   <sql id="BASE_COLUMN">
-    pid,uid,year,month,month_total,last_update_time,month_rank,is_activity
+    pid,uid,year,month,month_total,month_rank,is_activity
   </sql>
   
   <insert id="saveOrUpdate" parameterType="cn.gzggzy.yyh.model.WeeklyStatistic">
@@ -17,12 +17,10 @@
     </trim>
     <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
       #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, #{year, jdbcType=VARCHAR},#{month, jdbcType=VARCHAR},
-      #{month_total, jdbcType=INTEGER},#{last_update_time, jdbcType=DATE},
-      #{month_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER}
+      #{month_total, jdbcType=INTEGER},#{month_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER}
     </trim>
     ON DUPLICATE KEY UPDATE
-    	week_total = #{month_total, jdbcType=INTEGER},
-    	#{last_update_time, jdbcType=DATE}
+    	month_total = #{month_total, jdbcType=INTEGER}
     ;
   </insert>
   

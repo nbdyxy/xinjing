@@ -5,6 +5,6 @@ import java.util.Map;
 
 public interface PersonalStatisticService {
 	
-	Map<String, Object> personalTotal(String uid, Date date, String dateStr);
+	Map<String, Object> personalTotal(String uid, String randomId, Date date, String dateStr);
 	
 }

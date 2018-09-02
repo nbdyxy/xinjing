@@ -21,7 +21,7 @@ public class YearlyStatisticServiceImpl implements YearlyStatisticService {
 	private YearlyStatisticDao yearlyStatisticDao;
 	
 	@Override
-	public YearlyStatistic saveOrUpdate(String uid) {
+	public int saveOrUpdate(YearlyStatistic ys) {
 //		Calendar c = Calendar.getInstance();
 //		Date beginDate = DateUtils.getFirstDayOfWeek(c.getTime());
 //		Date endDate = DateUtils.getLastDayOfWeek(c.getTime());
@@ -65,7 +65,7 @@ public class YearlyStatisticServiceImpl implements YearlyStatisticService {
 //				return ws;
 //			}
 //		}
-		return null;
+		return yearlyStatisticDao.saveOrUpdate(ys);
 	}
 	
 	@Override

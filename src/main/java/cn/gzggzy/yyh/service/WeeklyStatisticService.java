@@ -8,6 +8,7 @@ import cn.gzggzy.yyh.model.WeeklyStatistic;
 
 public interface WeeklyStatisticService {
 	
-	WeeklyStatistic saveOrUpdate(String uid);
+	int saveOrUpdate(WeeklyStatistic ws);
+	
 	Map<String, Object> selectWeekly(String uid, Date date);
 }

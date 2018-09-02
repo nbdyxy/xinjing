@@ -86,10 +86,15 @@ public class XinjingApplicationTests {
 //		WeeklyStatistic ws = weeklyStatisticService.saveOrUpdate("19eb1b0f6d6b4fc4b0682e08c4025f3d", "2018-07-23", "2018-07-29");
 //		System.out.println(ws);
 		Date date = new Date();
-		String dateStr = DateUtils.parseDateToStr(date, "yyyy-MM-dd");
-		Map<String, Object> resultMap = personalStatisticService.personalTotal("09c18c679d2d41a0a29bb6f91df5010d", date, dateStr);
+		Date beginDate = DateUtils.getFirstDayOfWeek(date);
+		String beginDateStr = DateUtils.parseDateToStr(beginDate, "yyyy-MM-dd");
+		String endDateStr = DateUtils.parseDateToStr(date, "yyyy-MM-dd");
+		System.out.println("beginDateStr: " + beginDateStr + "======" + "endDateStr: " + endDateStr);
+		int result = personalCountOffService.weeklyStatisticByUID("09c18c679d2d41a0a29bb6f91df5010d", beginDateStr, endDateStr);
+		System.out.println(result);
+//		Map<String, Object> resultMap = personalStatisticService.personalTotal("09c18c679d2d41a0a29bb6f91df5010d", date, dateStr);
 		
-		System.out.println(((Map)resultMap.get("ws_map")).get("weekly_total"));
+//		System.out.println(((Map)resultMap.get("ws_map")).get("weekly_total"));
 //		Map<String, Object> ws_map = weeklyStatisticService.selectWeekly("19eb1b0f6d6b4fc4b0682e08c4025f3d", null);
 //		if (0 != ws_map.size()) {
 //			System.out.println(ws_map.get("weekly_total"));

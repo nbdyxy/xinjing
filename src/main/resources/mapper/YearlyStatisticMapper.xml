@@ -6,7 +6,7 @@
   </sql>
 
   <sql id="BASE_COLUMN">
-    pid,uid,year,year_total,last_update_time,year_rank,is_activity
+    pid,uid,year,year_total,year_rank,is_activity
   </sql>
   
   <insert id="saveOrUpdate" parameterType="cn.gzggzy.yyh.model.YearlyStatistic">
@@ -18,11 +18,10 @@
     <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
       #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, 
       #{year, jdbcType=VARCHAR},#{year_total, jdbcType=INTEGER},
-      #{last_update_time, jdbcType=DATE},#{year_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER}
+      #{year_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER}
     </trim>
     ON DUPLICATE KEY UPDATE
-    	year_total = #{year_total, jdbcType=INTEGER},
-    	#{last_update_time, jdbcType=DATE}
+    	year_total = #{year_total, jdbcType=INTEGER}
     ;
   </insert>
   
