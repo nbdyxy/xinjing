@@ -34,7 +34,7 @@
 		t.uid = #{uid}
 	AND t.year = #{year}
 	AND t.month = #{month}
-	AND t.year_week = '{year_week}';
+	AND t.year_week = #{year_week};
   </select>
 
 </mapper>

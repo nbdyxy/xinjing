@@ -86,6 +86,7 @@ public class WeeklyStatisticServiceImpl implements WeeklyStatisticService {
 		int now_month = DateUtils.getMonth(date);
 		int now_year_week = DateUtils.getWeekthOfYear(date);
 		WeeklyStatistic ws = weeklyStatisticDao.selectWeekly(uid, now_year, now_month, now_year_week);
+		log.info("ws: {}", ws);
 		int week_total = 0;
 		if (null != ws) {
 			week_total = ws.getWeek_total();

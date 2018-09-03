@@ -72,7 +72,7 @@ public class StatisticServiceImpl implements StatisticService {
 		MonthlyStatistic ms = (MonthlyStatistic) resultMap.get("ms");
 		if (null != ms) {
 			int month_total = ms.getMonth_total();
-			int new_month_total = before_record_number == 0 ? count : (month_total+count-before_record_number);
+			int new_month_total = month_total + count - before_record_number;
 			ms.setMonth_total(new_month_total);
 		} else {
 			ms = this.createMonthlyStatistic(uid, year_week, month_week, count);
@@ -84,7 +84,7 @@ public class StatisticServiceImpl implements StatisticService {
 		YearlyStatistic ys = (YearlyStatistic) resultMap.get("ys");
 		if (null != ys) {
 			int year_total = ys.getYear_total();
-			int new_year_total = before_record_number == 0 ? count : (year_total+count-before_record_number);
+			int new_year_total = year_total + count - before_record_number;
 			ys.setYear_total(new_year_total);
 		} else {
 			ys = this.createYearlyStatistic(uid, year, count);
