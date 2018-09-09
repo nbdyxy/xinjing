@@ -585,6 +585,21 @@ public class DateUtils {
 		c.set(Calendar.MILLISECOND, 0);
 		return c.getTime();
 	}
+	
+	/**
+	 * 获取某年某月的最后一天
+	 * 
+	 * @param date
+	 *            目标日期
+	 * @return
+	 */
+	public static Date getLastDayOfMonth(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH) + 1;
+		return getLastDayOfMonth(year, month);
+	}	
 
 	/**
 	 * 获取某年某月的最后一天
@@ -600,6 +615,40 @@ public class DateUtils {
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, year);
 		c.set(Calendar.MONTH, month);
+		int day = c.getActualMaximum(c.DAY_OF_MONTH);
+		c.set(Calendar.DAY_OF_MONTH, day);
+		c.set(Calendar.HOUR_OF_DAY, 23);
+		c.set(Calendar.MINUTE, 59);
+		c.set(Calendar.SECOND, 59);
+		c.set(Calendar.MILLISECOND, 999);
+		return c.getTime();
+	}
+	
+	/**
+	 * 获取某年某月的最后一天
+	 * 
+	 * @param date
+	 *            目标日期
+	 * @return
+	 */
+	public static Date getLastDayOfYear(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		int year = c.get(Calendar.YEAR);
+		return getLastDayOfYear(year);
+	}
+	
+	/**
+	 * 获取某年的最后一天
+	 * 
+	 * @param year
+	 *            目标年份
+	 * @return
+	 */
+	public static Date getLastDayOfYear(int year) {
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, year);
+		c.set(Calendar.MONTH, 11);
 		int day = c.getActualMaximum(c.DAY_OF_MONTH);
 		c.set(Calendar.DAY_OF_MONTH, day);
 		c.set(Calendar.HOUR_OF_DAY, 23);
@@ -907,17 +956,6 @@ public class DateUtils {
 		c.set(Calendar.SECOND, 59);
 		c.set(Calendar.MILLISECOND, 999);
 		return c.getTime();
-	}
-
-	public static void main(String[] args) {
-		try {
-			DateUtils dateUtil = new DateUtils();
-			System.out.println();
-
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-
 	}
 
 }

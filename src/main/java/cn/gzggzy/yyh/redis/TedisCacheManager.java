@@ -7,11 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +25,7 @@ import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.util.ReflectionUtils;
@@ -70,13 +73,21 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
     //                          Map<String, RedisCacheConfiguration> initialCacheConfigurations) {
     //     super(cacheWriter, defaultCacheConfiguration, initialCacheConfigurations);
     // }
-
+    
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+    
     @Override
     public Cache getCache(String name) {
+    	log.info("getCache: {}", name);
         Cache cache = super.getCache(name);
-        return new RedisCacheWrapper(cache);
+        if (null != cache) {
+        	redisTemplate.expire(name, 7, TimeUnit.DAYS);
+        }
+        return new RedisCacheWrapper(cache, redisTemplate);
     }
-
+    
+    
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -106,6 +117,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
             ReflectionUtils.makeAccessible(method);
             CacheExpire cacheExpire = AnnotationUtils.findAnnotation(method, CacheExpire.class);
             if (cacheExpire == null) {
+            	log.info("cacheExpire is null !");
                 return;
             }
             Cacheable cacheable = AnnotationUtils.findAnnotation(method, Cacheable.class);
@@ -138,7 +150,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
                 continue;
             }
             long expire = cacheExpire.expire();
-            log.info("cacheName: {}, expire: {}", cacheName, expire);
+            log.info("---------------------cacheName: {}, expire: {}", cacheName, expire);
             if (expire >= 0) {
                 // 缓存配置
                 RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
@@ -153,17 +165,21 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
             }
         }
     }
-
+    
+    
+    
     protected static class RedisCacheWrapper implements Cache {
         private final Cache cache;
+        private final RedisTemplate<String, Object> redisTemplate;
 
-        RedisCacheWrapper(Cache cache) {
+        RedisCacheWrapper(Cache cache, RedisTemplate<String, Object> redisTemplate) {
             this.cache = cache;
+            this.redisTemplate = redisTemplate;
         }
 
         @Override
         public String getName() {
-            // log.info("name: {}", cache.getName());
+            log.info("name: {}", cache.getName());
             try {
                 return cache.getName();
             } catch (Exception e) {
@@ -174,7 +190,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public Object getNativeCache() {
-            // log.info("nativeCache: {}", cache.getNativeCache());
+            log.info("nativeCache: {}", cache.getNativeCache());
             try {
                 return cache.getNativeCache();
             } catch (Exception e) {
@@ -185,8 +201,13 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public ValueWrapper get(Object o) {
-            // log.info("get ---> o: {}", o);
+            log.info("get ---> o: {}", o);
             try {
+            	log.info("name: {}", cache.getName());
+            	log.info("expire ---> o1: {}", redisTemplate.getExpire(cache.getName() + "::" + o.toString()));
+            	//更新缓存有效时间
+            	redisTemplate.expire(cache.getName() + "::" + o.toString(), 6000, TimeUnit.SECONDS);
+            	log.info("expire ---> o2: {}", redisTemplate.getExpire(cache.getName() + "::" + o.toString()));
                 return cache.get(o);
             } catch (Exception e) {
                 log.error("get ---> o: {}, errmsg: {}", o, e.getMessage(), e);
@@ -196,7 +217,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public <T> T get(Object o, Class<T> aClass) {
-            // log.info("get ---> o: {}, clazz: {}", o, aClass);
+            log.info("get ---> o: {}, clazz: {}", o, aClass);
             try {
                 return cache.get(o, aClass);
             } catch (Exception e) {
@@ -207,7 +228,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public <T> T get(Object o, Callable<T> callable) {
-            // log.info("get ---> o: {}", o);
+            log.info("get ---> o: {}", o);
             try {
                 return cache.get(o, callable);
             } catch (Exception e) {
@@ -218,7 +239,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public void put(Object o, Object o1) {
-            // log.info("put ---> o: {}, o1: {}", o, o1);
+            log.info("put ---> o: {}, o1: {}", o, o1);
             try {
                 cache.put(o, o1);
             } catch (Exception e) {
@@ -228,7 +249,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public ValueWrapper putIfAbsent(Object o, Object o1) {
-            // log.info("putIfAbsent ---> o: {}, o1: {}", o, o1);
+            log.info("putIfAbsent ---> o: {}, o1: {}", o, o1);
             try {
                 return cache.putIfAbsent(o, o1);
             } catch (Exception e) {
@@ -239,7 +260,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public void evict(Object o) {
-            // log.info("evict ---> o: {}", o);
+            log.info("evict ---> o: {}", o);
             try {
                 cache.evict(o);
             } catch (Exception e) {
@@ -249,7 +270,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
 
         @Override
         public void clear() {
-            // log.info("clear");
+            log.info("clear");
             try {
                 cache.clear();
             } catch (Exception e) {

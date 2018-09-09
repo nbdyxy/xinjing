@@ -18,6 +18,7 @@ import cn.gzggzy.yyh.model.PersonalCountOff;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
+import cn.gzggzy.yyh.service.RankService;
 import cn.gzggzy.yyh.service.StatisticService;
 import cn.gzggzy.yyh.util.DateUtils;
 
@@ -30,6 +31,9 @@ public class PersonalCountOffController {
 	
 	@Autowired
 	private StatisticService statisticService;
+	
+	@Autowired
+	private RankService rankService;
 	
 	@Autowired
 	public LoginFilter loginFilter;

@@ -19,6 +19,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 
@@ -28,6 +29,7 @@ import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
 @EnableConfigurationProperties(RedisProperties.class)
 //@EnableAutoConfiguration(exclude = {RedisConnectionFactory.class})
 @EnableCaching(proxyTargetClass = true) // 加上这个注解是为了支持 @Cacheable、@CachePut、@CacheEvict 等缓存注解
+//@EnableTransactionManagement
 public class TedisAutoConfiguration extends CachingConfigurerSupport {
 	
 	private static final Logger log = LoggerFactory.getLogger(TedisAutoConfiguration.class);
@@ -80,7 +82,10 @@ public class TedisAutoConfiguration extends CachingConfigurerSupport {
         log.info("spring.redis.port: {}", factory.getPort());
         log.info("spring.redis.timeout: {}", factory.getTimeout());
         log.info("spring.redis.password: {}", factory.getPassword());
-
+        
+        // explicitly enable transaction support
+//        template.setEnableTransactionSupport(true);
+        
         // factory
         template.setConnectionFactory(redisConnectionFactory);
         template.afterPropertiesSet();

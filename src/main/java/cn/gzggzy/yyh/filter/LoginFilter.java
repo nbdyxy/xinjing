@@ -2,6 +2,7 @@ package cn.gzggzy.yyh.filter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,6 +58,7 @@ public class LoginFilter {
 			log.info("userInfo: {}", userInfo.toString());
 			result.put("randomId", loginCookieVaule);
 			result.put("userInfo", userInfo);
+			redisTemplate.expire(key, 6000, TimeUnit.SECONDS);
 		}
 		return result;
 	}
