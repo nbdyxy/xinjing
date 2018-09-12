@@ -1,6 +1,5 @@
 package cn.gzggzy.yyh.service.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +18,6 @@ import cn.gzggzy.yyh.service.PersonalStatisticService;
 import cn.gzggzy.yyh.service.RankService;
 import cn.gzggzy.yyh.service.WeeklyStatisticService;
 import cn.gzggzy.yyh.service.YearlyStatisticService;
-import cn.gzggzy.yyh.util.DateUtils;
 
 @Service
 public class PersonalStatisticServiceImpl implements PersonalStatisticService {
@@ -35,13 +33,11 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService {
 	@Autowired
 	private YearlyStatisticService yearlyStatisticService;
 	
-	@Autowired
-	private RankService rankService;
-	
 	@Override
 	@Cacheable(value="statistic", key="#p1.concat(#p3)", unless="#result == null")
 	@CacheExpire(6000)
 	public Map<String, Object> personalTotal(String uid, String randomId, Date date, String dateStr) {
+		long start = System.currentTimeMillis();
 		log.info("uid: {}, dateStr: {}", uid, dateStr);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Map<String, Object> ws_map = weeklyStatisticService.selectWeekly(uid, date);
@@ -54,13 +50,10 @@ public class PersonalStatisticServiceImpl implements PersonalStatisticService {
 		resultMap.put("ws_map", ws_map);
 		resultMap.put("ms", ms);
 		resultMap.put("ys", ys);
+		long end = System.currentTimeMillis();
+		log.info("查询数据耗时： {}", end - start);
 		return resultMap;
 		
 	}
 	
-	public static void main(String[] args) {
-		Date date = new Date();
-		Date endOfMonth = DateUtils.getLastDayOfMonth(date);
-		System.out.println(DateUtils.parseDateToStr(endOfMonth, "yyMMdd"));
-	}
 }

@@ -102,6 +102,7 @@ public class UserInfoController {
 	
 	@GetMapping
 	public String userDetailInfo(Model model, UserInfo userInfo, BindingResult bindingResult) {
+		long start = System.currentTimeMillis();
 		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
 		if (0 != userInfoRedis.size()) {
 			userInfo = (UserInfo) userInfoRedis.get("userInfo");
@@ -114,16 +115,18 @@ public class UserInfoController {
 			Map<String, Object> statisticMap = personalStatisticService.personalTotal(uid, randomId, date, dateStr);
 			//获取当前日期各项指标的排名情况
 			Map<String, Object> rankMap = rankService.reverRankMapCountOff(uid, date, personalCountOffTopFive.get(0).getRecord_number(), statisticMap);
-			log.info("week_rank: {} ", rankMap.get("week_rank"));
-			log.info("month_rank: {} ", rankMap.get("month_rank"));
-			log.info("year_rank: {} ", rankMap.get("year_rank"));
-			log.info("userInfo: {}", userInfo);
-			log.info("weekly_total: {}", ((Map)statisticMap.get("ws_map")));
+//			log.info("week_rank: {} ", rankMap.get("week_rank"));
+//			log.info("month_rank: {} ", rankMap.get("month_rank"));
+//			log.info("year_rank: {} ", rankMap.get("year_rank"));
+//			log.info("userInfo: {}", userInfo);
+//			log.info("weekly_total: {}", ((Map)statisticMap.get("ws_map")));
 			model.addAttribute("userInfo", userInfo);
 			model.addAttribute("personalCountOffTopFive", personalCountOffTopFive);
 			model.addAttribute("statisticMap", statisticMap);
 			model.addAttribute("rankMap", rankMap);
 			model.addAttribute("serverTime", dateStr);
+			long end = System.currentTimeMillis();
+			log.info("初始化用户数据耗时： {}", end - start);
 			return "gongxiu_personally";
 		}
 		log.info("用户登录信息过期.");

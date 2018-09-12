@@ -420,7 +420,7 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					<div class="row my-row">
 						<div class="col-xs-6 my-col-left">本日报数</div>
 						<div id="today-count" class="col-xs-4 my-col-center" th:with="today=${personalCountOffTopFive[0]}" th:text="${today.record_number}">10</div>
-						<div class="col-xs-2 my-col-right" th:text="${rankMap['daily_rank']}">-</div>
+						<div id="daily-rank" class="col-xs-2 my-col-right" th:text="${rankMap['daily_rank']}">-</div>
 					</div>
 					<div class="row my-row" th:with="ws_map=${statisticMap['ws_map']}">
 						<div class="col-xs-6 my-col-left">本周汇总</div>
@@ -440,7 +440,7 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					<div class="row my-row">
 						<div class="col-xs-6 my-col-left">本年日均</div>
 						<div id="year-avg" class="col-xs-4 my-col-center" th:text="${statisticMap['ys']} ? ${statisticMap['ys'].year_total} : 0">2661</div>
-						<div id="year-avg-rank" class="col-xs-2 my-col-right">21</div>
+						<div id="year-avg-rank" class="col-xs-2 my-col-right">-</div>
 					</div>
 				</div>
 			</div>
@@ -702,14 +702,14 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 							var obj = data.content;
 							console.log(obj);
 							$("#today-count").text(obj.pcoList[0].record_number);
+							$("#daily-rank").text(obj.rankMap.daily_rank);
 							$("#weekly-total").text(obj.statisticMap.ws_map.weekly_total);
-							$("#week-rank").text(obj.statisticMap.ws_map.ws.week_rank);
+							$("#week-rank").text(obj.rankMap.week_rank);
 							$("#month-total").text(obj.statisticMap.ms.month_total);
-							$("#month-rank").text(obj.statisticMap.ms.month_rank);
+							$("#month-rank").text(obj.rankMap.month_rank);
 							$("#year-total").text(obj.statisticMap.ys.year_total);
-							$("#year-rank").text(obj.statisticMap.ys.year_rank);
+							$("#year-rank").text(obj.rankMap.year_rank);
 							$("#year-avg").text(obj.statisticMap.ys.year_total);
-							$("#year-avg-rank").text(obj.statisticMap.ys.year_rank);
 						}
 						setTimeout(function() {
 							$("#tips").addClass("hide");

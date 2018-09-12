@@ -54,8 +54,10 @@ public class PersonalCountOffController {
 				//同步更新周度、月度、年度汇总表
 				Map<String, Object> statisticMap = statisticService.saveOrUpdateStatistic(pcolBefore.get(0), randomId, uid, date, dateStr, personalCountOff.getRecord_number());
 				Map<String, Object> resultMap = new HashMap<String, Object>();
+				Map<String, Object> rankMap = rankService.reverRankMapCountOff(uid, date, personalCountOffList.get(0).getRecord_number(), statisticMap);
 				resultMap.put("pcoList", personalCountOffList);
 				resultMap.put("statisticMap", statisticMap);
+				resultMap.put("rankMap", rankMap);
 				return RestResponseHashMap.success("报数成功", resultMap);
 			}
 		}

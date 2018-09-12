@@ -39,17 +39,27 @@ public class RankServiceImpl implements RankService {
 	
 	@Override
 	public boolean rankAdd(String uid, Date date, String dateStr, String type, int countoff) {
-		log.info("key: {}, value: {}, score: {}", type + dateStr, uid, countoff);
-		return zsetOps.add(type + dateStr, uid, countoff) ? redisTemplate.expireAt(type + dateStr, DateUtils.getDayEndTime(date)) : false;
+		long start = System.currentTimeMillis();
+		boolean result = zsetOps.add(type + dateStr, uid, countoff) ? redisTemplate.expireAt(type + dateStr, DateUtils.getDayEndTime(date)) : false;
+		long end = System.currentTimeMillis();
+//		log.info("key: {}, value: {}, score: {}", type + dateStr, uid, countoff);
+		log.info("子排行榜更新耗时：{}", end - start);
+		return result;
 	}
 
 	@Override
 	public Long getRank(String uid, String dateStr, String type, boolean reverse) {
-		log.info("getRank---key: {}, value: {}", type + dateStr, uid);
+//		log.info("getRank---key: {}, value: {}", type + dateStr, uid);
+		long start = System.currentTimeMillis();
+		long result;
 		if (reverse) {
-			return zsetOps.reverseRank(type + dateStr, uid) + 1;
+			result = zsetOps.reverseRank(type + dateStr, uid) + 1;
+		} else {
+			result = zsetOps.rank(type + dateStr, uid) + 1;
 		}
-		return zsetOps.rank(type + dateStr, uid) + 1;
+		long end = System.currentTimeMillis();
+		log.info("子排名获取耗时：{}", end - start);
+		return result;
 	}
 
 	@Override
@@ -64,6 +74,7 @@ public class RankServiceImpl implements RankService {
 
 	@Override
 	public Map<String, Object> reverRankMapCountOff(String uid, Date date, int todayCountOff, Map<String, Object> map) {
+		long start = System.currentTimeMillis();
 		Map<String, Object> rank_map = new HashMap<String, Object>();
 		Long daily_rank, week_rank, month_rank, year_rank;
 		daily_rank = -1l;
@@ -114,7 +125,8 @@ public class RankServiceImpl implements RankService {
 		} else {
 			rank_map.put("year_rank", "-");
 		}
-		
+		long end = System.currentTimeMillis();
+		log.info("排行榜更新耗时： {}", end - start);
 		return rank_map;
 	}
 	
