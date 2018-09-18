@@ -625,6 +625,21 @@ public class DateUtils {
 	}
 	
 	/**
+	 * 获取所在日期所在年的第一天
+	 * 
+	 * @param date
+	 * @return
+	 */
+	public static Date getFirstDayOfYear(Date date) {
+		Calendar c = new GregorianCalendar();
+		c.setFirstDayOfWeek(Calendar.MONDAY);
+		c.setTime(date);
+		int year = c.get(Calendar.YEAR);
+		c.set(year, 0, 1);
+		return c.getTime();
+	}
+	
+	/**
 	 * 获取某年某月的最后一天
 	 * 
 	 * @param date
@@ -894,6 +909,29 @@ public class DateUtils {
 		return times;
 	}
 
+	/**
+	 * 两个时间之间相差距离多少天
+	 * 
+	 * @param one
+	 *            时间参数 1：
+	 * @param two
+	 *            时间参数 2：
+	 * @return 相差天数
+	 */
+	public static Long getDistanceDays(Date date1, Date date2) {
+		long days = 0;
+		long time1 = date1.getTime();
+		long time2 = date2.getTime();
+		long diff;
+		if (time1 < time2) {
+			diff = time2 - time1;
+		} else {
+			diff = time1 - time2;
+		}
+		days = diff / (1000 * 60 * 60 * 24);
+		return days;
+	}
+	
 	/**
 	 * 两个时间之间相差距离多少天
 	 * 

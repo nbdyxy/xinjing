@@ -26,6 +26,7 @@ import cn.gzggzy.yyh.filter.LoginFilter;
 import cn.gzggzy.yyh.model.PersonalCountOff;
 import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
+import cn.gzggzy.yyh.model.YearlyStatistic;
 import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
 import cn.gzggzy.yyh.service.PersonalStatisticService;
@@ -120,11 +121,24 @@ public class UserInfoController {
 //			log.info("year_rank: {} ", rankMap.get("year_rank"));
 //			log.info("userInfo: {}", userInfo);
 //			log.info("weekly_total: {}", ((Map)statisticMap.get("ws_map")));
+			
+			Date firstDayOfYear = DateUtils.getFirstDayOfYear(date);
+			long day = DateUtils.getDistanceDays(firstDayOfYear, date) + 1;
+			Double year_avg = 0d;
+			YearlyStatistic ys = (YearlyStatistic) statisticMap.get("ys");
+			if (null != ys) {
+				Double total = new Double(ys.getYear_total());
+				year_avg = total / day;
+				year_avg = (double) Math.round(year_avg * 100) / 100;
+				log.info("year_avg: {}", year_avg);
+			}
+			
 			model.addAttribute("userInfo", userInfo);
 			model.addAttribute("personalCountOffTopFive", personalCountOffTopFive);
 			model.addAttribute("statisticMap", statisticMap);
 			model.addAttribute("rankMap", rankMap);
 			model.addAttribute("serverTime", dateStr);
+			model.addAttribute("year_avg", year_avg);
 			long end = System.currentTimeMillis();
 			log.info("初始化用户数据耗时： {}", end - start);
 			return "gongxiu_personally";

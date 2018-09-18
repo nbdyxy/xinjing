@@ -8,6 +8,7 @@
  */
 package cn.gzggzy.yyh.service.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,7 +115,7 @@ public class RankServiceImpl implements RankService {
 			rank_map.put("month_rank", "-");
 		}
 		
-		//年度报数的排名缓存处理
+		//年度报数的排名缓存处理和日均报数的计算
 		Date endOfYear = DateUtils.getLastDayOfYear(date); 
 		String endOfYearStr = DateUtils.parseDateToStr(endOfYear, "yyMMdd");
 		YearlyStatistic ys = (YearlyStatistic) map.get("ys");
@@ -129,5 +130,12 @@ public class RankServiceImpl implements RankService {
 		log.info("排行榜更新耗时： {}", end - start);
 		return rank_map;
 	}
+	
+//	public static void main(String[] args) {
+//		Date date = new Date();
+//		Date firstDayOfYear = DateUtils.getFirstDayOfYear(date);
+//		long day = DateUtils.getDistanceDays(firstDayOfYear, date) + 1;
+//		System.out.println(day);
+//	}
 	
 }

@@ -206,7 +206,7 @@ public class TedisCacheManager extends RedisCacheManager implements ApplicationC
             	log.info("name: {}", cache.getName());
             	log.info("expire ---> o1: {}", redisTemplate.getExpire(cache.getName() + "::" + o.toString()));
             	//更新缓存有效时间
-//            	redisTemplate.expire(cache.getName() + "::" + o.toString(), 6000, TimeUnit.SECONDS);
+            	redisTemplate.expire(cache.getName() + "::" + o.toString(), 6000, TimeUnit.SECONDS);
             	log.info("expire ---> o2: {}", redisTemplate.getExpire(cache.getName() + "::" + o.toString()));
                 return cache.get(o);
             } catch (Exception e) {

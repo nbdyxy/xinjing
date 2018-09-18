@@ -15,7 +15,6 @@ import cn.gzggzy.yyh.model.YearlyStatistic;
 import cn.gzggzy.yyh.redis.CacheExpire;
 import cn.gzggzy.yyh.service.MonthlyStatisticService;
 import cn.gzggzy.yyh.service.PersonalStatisticService;
-import cn.gzggzy.yyh.service.RankService;
 import cn.gzggzy.yyh.service.WeeklyStatisticService;
 import cn.gzggzy.yyh.service.YearlyStatisticService;
 

@@ -439,7 +439,7 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					</div>
 					<div class="row my-row">
 						<div class="col-xs-6 my-col-left">本年日均</div>
-						<div id="year-avg" class="col-xs-4 my-col-center" th:text="${statisticMap['ys']} ? ${statisticMap['ys'].year_total} : 0">2661</div>
+						<div id="year-avg" class="col-xs-4 my-col-center" th:text="${year_avg} > 0 ? ${year_avg} : '-'">2661</div>
 						<div id="year-avg-rank" class="col-xs-2 my-col-right">-</div>
 					</div>
 				</div>
