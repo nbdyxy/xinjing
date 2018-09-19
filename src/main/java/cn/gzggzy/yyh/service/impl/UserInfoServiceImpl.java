@@ -96,5 +96,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		return null;
 	}
+
+	@Override
+	public int selectUserNumber() {
+		return userInfoDao.selectUserNumber();
+	}
 	
 }

@@ -1,13 +1,5 @@
 package cn.gzggzy.yyh;
 
-import java.time.Duration;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -17,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.TimeToLive;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -25,13 +16,16 @@ import cn.gzggzy.yyh.service.MonthlyStatisticService;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
 import cn.gzggzy.yyh.service.PersonalStatisticService;
 import cn.gzggzy.yyh.service.RankService;
+import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.service.WeeklyStatisticService;
 import cn.gzggzy.yyh.service.YearlyStatisticService;
-import cn.gzggzy.yyh.util.DateUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class XinjingApplicationTests {
+	
+	@Autowired
+	private UserInfoService userInfoService;
 	
 	@Autowired
 	private PersonalCountOffService personalCountOffService;
@@ -85,6 +79,7 @@ public class XinjingApplicationTests {
 	
 	@Test
 	public void insert() {
+		System.out.println(userInfoService.selectUserNumber());
 //		PersonalCountOff model = new PersonalCountOff();
 //		Random random = new Random();
 //		Calendar c = Calendar.getInstance();
@@ -156,7 +151,7 @@ public class XinjingApplicationTests {
 //		zsetOps.add("weekly", "user1", 5);
 //		template.expire("weekly", 10, TimeUnit.MINUTES);
 //		System.out.println(template.getExpire("weekly", TimeUnit.MINUTES));
-		System.out.println(zsetOps.reverseRank("daily180909", "09c18c679d2d41a0a29bb6f91df5010d"));
+//		System.out.println(zsetOps.reverseRank("daily180909", "09c18c679d2d41a0a29bb6f91df5010d"));
 //		Set<String> result2 = zsetOps.reverseRange("weekly", 0, 2);
 //		Iterator<String> it2 = result2.iterator();
 //		while(it2.hasNext()) {

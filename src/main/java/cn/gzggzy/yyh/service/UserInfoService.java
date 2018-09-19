@@ -21,4 +21,5 @@ public interface UserInfoService {
 	
 	UserInfo updateUserInfo(UserInfo userInfo, String randomId);
 	
+	int selectUserNumber();
 }

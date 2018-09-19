@@ -98,6 +98,11 @@
 	  </where>
   </update>
   
-
+  <select id="selectUserNumber" resultType="java.lang.Integer">
+      SELECT
+        COUNT(1)
+      FROM
+        <include refid="BASE_TABLE"/>
+  </select>
 
 </mapper>

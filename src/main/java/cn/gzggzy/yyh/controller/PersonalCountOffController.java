@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.gzggzy.yyh.filter.LoginFilter;
 import cn.gzggzy.yyh.model.PersonalCountOff;
 import cn.gzggzy.yyh.model.UserInfo;
+import cn.gzggzy.yyh.model.YearlyStatistic;
 import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
 import cn.gzggzy.yyh.service.RankService;
@@ -25,6 +28,8 @@ import cn.gzggzy.yyh.util.DateUtils;
 @Controller
 @RequestMapping("/personalcountoff")
 public class PersonalCountOffController {
+	
+	private final static Logger log = LoggerFactory.getLogger(PersonalCountOffController.class);
 	
 	@Autowired
 	private PersonalCountOffService personalCountOffService;
@@ -55,9 +60,20 @@ public class PersonalCountOffController {
 				Map<String, Object> statisticMap = statisticService.saveOrUpdateStatistic(pcolBefore.get(0), randomId, uid, date, dateStr, personalCountOff.getRecord_number());
 				Map<String, Object> resultMap = new HashMap<String, Object>();
 				Map<String, Object> rankMap = rankService.reverRankMapCountOff(uid, date, personalCountOffList.get(0).getRecord_number(), statisticMap);
+				Date firstDayOfYear = DateUtils.getFirstDayOfYear(date);
+				long day = DateUtils.getDistanceDays(firstDayOfYear, date) + 1;
+				Double year_avg = 0d;
+				YearlyStatistic ys = (YearlyStatistic) statisticMap.get("ys");
+				if (null != ys) {
+					Double total = new Double(ys.getYear_total());
+					year_avg = total / day;
+					year_avg = (double) Math.round(year_avg * 100) / 100;
+					log.info("year_avg: {}", year_avg);
+				}
 				resultMap.put("pcoList", personalCountOffList);
 				resultMap.put("statisticMap", statisticMap);
 				resultMap.put("rankMap", rankMap);
+				resultMap.put("year_avg", year_avg);
 				return RestResponseHashMap.success("报数成功", resultMap);
 			}
 		}

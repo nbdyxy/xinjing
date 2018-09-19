@@ -22,4 +22,5 @@ public interface UserInfoDao {
 	
 	int updateUserInfo(@Param("userInfo") UserInfo userInfo); 
 	
+	int selectUserNumber();
 }

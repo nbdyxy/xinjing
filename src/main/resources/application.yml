@@ -10,12 +10,12 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
         
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://111.230.177.14:3306/xinjing?useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://111.230.177.14:3306/xinjing?useUnicode=true&characterEncoding=UTF-8&useSSL=false
     username: root
     password: fy_C2mE
     
@@ -28,6 +28,7 @@ spring:
       remove-abandoned-timeout: 1800 #关闭空闲连接超时时间
       filter-class-names: stat
       filters: stat,config
+      
       #initialSize: 5
       #minIdle: 5
       #maxActive: 20
