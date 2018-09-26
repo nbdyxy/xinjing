@@ -19,6 +19,10 @@ import cn.gzggzy.yyh.redis.CacheExpire;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.util.DESUtils;
 
+/**
+ * @author Administrator
+ *
+ */
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
 	
@@ -30,6 +34,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Autowired
 	private Configuration configuration;
 	
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#insert(java.lang.String, cn.gzggzy.yyh.model.RegisterUserInfo)
+	 */
 	@Override
 	public int insert(String uid, RegisterUserInfo registerUserInfo) {
 		
@@ -49,14 +56,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 		
 		return userInfoDao.insert(userInfo);
 	}
-
+	
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#selectUsers()
+	 */
 	@Override
 	public List<UserInfo> selectUsers() {
 		logger.info("查询所有人");
 		return userInfoDao.selectUsers();
 	}
 
-
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#selectAllUserName(java.lang.String)
+	 */
 	@Override
 	@Cacheable(value = "user", key = "#usernameList", unless="#result == null")
 	@CacheExpire(expire = 6000)
@@ -64,25 +76,37 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoDao.selectAllUserName();
 	}
 	
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#selectUserById(java.lang.String)
+	 */
 	@Override
 	public UserInfo selectUserById(String uid) {
 		logger.info("按uid查询人员: {}", uid);
 		return userInfoDao.selectUserById(uid);
 	}
 	
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#selectUserByUserName(java.lang.String)
+	 */
 	@Override
 	public UserInfo selectUserByUserName(String userName) {
 		logger.info("按姓名查询人员");
 		return userInfoDao.selectUserByUserName(userName);
 	}
 	
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#login(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	@Override
 	@Cacheable(value = "user", key = "#randomId", unless="#result == null")
 	@CacheExpire(expire = 6000)
 	public UserInfo login(String userName, String password, String randomId) {
 		return userInfoDao.login(userName, password);
 	}
-
+	
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#updateUserInfo(cn.gzggzy.yyh.model.UserInfo, java.lang.String)
+	 */
 	@Override
 	@CachePut(cacheNames = "user", key="#randomId", unless="#result == null")
 	public UserInfo updateUserInfo(UserInfo userInfo, String randomId) {
@@ -96,10 +120,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		return null;
 	}
-
+	
+	/*
+	 * @see cn.gzggzy.yyh.service.UserInfoService#selectUserNumber(boolean)
+	 */
 	@Override
-	public int selectUserNumber() {
-		return userInfoDao.selectUserNumber();
+	public int selectUserNumber(boolean isAttend) {
+		if (isAttend) {
+			return userInfoDao.selectUserNumber(1);
+		} else {
+			return userInfoDao.selectUserNumber(null);
+		}
 	}
+	
+	
 	
 }

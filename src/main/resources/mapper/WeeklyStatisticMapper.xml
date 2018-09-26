@@ -36,5 +36,17 @@
 	AND t.month = #{month}
 	AND t.year_week = #{year_week};
   </select>
-
+	
+  <select id="selectWeekTotal" resultType="java.lang.Integer">
+  	SELECT
+		SUM(t.week_total)
+	FROM
+		weekly_statistic t
+	WHERE
+		t.year = #{year}
+	AND t.month = #{month}
+	AND t.year_week = #{year_week}
+	AND t.month_week = #{month_week};
+  </select>
+	
 </mapper>

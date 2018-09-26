@@ -78,6 +78,14 @@ public class YearlyStatisticServiceImpl implements YearlyStatisticService {
 		log.info("uid: {}, year: {}, month: {}, year_week: {}", uid, year);
 		return yearlyStatisticDao.selectYearly(uid, year);
 	}
+
+	/* 
+	 * @see cn.gzggzy.yyh.service.YearlyStatisticService#selectYearTotal(java.lang.String)
+	 */
+	@Override
+	public int selectYearTotal(int year) {
+		return yearlyStatisticDao.selectYearTotal(year);
+	}
 	
 	
 	

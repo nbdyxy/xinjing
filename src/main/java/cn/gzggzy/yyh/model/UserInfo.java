@@ -23,6 +23,7 @@ public class UserInfo implements Serializable {
 	private Integer is_enable;
 	private Date create_time;
 	private Integer third_party_enable;
+	private Integer is_attend;
 	
 	
 	public UserInfo() {
@@ -105,7 +106,13 @@ public class UserInfo implements Serializable {
 	public void setThird_party_enable(Integer third_party_enable) {
 		this.third_party_enable = third_party_enable;
 	}
-	
+	public Integer getIs_attend() {
+		return is_attend;
+	}
+	public void setIs_attend(Integer is_attend) {
+		this.is_attend = is_attend;
+	}
+
 	@Override
 	public String toString() {
 		return "UserInfo{" +
@@ -114,6 +121,7 @@ public class UserInfo implements Serializable {
                 ", password='" + password + '\'' +
                 ", last_login_ip='" + last_login_ip + '\'' +
                 ", login_count='" + login_count + '\'' +
+                ", is_attend='" + is_attend + '\'' +
                 '}';
 	}
 	

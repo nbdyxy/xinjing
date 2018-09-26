@@ -34,5 +34,14 @@
 		t.uid = #{uid}
 	AND t.year = #{year}
   </select>
+  
+  <select id="selectYearTotal" resultType="java.lang.Integer">
+  	SELECT
+		SUM(t.year_total)
+	FROM
+		yearly_statistic t
+	WHERE
+		t.year = #{year};
+  </select>
 
 </mapper>

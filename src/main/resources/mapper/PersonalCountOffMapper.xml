@@ -103,5 +103,13 @@
 		t.uid;
   </select>
   
+  <select id="selectOneDayTotal" resultType="java.lang.Integer">
+  	SELECT
+		SUM(t.record_number)
+	FROM
+		personal_countoff t
+	WHERE
+		DATE_FORMAT(t.record_date, '%Y-%m-%d') = #{date};
+  </select>
   
 </mapper>

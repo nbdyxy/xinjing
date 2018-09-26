@@ -93,4 +93,11 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 		return personalCountOffDao.weeklyStatisticByUID(uid, beginDate, endDate);
 	}
 
+	@Override
+	public int selectOneDayTotal(String date) {
+		return personalCountOffDao.selectOneDayTotal(date);
+	}
+	
+	
+
 }

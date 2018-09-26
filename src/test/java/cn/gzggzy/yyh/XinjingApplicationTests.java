@@ -1,5 +1,8 @@
 package cn.gzggzy.yyh;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -79,7 +82,21 @@ public class XinjingApplicationTests {
 	
 	@Test
 	public void insert() {
-		System.out.println(userInfoService.selectUserNumber());
+		
+//		System.out.println(userInfoService.selectUserNumber(false));
+		
+		int result = personalCountOffService.selectOneDayTotal("2018-07-25");
+		System.out.println(result);
+		
+//		result = weeklyStatisticService.selectOneWeekTotal(2018, 9, 38, 3);
+//		System.out.println(result);
+		
+		result = monthlyStatisticService.selectOneMonthTotal(2018, 9);
+		System.out.println(result);
+		
+		result = yearlyStatisticService.selectYearTotal(2018);
+		System.out.println(result);
+		
 //		PersonalCountOff model = new PersonalCountOff();
 //		Random random = new Random();
 //		Calendar c = Calendar.getInstance();
@@ -171,6 +188,17 @@ public class XinjingApplicationTests {
 //		String key = type + dateStr;
 //		System.out.println(template.getExpire(key, TimeUnit.HOURS));
 //		System.out.println(template.getExpire(key, TimeUnit.MINUTES));
+		
+//		long size = zsetOps.size("monthly180930");
+//		System.out.println("size: " + size);
+//		long count = zsetOps.count("monthly180930", 0, size);
+//		System.out.println("count: " + count);
+//		Set<String> mySet  = zsetOps.range("monthly180930", 0, size);
+//		Iterator<String> it = mySet.iterator();
+//		while(it.hasNext()) {
+//			System.out.println(it.next());
+//		}
+		
 	}
 
 }

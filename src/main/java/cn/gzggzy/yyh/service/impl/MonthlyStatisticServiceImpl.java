@@ -37,6 +37,14 @@ public class MonthlyStatisticServiceImpl implements MonthlyStatisticService {
 		log.info("uid: {}, year: {}, month: {}", uid, year, month);
 		return monthlyStatisticDao.selectMonthly(uid, year, month);
 	}
+
+	/* 
+	 * @see cn.gzggzy.yyh.service.MonthlyStatisticService#selectOneMonthTotal(int, int)
+	 */
+	@Override
+	public int selectOneMonthTotal(int year, int month) {
+		return monthlyStatisticDao.selectOneMonthTotal(year, month);
+	}
 	
 	
 	

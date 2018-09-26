@@ -23,4 +23,14 @@ public interface PersonalCountOffService {
 	
 	int weeklyStatisticByUID(String uid, String beginDate, String endDate);
 	
+	/**
+	 * @Title: selectOneDayTotal  
+	 * @Description: TODO  
+	 * @param date
+	 * @return 某天报数的总数
+	 * int
+	 * @throws
+	 */
+	int selectOneDayTotal(String date);
+	
 }

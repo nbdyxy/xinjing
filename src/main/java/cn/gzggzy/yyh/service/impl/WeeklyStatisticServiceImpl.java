@@ -104,7 +104,13 @@ public class WeeklyStatisticServiceImpl implements WeeklyStatisticService {
 		log.info("uid: {}, year: {}, month: {}, year_week: {}", uid, now_year, now_month, now_year_week);
 		return map;
 	}
-	
-	
+
+	/* 
+	 * @see cn.gzggzy.yyh.service.WeeklyStatisticService#selectOneWeekTotal(int, int, int, int)
+	 */
+	@Override
+	public int selectOneWeekTotal(int year, int month, int year_week, int month_week) {
+		return weeklyStatisticDao.selectOneWeekTotal(year, month, year_week, month_week);
+	}
 	
 }

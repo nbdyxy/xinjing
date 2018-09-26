@@ -34,5 +34,15 @@
 	AND t.year = #{year}
 	AND t.month = #{month}
   </select>
+  
+  <select id="selectMonthTotal" resultType="java.lang.Integer">
+  	SELECT
+		SUM(month_total)
+	FROM
+		monthly_statistic
+	WHERE
+		year = #{year}
+	AND month = #{month}
+  </select>
 
 </mapper>
