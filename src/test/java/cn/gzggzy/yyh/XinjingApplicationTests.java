@@ -88,8 +88,8 @@ public class XinjingApplicationTests {
 		int result = personalCountOffService.selectOneDayTotal("2018-07-25");
 		System.out.println(result);
 		
-//		result = weeklyStatisticService.selectOneWeekTotal(2018, 9, 38, 3);
-//		System.out.println(result);
+		result = weeklyStatisticService.selectOneWeekTotal(2018, 9, 38, 3);
+		System.out.println(result);
 		
 		result = monthlyStatisticService.selectOneMonthTotal(2018, 9);
 		System.out.println(result);

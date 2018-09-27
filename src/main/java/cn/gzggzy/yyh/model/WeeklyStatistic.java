@@ -11,6 +11,7 @@ public class WeeklyStatistic {
 	private int week_total;
 	private int week_rank;
 	private int is_activity;
+	private int is_self_activity;
 	
 	public String getPid() {
 		return pid;
@@ -66,6 +67,12 @@ public class WeeklyStatistic {
 	public void setIs_activity(int is_activity) {
 		this.is_activity = is_activity;
 	}
+	public int getIs_self_activity() {
+		return is_self_activity;
+	}
+	public void setIs_self_activity(int is_self_activity) {
+		this.is_self_activity = is_self_activity;
+	}
 	
 	@Override
 	public String toString() {
@@ -79,6 +86,7 @@ public class WeeklyStatistic {
                 ", week_total='" + week_total +
                 ", week_rank='" + week_rank +
                 ", is_activity='" + is_activity +
+                ", is_self_activity='" + is_self_activity +
                 '}';
 	}
 }

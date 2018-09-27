@@ -9,6 +9,7 @@ public class MonthlyStatistic {
 	private int month_total;
 	private int month_rank;
 	private int is_activity;
+	private int is_self_activity;
 	
 	public String getPid() {
 		return pid;
@@ -52,6 +53,12 @@ public class MonthlyStatistic {
 	public void setIs_activity(int is_activity) {
 		this.is_activity = is_activity;
 	}
+	public int getIs_self_activity() {
+		return is_self_activity;
+	}
+	public void setIs_self_activity(int is_self_activity) {
+		this.is_self_activity = is_self_activity;
+	}
 	
 	@Override
 	public String toString() {
@@ -63,6 +70,7 @@ public class MonthlyStatistic {
                 ", month_total='" + month_total +
                 ", month_rank='" + month_rank +
                 ", is_activity='" + is_activity +
+                ", is_self_activity='" + is_self_activity +
                 '}';
 	}
 }

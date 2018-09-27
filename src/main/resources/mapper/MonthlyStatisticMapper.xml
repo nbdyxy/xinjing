@@ -6,7 +6,7 @@
   </sql>
 
   <sql id="BASE_COLUMN">
-    pid,uid,year,month,month_total,month_rank,is_activity
+    pid,uid,year,month,month_total,month_rank,is_activity,is_self_activity
   </sql>
   
   <insert id="saveOrUpdate" parameterType="cn.gzggzy.yyh.model.WeeklyStatistic">
@@ -17,7 +17,7 @@
     </trim>
     <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
       #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, #{year, jdbcType=VARCHAR},#{month, jdbcType=VARCHAR},
-      #{month_total, jdbcType=INTEGER},#{month_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER}
+      #{month_total, jdbcType=INTEGER},#{month_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER},#{is_self_activity, jdbcType=INTEGER}
     </trim>
     ON DUPLICATE KEY UPDATE
     	month_total = #{month_total, jdbcType=INTEGER}
@@ -35,14 +35,14 @@
 	AND t.month = #{month}
   </select>
   
-  <select id="selectMonthTotal" resultType="java.lang.Integer">
+  <select id="selectOneMonthTotal" resultType="java.lang.Integer">
   	SELECT
-		SUM(month_total)
+		SUM(t.month_total)
 	FROM
-		monthly_statistic
+		monthly_statistic t
 	WHERE
-		year = #{year}
-	AND month = #{month}
+		t.year = #{year}
+	AND t.month = #{month}
   </select>
 
 </mapper>

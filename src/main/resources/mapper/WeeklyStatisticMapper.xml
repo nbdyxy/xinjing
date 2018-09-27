@@ -6,7 +6,7 @@
   </sql>
 
   <sql id="BASE_COLUMN">
-    pid,uid,year,month,year_week,month_week,week_total,week_rank,is_activity
+    pid,uid,year,month,year_week,month_week,week_total,week_rank,is_activity,is_self_activity
   </sql>
   
   <insert id="saveOrUpdate" parameterType="cn.gzggzy.yyh.model.WeeklyStatistic">
@@ -18,7 +18,7 @@
     <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
       #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, #{year, jdbcType=VARCHAR},#{month, jdbcType=VARCHAR},
       #{year_week, jdbcType=VARCHAR},#{month_week, jdbcType=VARCHAR},#{week_total, jdbcType=INTEGER},
-      #{week_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER}
+      #{week_rank, jdbcType=INTEGER},#{is_activity, jdbcType=INTEGER},#{is_self_activity, jdbcType=INTEGER}
     </trim>
     ON DUPLICATE KEY UPDATE
     	week_total = #{week_total, jdbcType=INTEGER}
@@ -37,7 +37,7 @@
 	AND t.year_week = #{year_week};
   </select>
 	
-  <select id="selectWeekTotal" resultType="java.lang.Integer">
+  <select id="selectOneWeekTotal" resultType="java.lang.Integer">
   	SELECT
 		SUM(t.week_total)
 	FROM
