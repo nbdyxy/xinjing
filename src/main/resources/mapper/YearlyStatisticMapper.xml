@@ -37,7 +37,7 @@
   
   <select id="selectYearTotal" resultType="java.lang.Integer">
   	SELECT
-		SUM(t.year_total)
+  		IFNULL(SUM(t.year_total), 0)
 	FROM
 		yearly_statistic t
 	WHERE

@@ -97,7 +97,24 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 	public int selectOneDayTotal(String date) {
 		return personalCountOffDao.selectOneDayTotal(date);
 	}
-	
-	
 
+	/**
+	 * @Title: selectTop100  
+	 * @Description: 查询最新的前100报数  
+	 * @return
+	 * List<PersonalCountOff>
+	 * @throws
+	 */
+	@Override
+	public List<PersonalCountOff> selectTop100() {
+		List<PersonalCountOff> pcoList = personalCountOffDao.selectTop100();
+		int count = 0;
+		for (PersonalCountOff pco : pcoList) {
+			String uName = pco.getuName().substring(0, 1).concat("**");
+			pco.setuName(uName);
+			pcoList.set(count++, pco);
+		}
+		return pcoList;
+	}
+	
 }

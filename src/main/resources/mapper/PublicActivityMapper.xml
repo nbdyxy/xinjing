@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gzggzy.yyh.dao.PublicActivityDao" >
+  <sql id="BASE_TABLE">
+    public_activity
+  </sql>
+
+  <sql id="BASE_COLUMN">
+    public_activity_id, public_activity_creator_id, public_activity_name, public_activity_begin_time, public_activity_end_time, public_activity_target, public_activity_create_time, public_activity_enable
+  </sql>
+
+</mapper>

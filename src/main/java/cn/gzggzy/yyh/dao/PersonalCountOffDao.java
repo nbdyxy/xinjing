@@ -21,4 +21,6 @@ public interface PersonalCountOffDao {
 	int weeklyStatisticByUID(@Param("uid") String uid, @Param("beginDate") String beginDate, @Param("endDate") String endDate);
 	
 	int selectOneDayTotal(@Param("date") String date);
+	
+	List<PersonalCountOff> selectTop100();
 }

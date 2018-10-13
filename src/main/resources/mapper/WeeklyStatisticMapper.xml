@@ -39,7 +39,7 @@
 	
   <select id="selectOneWeekTotal" resultType="java.lang.Integer">
   	SELECT
-		SUM(t.week_total)
+  		IFNULL(SUM(t.week_total), 0)
 	FROM
 		weekly_statistic t
 	WHERE

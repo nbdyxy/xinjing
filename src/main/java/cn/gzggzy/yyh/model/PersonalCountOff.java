@@ -14,6 +14,7 @@ public class PersonalCountOff implements Serializable {
 	
 	private String pid;
 	private String uid;
+	private String uName;
 	private Date record_date;
 	private int record_number;
 	
@@ -25,6 +26,15 @@ public class PersonalCountOff implements Serializable {
 		super();
 		this.pid = pid;
 		this.uid = uid;
+		this.record_date = record_date;
+		this.record_number = record_number;
+	}
+	
+	public PersonalCountOff(String pid, String uid, String uName, Date record_date, int record_number) {
+		super();
+		this.pid = pid;
+		this.uid = uid;
+		this.uName = uName;
 		this.record_date = record_date;
 		this.record_number = record_number;
 	}
@@ -41,6 +51,13 @@ public class PersonalCountOff implements Serializable {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
+	public String getuName() {
+		return uName;
+	}
+	public void setuName(String uName) {
+		this.uName = uName;
+	}
+
 	public Date getRecord_date() {
 		return record_date;
 	}

@@ -1,6 +1,8 @@
 package cn.gzggzy.yyh;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -15,6 +17,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import cn.gzggzy.yyh.model.PersonalCountOff;
+import cn.gzggzy.yyh.service.DynamicsService;
 import cn.gzggzy.yyh.service.MonthlyStatisticService;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
 import cn.gzggzy.yyh.service.PersonalStatisticService;
@@ -47,6 +51,9 @@ public class XinjingApplicationTests {
 	
 	@Autowired
 	private RankService rankService;
+	
+	@Autowired
+	private DynamicsService dynamicsService;
 	
 	@Autowired
 	private CacheManager cacheManager;
@@ -83,19 +90,33 @@ public class XinjingApplicationTests {
 	@Test
 	public void insert() {
 		
+//		Map<String, Integer> result = dynamicsService.platformDynamics("2018-09-18");
+//		for(Map.Entry<String, Integer> entry : result.entrySet()) {
+//			System.out.println(entry.getValue() + "------------" + entry.getKey());
+//		}
+		
+		List<PersonalCountOff> pco = personalCountOffService.selectTop100();
+		System.out.println(pco.get(0).getuName());
+		
 //		System.out.println(userInfoService.selectUserNumber(false));
 		
-		int result = personalCountOffService.selectOneDayTotal("2018-07-25");
-		System.out.println(result);
+//		int result = personalCountOffService.selectOneDayTotal("2018-07-25");
+//		System.out.println(result);
+//		
+//		result = weeklyStatisticService.selectOneWeekTotal(2018, 9, 38, 3);
+//		System.out.println(result);
+//		
+//		result = monthlyStatisticService.selectOneMonthTotal(2018, 9);
+//		System.out.println(result);
+//		
+//		result = yearlyStatisticService.selectYearTotal(2018);
+//		System.out.println(result);
 		
-		result = weeklyStatisticService.selectOneWeekTotal(2018, 9, 38, 3);
-		System.out.println(result);
-		
-		result = monthlyStatisticService.selectOneMonthTotal(2018, 9);
-		System.out.println(result);
-		
-		result = yearlyStatisticService.selectYearTotal(2018);
-		System.out.println(result);
+//		int result = userInfoService.selectUserNumber(true);
+//		System.out.println(result);
+//		
+//		result = userInfoService.selectUserNumber(false);
+//		System.out.println(result);
 		
 //		PersonalCountOff model = new PersonalCountOff();
 //		Random random = new Random();

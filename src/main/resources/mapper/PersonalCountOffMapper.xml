@@ -105,11 +105,22 @@
   
   <select id="selectOneDayTotal" resultType="java.lang.Integer">
   	SELECT
-		SUM(t.record_number)
+		IFNULL(SUM(t.record_number), 0)
 	FROM
 		personal_countoff t
 	WHERE
 		DATE_FORMAT(t.record_date, '%Y-%m-%d') = #{date};
+  </select>
+  
+  <select id="selectTop100" resultType="cn.gzggzy.yyh.model.PersonalCountOff">
+  	SELECT
+		p.pid pid , p.uid uid , u.username uName, p.record_date record_date, p.record_number record_number
+	FROM
+		personal_countoff p
+	LEFT JOIN user_info u ON p.uid = u.user_id
+	ORDER BY
+		p.record_date DESC
+	LIMIT 0, 100
   </select>
   
 </mapper>

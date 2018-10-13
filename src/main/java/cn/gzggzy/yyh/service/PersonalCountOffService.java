@@ -33,4 +33,13 @@ public interface PersonalCountOffService {
 	 */
 	int selectOneDayTotal(String date);
 	
+	/**
+	 * @Title: selectTop100  
+	 * @Description: 查询最新的前100报数  
+	 * @return
+	 * List<PersonalCountOff>
+	 * @throws
+	 */
+	List<PersonalCountOff> selectTop100();
+	
 }
