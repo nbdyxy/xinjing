@@ -25,6 +25,7 @@ public class PublicActivity {
 	private Date public_activity_create_time;
 	private int public_activity_enable;
 	private String public_activity_creator_name;
+	private Date public_activity_update_time;
 	
 	public String getPublic_activity_id() {
 		return public_activity_id;
@@ -79,6 +80,12 @@ public class PublicActivity {
 	}
 	public void setPublic_activity_creator_name(String public_activity_creator_name) {
 		this.public_activity_creator_name = public_activity_creator_name;
+	}
+	public Date getPublic_activity_update_time() {
+		return public_activity_update_time;
+	}
+	public void setPublic_activity_update_time(Date public_activity_update_time) {
+		this.public_activity_update_time = public_activity_update_time;
 	}
 	
 }

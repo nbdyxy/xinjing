@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gzggzy.yyh.dao.PrivateActivityDao" >
+  <sql id="BASE_TABLE">
+    private_activity
+  </sql>
+
+  <sql id="BASE_COLUMN">
+    private_activity_id, private_activity_creator_id, private_activity_name, private_activity_begin_time, 
+    private_activity_end_time, private_activity_target, private_activity_create_time, private_activity_enable
+  </sql>
+  
+  <select id="selectActivityEnable" resultType="cn.gzggzy.yyh.model.PrivateActivity">
+  	<!-- SELECT
+		pa.public_activity_id public_activity_id, pa.public_activity_creator_id public_activity_creator_id,
+		pa.public_activity_name public_activity_name, pa.public_activity_begin_time public_activity_begin_time,
+		pa.public_activity_end_time public_activity_end_time, pa.public_activity_target public_activity_target,
+		pa.public_activity_create_time public_activity_create_time, pa.public_activity_enable public_activity_enable,
+		ui.username public_activity_creator_name
+	FROM
+		public_activity pa
+	LEFT JOIN user_info ui ON pa.public_activity_creator_id = ui.user_id
+	WHERE
+		pa.public_avtivity_enable = 1; 
+		p.public_activity_id public_activity_id, p.public_activity_creator_id public_activity_creator_id,
+		p.public_activity_name public_activity_name, p.public_activity_begin_time public_activity_begin_time,
+		p.public_activity_end_time public_activity_end_time, p.public_activity_target public_activity_target,
+		p.public_activity_create_time public_activity_create_time, p.public_activity_enable public_activity_enable,
+		u.username public_activity_creator_name-->
+	SELECT
+		p.*, u.username private_activity_creator_name
+	FROM
+		private_activity p,
+		user_info u
+	WHERE
+		p.private_activity_creator_id = u.user_id
+	AND 
+		p.private_activity_enable = 1
+  </select>
+  
+  <select id="selectActivityById" resultType="cn.gzggzy.yyh.model.PrivateActivity">
+  	SELECT
+		pa.*, ui.username private_activity_creator_name
+	FROM
+		private_activity pa
+	LEFT JOIN user_info ui ON pa.private_activity_creator_id = ui.user_id
+	WHERE
+		pa.private_activity_id = #{private_activity_id};
+  </select>
+  
+  <insert id="insertPrivateActivity" parameterType="cn.gzggzy.yyh.model.PrivateActivity">
+    INSERT INTO
+      <include refid="BASE_TABLE"/>
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <include refid="BASE_COLUMN"/>
+    </trim>
+    <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+      #{private_activity_id, jdbcType=VARCHAR}, #{private_activity_creator_id, jdbcType=VARCHAR},
+      #{private_activity_name, jdbcType=VARCHAR}, #{private_activity_begin_time, jdbcType=DATE},
+      #{private_activity_end_time, jdbcType=DATE}, #{private_activity_target, jdbcType=INTEGER},
+      #{private_activity_create_time, jdbcType=DATE}, #{private_activity_enable, jdbcType=INTEGER}
+    </trim>
+  </insert>
+  
+  <update id="updatePrivateActivity" parameterType="cn.gzggzy.yyh.model.PrivateActivity">
+      update 
+        <include refid="BASE_TABLE"/>
+      <set>
+      	<if test="private_activity_name != null and private_activity_name != '' ">
+      		private_activity_name = #{private_activity_name},
+      	</if>
+      	<if test="private_activity_begin_time != null">
+      		private_activity_begin_time = #{private_activity_begin_time},
+      	</if>
+      	<if test="private_activity_end_time != null">
+      		private_activity_end_time = #{private_activity_end_time},
+      	</if>
+      	<if test="private_activity_target != null and private_activity_target != '' ">
+      		private_activity_target = #{private_activity_target},
+      	</if>
+      	<if test="private_activity_create_time != null">
+      		private_activity_create_time = #{private_activity_create_time},
+      	</if>
+      	<if test="private_activity_enable != null and private_activity_enable != '' ">
+      		private_activity_enable = #{private_activity_enable},
+      	</if>
+      </set>
+	  <where>
+	  	private_activity_id = #{private_activity_id}
+	  </where>
+  </update>
+  
+</mapper>
