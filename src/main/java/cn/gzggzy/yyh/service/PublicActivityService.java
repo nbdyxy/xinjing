@@ -19,13 +19,28 @@ import cn.gzggzy.yyh.model.PublicActivity;
 public interface PublicActivityService {
 	
 	/**
-	 * @Title: selectEnable  
-	 * @Description: 查询当前可用的公共活动  
+	 * @Title: selectActivityAll  
+	 * @Description: 查询所有的公共活动  
+	 * @param pageNum 页码
+	 * @param pageSize 每页数量
+	 * @param page 是否使用分页
 	 * @return
 	 * List<PublicActivity>
 	 * @throws
 	 */
-	List<PublicActivity> selectActivityEnable();
+	List<PublicActivity> selectActivityAll(int pageNum, int pageSize, String orderBy, boolean page);
+	
+	/**
+	 * @Title: selectActivityEnable  
+	 * @Description: 查询当前可用的公共活动  
+	 * @param pageNum 页码
+	 * @param pageSize 每页数量
+	 * @param page 是否使用分页
+	 * @return
+	 * List<PublicActivity>
+	 * @throws
+	 */
+	List<PublicActivity> selectActivityEnable(int pageNum, int pageSize, String orderBy, boolean page);
 	
 	/**
 	 * @Title: selectActivityById  
@@ -57,4 +72,13 @@ public interface PublicActivityService {
 	 */
 	int updatePublicActivity(PublicActivity pa);
 	
+	/**
+	 * @Title: deletePublicActivityById  
+	 * @Description: 删除集合内指定主键的公共活动
+	 * @param pidList
+	 * @return
+	 * int
+	 * @throws
+	 */
+	int deletePublicActivityById(List<String> pidList);
 }

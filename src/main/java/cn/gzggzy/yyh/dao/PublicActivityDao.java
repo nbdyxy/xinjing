@@ -21,7 +21,16 @@ import cn.gzggzy.yyh.model.PublicActivity;
 public interface PublicActivityDao {
 	
 	/**
-	 * @Title: selectEnable  
+	 * @Title: selectActivityAll  
+	 * @Description: 查询所有的公共活动  
+	 * @return
+	 * List<PublicActivity>
+	 * @throws
+	 */
+	List<PublicActivity> selectActivityAll();
+	
+	/**
+	 * @Title: selectActivityEnable  
 	 * @Description: 查询当前可用的公共活动  
 	 * @return
 	 * List<PublicActivity>
@@ -58,4 +67,25 @@ public interface PublicActivityDao {
 	 * @throws
 	 */
 	int updatePublicActivity(PublicActivity pa);
+	
+	
+	/**
+	 * @Title: deletePublicActivityById  
+	 * @Description: 删除集合内指定主键的公共活动
+	 * @param pidList
+	 * @return
+	 * int
+	 * @throws
+	 */
+	int deletePublicActivityById(@Param("list") List<String> pidList);
+	
+	/**
+	 * @Title: selectAll  
+	 * @Description: 查询所有公共活动
+	 * @param pidList
+	 * @return
+	 * int
+	 * @throws
+	 */
+	List<PublicActivity> selectAll();
 }

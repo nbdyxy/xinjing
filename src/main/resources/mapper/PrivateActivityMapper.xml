@@ -7,8 +7,18 @@
 
   <sql id="BASE_COLUMN">
     private_activity_id, private_activity_creator_id, private_activity_name, private_activity_begin_time, 
-    private_activity_end_time, private_activity_target, private_activity_create_time, private_activity_enable
+    private_activity_end_time, private_activity_target, private_activity_create_time, private_activity_enable, private_activity_update_time
   </sql>
+  
+  <select id="selectActivityAll" resultType="cn.gzggzy.yyh.model.PrivateActivity">
+	SELECT
+		p.*, u.username private_activity_creator_name
+	FROM
+		private_activity p,
+		user_info u
+	WHERE
+		p.private_activity_creator_id = u.user_id
+  </select>
   
   <select id="selectActivityEnable" resultType="cn.gzggzy.yyh.model.PrivateActivity">
   	<!-- SELECT
@@ -58,7 +68,8 @@
       #{private_activity_id, jdbcType=VARCHAR}, #{private_activity_creator_id, jdbcType=VARCHAR},
       #{private_activity_name, jdbcType=VARCHAR}, #{private_activity_begin_time, jdbcType=DATE},
       #{private_activity_end_time, jdbcType=DATE}, #{private_activity_target, jdbcType=INTEGER},
-      #{private_activity_create_time, jdbcType=DATE}, #{private_activity_enable, jdbcType=INTEGER}
+      #{private_activity_create_time, jdbcType=DATE}, #{private_activity_enable, jdbcType=INTEGER},
+      #{private_activity_update_time, jdbcType=DATE}
     </trim>
   </insert>
   
@@ -89,5 +100,16 @@
 	  	private_activity_id = #{private_activity_id}
 	  </where>
   </update>
+  
+  <delete id="deletePrivateActivityById" parameterType="java.util.List">
+  	DELETE FROM
+  	  <include refid="BASE_TABLE"/>
+  	<where>
+  		private_activity_id in 
+  			<foreach collection="list" item="item" index="index" separator="," open="(" close=")"> 
+  				#{item}
+  			</foreach>
+  	</where>
+  </delete>
   
 </mapper>

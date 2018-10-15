@@ -11,6 +11,7 @@ package cn.gzggzy.yyh.service;
 import java.util.List;
 
 import cn.gzggzy.yyh.model.PrivateActivity;
+import cn.gzggzy.yyh.model.PublicActivity;
 
 /**
  * @author Administrator
@@ -19,13 +20,28 @@ import cn.gzggzy.yyh.model.PrivateActivity;
 public interface PrivateActivityService {
 	
 	/**
-	 * @Title: selectActivityEnable  
-	 * @Description: 查询当前可用的私有活动  
+	 * @Title: selectActivityAll  
+	 * @Description: 查询所有的私有活动  
+	 * @param pageNum 页码
+	 * @param pageSize 每页数量
+	 * @param page 是否使用分页
 	 * @return
 	 * List<PrivateActivity>
 	 * @throws
 	 */
-	List<PrivateActivity> selectActivityEnable();
+	List<PrivateActivity> selectActivityAll(int pageNum, int pageSize, String orderBy, boolean page);
+	
+	/**
+	 * @Title: selectActivityEnable  
+	 * @Description: 查询当前可用的私有活动  
+	 * @param pageNum 页码
+	 * @param pageSize 每页数量
+	 * @param page 是否使用分页
+	 * @return
+	 * List<PrivateActivity>
+	 * @throws
+	 */
+	List<PrivateActivity> selectActivityEnable(int pageNum, int pageSize, String orderBy, boolean page);
 	
 	/**
 	 * @Title: selectActivityById  
@@ -56,5 +72,15 @@ public interface PrivateActivityService {
 	 * @throws
 	 */
 	int updatePrivateActivity(PrivateActivity pa);
+	
+	/**
+	 * @Title: deletePrivateActivityById  
+	 * @Description: 删除集合内指定主键的私有活动
+	 * @param pidList
+	 * @return
+	 * int
+	 * @throws
+	 */
+	int deletePrivateActivityById(List<String> pidList);
 	
 }

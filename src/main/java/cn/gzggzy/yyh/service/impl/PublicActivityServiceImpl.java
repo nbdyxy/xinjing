@@ -13,6 +13,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+
 import cn.gzggzy.yyh.dao.PublicActivityDao;
 import cn.gzggzy.yyh.model.PublicActivity;
 import cn.gzggzy.yyh.service.PublicActivityService;
@@ -28,10 +30,24 @@ public class PublicActivityServiceImpl implements PublicActivityService {
 	public PublicActivityDao publicActivityDao;
 	
 	/* 
+	 * @see cn.gzggzy.yyh.service.PublicActivityService#selectActivityAll(int, int, java.lang.String, boolean)
+	 */
+	@Override
+	public List<PublicActivity> selectActivityAll(int pageNum, int pageSize, String orderBy, boolean page) {
+		if (page) {
+			PageHelper.startPage(pageNum, pageSize, orderBy);
+		}
+		return publicActivityDao.selectActivityAll();
+	}
+	
+	/* 
 	 * @see cn.gzggzy.yyh.service.PublicActivityService#selectEnable()
 	 */
 	@Override
-	public List<PublicActivity> selectActivityEnable() {
+	public List<PublicActivity> selectActivityEnable(int pageNum, int pageSize, String orderBy, boolean page) {
+		if (page) {
+			PageHelper.startPage(pageNum, pageSize, orderBy);
+		}
 		return publicActivityDao.selectActivityEnable();
 	}
 
@@ -57,6 +73,14 @@ public class PublicActivityServiceImpl implements PublicActivityService {
 	@Override
 	public int updatePublicActivity(PublicActivity pa) {
 		return publicActivityDao.updatePublicActivity(pa);
+	}
+
+	/* 
+	 * @see cn.gzggzy.yyh.service.PublicActivityService#deletePublicActivityById(java.util.List)
+	 */
+	@Override
+	public int deletePublicActivityById(List<String> pidList) {
+		return publicActivityDao.deletePublicActivityById(pidList);
 	}
 
 }

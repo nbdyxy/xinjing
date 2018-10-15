@@ -16,6 +16,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.github.pagehelper.Page;
+
 import cn.gzggzy.yyh.model.PrivateActivity;
 import cn.gzggzy.yyh.model.PublicActivity;
 import cn.gzggzy.yyh.service.DynamicsService;
@@ -98,22 +100,57 @@ public class XinjingApplicationTests {
 	
 	@Test
 	public void insert() throws ParseException {
-//		PublicActivity pa = new PublicActivity();
-//		pa.setPublic_activity_id(UUID.randomUUID().toString());
-//		pa.setPublic_activity_creator_id("09c18c679d2d41a0a29bb6f91df5010d");
-//		pa.setPublic_activity_name("第一次《心经》百万共修活动");
-//		pa.setPublic_activity_begin_time(DateUtils.parseStrToDate("2018-01-01", "yyyy-MM-dd"));
-//		pa.setPublic_activity_end_time(DateUtils.parseStrToDate("2018-12-31", "yyyy-MM-dd"));
-//		pa.setPublic_activity_target(1000000);
-//		pa.setPublic_activity_create_time(DateUtils.parseStrToDate("2017-11-20 08:32:15", "yyyy-MM-dd HH:mm:ss"));
-//		pa.setPublic_activity_enable(1);
-//		
-//		int result = publicActivityService.insertPublicActivity(pa);
-//		System.out.println(result);
+//		int i = 1;
+//		int count = 0;
+//		while(i++ <101) {
+//			PrivateActivity pa = new PrivateActivity();
+//			pa.setPrivate_activity_id(UUID.randomUUID().toString());
+//			pa.setPrivate_activity_creator_id("09c18c679d2d41a0a29bb6f91df5010d");
+//			pa.setPrivate_activity_name("第" + i + "次《心经》百万共修活动");
+//			pa.setPrivate_activity_begin_time(DateUtils.parseStrToDate("2018-01-01", "yyyy-MM-dd"));
+//			pa.setPrivate_activity_end_time(DateUtils.parseStrToDate("2018-12-31", "yyyy-MM-dd"));
+//			pa.setPrivate_activity_target(1000000);
+//			pa.setPrivate_activity_create_time(DateUtils.parseStrToDate("2017-11-20 08:32:15", "yyyy-MM-dd HH:mm:ss"));
+//			pa.setPrivate_activity_enable(i%2);
+//			pa.setPrivate_activity_update_time(DateUtils.parseStrToDate("2017-11-20 08:32:15", "yyyy-MM-dd HH:mm:ss"));
+//			int result = privateActivityService.insertPrivateActivity(pa);
+//			count += result;
+//		}
+//		System.out.println(count);
 		
-//		List<PublicActivity> pas = publicActivityService.selectActivityEnable();
-//		System.out.println(pas.get(0).getPublic_activity_creator_name());
+		
+		List<PublicActivity> pas = publicActivityService.selectActivityEnable(1, 10, "public_activity_name desc", true);
+		System.out.println(pas.get(0).getPublic_activity_name());
+		System.out.println(((Page) pas).getTotal());
 //		
+//		pas = publicActivityService.selectActivityEnable(1, 10, "public_activity_name asc", true);
+//		System.out.println(pas.get(0).getPublic_activity_name());
+//		System.out.println(((Page) pas).getTotal());
+//		
+//		pas = publicActivityService.selectActivityAll(1, 10, "public_activity_name desc", true);
+//		System.out.println(pas.get(0).getPublic_activity_name());
+//		System.out.println(((Page) pas).getTotal());
+//		
+//		pas = publicActivityService.selectActivityAll(1, 10, "public_activity_name asc", true);
+//		System.out.println(pas.get(0).getPublic_activity_name());
+//		System.out.println(((Page) pas).getTotal());
+		
+//		List<PrivateActivity> pas = privateActivityService.selectActivityEnable(1, 10, "private_activity_name desc", true);
+//		System.out.println(pas.get(0).getPrivate_activity_name());
+//		System.out.println(((Page) pas).getTotal());
+//		
+//		pas = privateActivityService.selectActivityEnable(1, 10, "private_activity_name asc", true);
+//		System.out.println(pas.get(0).getPrivate_activity_name());
+//		System.out.println(((Page) pas).getTotal());
+//		
+//		pas = privateActivityService.selectActivityAll(1, 10, "private_activity_name desc", true);
+//		System.out.println(pas.get(0).getPrivate_activity_name());
+//		System.out.println(((Page) pas).getTotal());
+//		
+//		pas = privateActivityService.selectActivityAll(1, 10, "private_activity_name asc", true);
+//		System.out.println(pas.get(0).getPrivate_activity_name());
+//		System.out.println(((Page) pas).getTotal());
+		
 //		PublicActivity pa = publicActivityService.selectActivityById("2e955926-c28f-429e-a2b5-97e1b44db7f3");
 //		System.out.println(pa.getPublic_activity_creator_name());
 		
@@ -121,6 +158,13 @@ public class XinjingApplicationTests {
 //		pa.setPublic_activity_id("2e955926-c28f-429e-a2b5-97e1b44db7f3");
 //		pa.setPublic_activity_target(2000000);
 //		int result = publicActivityService.updatePublicActivity(pa);
+//		System.out.println(result);
+		
+//		List<String> pidList = new ArrayList<String>();
+//		pidList.add(0, "a28c501e-dd7e-4622-ab92-6b3e357c823d");
+//		pidList.add(1, "a73172b1-0476-4ca5-bb4c-04c3664dc27e");
+//		
+//		int result = publicActivityService.deletePublicActivityById(pidList);
 //		System.out.println(result);
 		
 //		PrivateActivity pa = new PrivateActivity();
@@ -136,17 +180,24 @@ public class XinjingApplicationTests {
 //		int result = privateActivityService.insertPrivateActivity(pa);
 //		System.out.println(result);
 		
-		List<PrivateActivity> pas = privateActivityService.selectActivityEnable();
-		System.out.println(pas.get(0).getPrivate_activity_creator_name());
+//		List<PrivateActivity> pas = privateActivityService.selectActivityEnable();
+//		System.out.println(pas.get(0).getPrivate_activity_creator_name());
+//		
+//		PrivateActivity pa = privateActivityService.selectActivityById("d17273df-2457-4c30-9194-6ddcf6b10b2d");
+//		System.out.println(pa.getPrivate_activity_creator_name());
+//		
+//		PrivateActivity pa2 = new PrivateActivity();
+//		pa2.setPrivate_activity_id("d17273df-2457-4c30-9194-6ddcf6b10b2d");
+//		pa2.setPrivate_activity_target(2000000);
+//		int result = privateActivityService.updatePrivateActivity(pa2);
+//		System.out.println(result);
 		
-		PrivateActivity pa = privateActivityService.selectActivityById("d17273df-2457-4c30-9194-6ddcf6b10b2d");
-		System.out.println(pa.getPrivate_activity_creator_name());
-		
-		PrivateActivity pa2 = new PrivateActivity();
-		pa2.setPrivate_activity_id("d17273df-2457-4c30-9194-6ddcf6b10b2d");
-		pa2.setPrivate_activity_target(2000000);
-		int result = privateActivityService.updatePrivateActivity(pa2);
-		System.out.println(result);
+//		List<String> pidList = new ArrayList<String>();
+//		pidList.add(0, "0cf27042-b734-4024-bfee-c9f4cf98d168");
+//		pidList.add(1, "d19feb92-949c-4608-89e1-0e085c7c1a57");
+//		
+//		int result = privateActivityService.deletePrivateActivityById(pidList);
+//		System.out.println(result);
 		
 //		Map<String, Integer> result = dynamicsService.platformDynamics("2018-09-18");
 //		for(Map.Entry<String, Integer> entry : result.entrySet()) {

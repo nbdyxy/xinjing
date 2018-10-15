@@ -270,11 +270,11 @@
 					<div class="col-xs-6 my-col-right" th:text="${#numbers.formatDecimal(platformDynamics['yearStatistic'],0,'COMMA',0,'POINT')}">29256 遍</div>
 				</div>
 			</div>
-			<div class="my-panel">
-				<div class="my-panel-title">第5次百万《心经》共修活动</div>
+			<div class="my-panel" th:unless="${#lists.isEmpty(paList)}">
+				<div class="my-panel-title" th:text="${paList[0].public_activity_name}">第5次百万《心经》共修活动</div>
 				<div class="container">
 					<div class="col-xs-6 my-col-left">共修活动</div>
-					<div class="col-xs-6 my-col-right">第20日</div>
+					<div class="col-xs-6 my-col-right" th:text="${days}">第20日</div>
 					<div class="col-xs-6 my-col-left">共修发愿</div>
 					<div class="col-xs-6 my-col-right">810 遍</div>
 					<div class="col-xs-6 my-col-left">共修完成</div>

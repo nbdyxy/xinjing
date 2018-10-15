@@ -7,8 +7,18 @@
 
   <sql id="BASE_COLUMN">
     public_activity_id, public_activity_creator_id, public_activity_name, public_activity_begin_time, 
-    public_activity_end_time, public_activity_target, public_activity_create_time, public_activity_enable
+    public_activity_end_time, public_activity_target, public_activity_create_time, public_activity_enable, public_activity_update_time
   </sql>
+  
+  <select id="selectActivityAll" resultType="cn.gzggzy.yyh.model.PublicActivity">
+	SELECT
+		p.*, u.username public_activity_creator_name
+	FROM
+		public_activity p,
+		user_info u
+	WHERE
+		p.public_activity_creator_id = u.user_id
+  </select>
   
   <select id="selectActivityEnable" resultType="cn.gzggzy.yyh.model.PublicActivity">
   	<!-- SELECT
@@ -58,7 +68,8 @@
       #{public_activity_id, jdbcType=VARCHAR}, #{public_activity_creator_id, jdbcType=VARCHAR},
       #{public_activity_name, jdbcType=VARCHAR}, #{public_activity_begin_time, jdbcType=DATE},
       #{public_activity_end_time, jdbcType=DATE}, #{public_activity_target, jdbcType=INTEGER},
-      #{public_activity_create_time, jdbcType=DATE}, #{public_activity_enable, jdbcType=INTEGER}
+      #{public_activity_create_time, jdbcType=DATE}, #{public_activity_enable, jdbcType=INTEGER},
+      #{public_activity_update_time, jdbcType=DATE}
     </trim>
   </insert>
   
@@ -89,5 +100,16 @@
 	  	public_activity_id = #{public_activity_id}
 	  </where>
   </update>
+  
+  <delete id="deletePublicActivityById" parameterType="java.util.List">
+  	DELETE FROM
+  	  <include refid="BASE_TABLE"/>
+  	<where>
+  		public_activity_id in 
+  			<foreach collection="list" item="item" index="index" separator="," open="(" close=")"> 
+  				#{item}
+  			</foreach>
+  	</where>
+  </delete>
   
 </mapper>

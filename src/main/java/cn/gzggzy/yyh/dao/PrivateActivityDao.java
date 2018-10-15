@@ -21,6 +21,15 @@ import cn.gzggzy.yyh.model.PrivateActivity;
 public interface PrivateActivityDao {
 	
 	/**
+	 * @Title: selectActivityAll
+	 * @Description: 查询所有的私有活动  
+	 * @return
+	 * List<PrivateActivity>
+	 * @throws
+	 */
+	List<PrivateActivity> selectActivityAll();
+	
+	/**
 	 * @Title: selectActivityEnable  
 	 * @Description: 查询当前可用的私有活动  
 	 * @return
@@ -58,4 +67,14 @@ public interface PrivateActivityDao {
 	 * @throws
 	 */
 	int updatePrivateActivity(PrivateActivity pa);
+	
+	/**
+	 * @Title: deletePrivateActivityById  
+	 * @Description: 删除集合内指定主键的私有活动
+	 * @param pidList
+	 * @return
+	 * int
+	 * @throws
+	 */
+	int deletePrivateActivityById(@Param("list") List<String> pidList);
 }

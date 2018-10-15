@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import cn.gzggzy.yyh.filter.LoginFilter;
 import cn.gzggzy.yyh.model.PersonalCountOff;
+import cn.gzggzy.yyh.model.PublicActivity;
 import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.service.DynamicsService;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
+import cn.gzggzy.yyh.service.PublicActivityService;
 import cn.gzggzy.yyh.util.DateUtils;
 
 @Controller
@@ -30,6 +32,9 @@ public class RouterController {
 	@Autowired
 	public PersonalCountOffService personalCountOffService;
 	
+	@Autowired
+	public PublicActivityService publicActivityService;
+	
 	@GetMapping("/index")
 	public String index() {
 		return "index";
@@ -41,8 +46,16 @@ public class RouterController {
 //		String date = DateUtils.parseDateToStr(c.getTime(), "yyyy-MM-dd");
 		Map<String, Integer> platformDynamics = dynamicsService.platformDynamics("2018-09-18");
 		List<PersonalCountOff> top100 = personalCountOffService.selectTop100();
+		List<PublicActivity> paList =  publicActivityService.selectActivityEnable(0, 0, null, false);
 		model.addAttribute("platformDynamics", platformDynamics);
 		model.addAttribute("top100", top100);
+		model.addAttribute("paList", paList);
+		if ( 0 != paList.size()) {
+			PublicActivity pa = paList.get(0);
+			Calendar c = Calendar.getInstance();
+			Long days = DateUtils.getDistanceDays(pa.getPublic_activity_begin_time(), c.getTime()) + 1;
+			model.addAttribute("days", "第" + days + "日");
+		}
 		return "dongtai";
 	}
 	
@@ -71,6 +84,5 @@ public class RouterController {
 	public String register(RegisterUserInfo registerUserInfo, BindingResult bindingResult) {
 		return "register";
 	}
-	
 	
 }
