@@ -11,7 +11,6 @@ package cn.gzggzy.yyh.service;
 import java.util.List;
 
 import cn.gzggzy.yyh.model.PrivateActivity;
-import cn.gzggzy.yyh.model.PublicActivity;
 
 /**
  * @author Administrator

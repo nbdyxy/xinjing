@@ -1,6 +1,7 @@
 package cn.gzggzy.yyh.controller;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,9 +53,16 @@ public class RouterController {
 		model.addAttribute("paList", paList);
 		if ( 0 != paList.size()) {
 			PublicActivity pa = paList.get(0);
+			Date begin = pa.getPublic_activity_begin_time();
+			Date end = pa.getPublic_activity_end_time();
 			Calendar c = Calendar.getInstance();
-			Long days = DateUtils.getDistanceDays(pa.getPublic_activity_begin_time(), c.getTime()) + 1;
+			Long days = DateUtils.getDistanceDays(begin, c.getTime()) + 1;
+			Long totalDays = DateUtils.getDistanceDays(begin, end) + 1;
+			System.out.println(totalDays);
+			Double timePercent = days.doubleValue() / totalDays.doubleValue() * 100;
+			int timePercentINT = (int) Math.ceil(timePercent);
 			model.addAttribute("days", "第" + days + "日");
+			model.addAttribute("timePercent", timePercentINT);
 		}
 		return "dongtai";
 	}
