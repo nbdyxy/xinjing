@@ -1,8 +1,6 @@
 package cn.gzggzy.yyh;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -16,10 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.github.pagehelper.Page;
-
-import cn.gzggzy.yyh.model.PrivateActivity;
-import cn.gzggzy.yyh.model.PublicActivity;
 import cn.gzggzy.yyh.service.DynamicsService;
 import cn.gzggzy.yyh.service.MonthlyStatisticService;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
@@ -30,7 +24,6 @@ import cn.gzggzy.yyh.service.RankService;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.service.WeeklyStatisticService;
 import cn.gzggzy.yyh.service.YearlyStatisticService;
-import cn.gzggzy.yyh.util.DateUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -100,6 +93,20 @@ public class XinjingApplicationTests {
 	
 	@Test
 	public void insert() throws ParseException {
+		
+		int result = personalCountOffService.selectPublicActivityCountNumber("2e955926-c28f-429e-a2b5-97e1b44db7f3");
+		System.out.println("公共活动报数总量: " + result);
+		
+		result = personalCountOffService.selectPrivateActivityCountNumber("d17273df-2457-4c30-9194-6ddcf6b10b2d");
+		System.out.println("私有活动报数总量: " + result);
+		
+		result = personalCountOffService.selectActivityJoinNumber("");
+		System.out.println("所有活动参与人数： " + result);
+		
+		result = personalCountOffService.selectPublicActivityCountNumber("2e955926-c28f-429e-a2b5-97e1b44db7f3");
+		System.out.println("某公共活动参与人数： " + result);
+		
+		
 //		int i = 1;
 //		int count = 0;
 //		while(i++ <101) {
@@ -119,9 +126,9 @@ public class XinjingApplicationTests {
 //		System.out.println(count);
 		
 		
-		List<PublicActivity> pas = publicActivityService.selectActivityEnable(1, 10, "public_activity_name desc", true);
-		System.out.println(pas.get(0).getPublic_activity_name());
-		System.out.println(((Page) pas).getTotal());
+//		List<PublicActivity> pas = publicActivityService.selectActivityEnable(1, 10, "public_activity_name desc", true);
+//		System.out.println(pas.get(0).getPublic_activity_name());
+//		System.out.println(((Page) pas).getTotal());
 //		
 //		pas = publicActivityService.selectActivityEnable(1, 10, "public_activity_name asc", true);
 //		System.out.println(pas.get(0).getPublic_activity_name());

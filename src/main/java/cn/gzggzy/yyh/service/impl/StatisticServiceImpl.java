@@ -75,7 +75,7 @@ public class StatisticServiceImpl implements StatisticService {
 			int new_month_total = month_total + count - before_record_number;
 			ms.setMonth_total(new_month_total);
 		} else {
-			ms = this.createMonthlyStatistic(uid, year_week, month_week, count);
+			ms = this.createMonthlyStatistic(uid, year, month, count);
 		}
 		log.info("ms: {}", ms);
 		monthlyStatisticService.saveOrUpdate(ms);

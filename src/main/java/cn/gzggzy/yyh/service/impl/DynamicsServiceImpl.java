@@ -56,7 +56,7 @@ public class DynamicsServiceImpl implements DynamicsService {
 		int year_week = DateUtils.getWeekthOfYear(tarDate);
 		int month_week = DateUtils.getWeekthOfMonth(tarDate);
 		int userNumber = userInfoDao.selectUserNumber(null);
-		int attendUserNumber = userInfoDao.selectUserNumber(1);
+		int attendUserNumber = personalCountOffDao.selectActivityJoinNumber(null);
 		int dayStatistic = personalCountOffDao.selectOneDayTotal(date);
 		int weekStatistic = weeklyStatisticDao.selectOneWeekTotal(year, month, year_week, month_week);
 		int monthStatistic = monthlyStatisticDao.selectOneMonthTotal(year, month);

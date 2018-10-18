@@ -43,9 +43,9 @@ public class RouterController {
 	
 	@GetMapping("/dongtai")
 	public String dongtai(Model model) {
-//		Calendar c = Calendar.getInstance();
-//		String date = DateUtils.parseDateToStr(c.getTime(), "yyyy-MM-dd");
-		Map<String, Integer> platformDynamics = dynamicsService.platformDynamics("2018-09-18");
+		Calendar c = Calendar.getInstance();
+		String date = DateUtils.parseDateToStr(c.getTime(), "yyyy-MM-dd");
+		Map<String, Integer> platformDynamics = dynamicsService.platformDynamics(date);
 		List<PersonalCountOff> top100 = personalCountOffService.selectTop100();
 		List<PublicActivity> paList =  publicActivityService.selectActivityEnable(0, 0, null, false);
 		model.addAttribute("platformDynamics", platformDynamics);
@@ -53,16 +53,31 @@ public class RouterController {
 		model.addAttribute("paList", paList);
 		if ( 0 != paList.size()) {
 			PublicActivity pa = paList.get(0);
+			String public_activity_id = pa.getPublic_activity_id();
+			
+			//当前天数以及时间进度的计算
 			Date begin = pa.getPublic_activity_begin_time();
 			Date end = pa.getPublic_activity_end_time();
-			Calendar c = Calendar.getInstance();
 			Long days = DateUtils.getDistanceDays(begin, c.getTime()) + 1;
 			Long totalDays = DateUtils.getDistanceDays(begin, end) + 1;
-			System.out.println(totalDays);
 			Double timePercent = days.doubleValue() / totalDays.doubleValue() * 100;
 			int timePercentINT = (int) Math.ceil(timePercent);
-			model.addAttribute("days", "第" + days + "日");
-			model.addAttribute("timePercent", timePercentINT);
+			
+			//报数总量
+			Double targetNumber = pa.getPublic_activity_target() + 0d;
+			Double nowNumber = personalCountOffService.selectPublicActivityCountNumber(public_activity_id) + 0d;
+			Double countPercent = nowNumber / targetNumber * 100; 
+			int countPercentINT = (int) Math.ceil(countPercent);
+			
+			//参与当前活动的报数人数
+			int joinNumber = personalCountOffService.selectActivityJoinNumber(public_activity_id);
+			
+			model.addAttribute("days", days);
+			model.addAttribute("targetNumber", targetNumber.intValue());
+			model.addAttribute("nowNumber", nowNumber.intValue());
+			model.addAttribute("joinNumber", joinNumber);
+			model.addAttribute("timePercentINT", timePercentINT);
+			model.addAttribute("countPercentINT", countPercentINT);
 		}
 		return "dongtai";
 	}

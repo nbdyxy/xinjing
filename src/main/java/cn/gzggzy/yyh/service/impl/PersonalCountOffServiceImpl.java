@@ -68,7 +68,6 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 		List<PersonalCountOff> personalCountOffList = this.handleTopFive(uid, randomId);
 		PersonalCountOff first = personalCountOffList.get(0);
 		first.setRecord_number(personalCountOff.getRecord_number());
-		first.setRecord_date(date);
 		int flag = this.saveOrUpdate(first);
 		if (flag >= 1) {
 			personalCountOffList.set(0, first);
@@ -115,6 +114,30 @@ public class PersonalCountOffServiceImpl implements PersonalCountOffService {
 			pcoList.set(count++, pco);
 		}
 		return pcoList;
+	}
+
+	/* 
+	 * @see cn.gzggzy.yyh.service.PersonalCountOffService#selectPublicActivityCountNumber(java.lang.String)
+	 */
+	@Override
+	public int selectPublicActivityCountNumber(String public_activity_id) {
+		return personalCountOffDao.selectPublicActivityCountNumber(public_activity_id);
+	}
+
+	/* 
+	 * @see cn.gzggzy.yyh.service.PersonalCountOffService#selectPrivateActivityCountNumber(java.lang.String)
+	 */
+	@Override
+	public int selectPrivateActivityCountNumber(String private_activity_id) {
+		return personalCountOffDao.selectPrivateActivityCountNumber(private_activity_id);
+	}
+
+	/* 
+	 * @see cn.gzggzy.yyh.service.PersonalCountOffService#selectActivityJoinNumber(java.lang.String)
+	 */
+	@Override
+	public int selectActivityJoinNumber(String public_activity_id) {
+		return personalCountOffDao.selectActivityJoinNumber(public_activity_id);
 	}
 	
 }

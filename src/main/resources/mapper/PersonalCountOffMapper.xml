@@ -6,7 +6,7 @@
   </sql>
 
   <sql id="BASE_COLUMN">
-    pid,uid,record_date,record_number
+    pid,uid,record_date,record_number,public_activity_id,private_activity_id
   </sql>
 
   <insert id="saveOrUpdate" parameterType="cn.gzggzy.yyh.model.PersonalCountOff">
@@ -16,11 +16,11 @@
       <include refid="BASE_COLUMN"/>
     </trim>
     <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
-      #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, #{record_date, jdbcType=DATE},#{record_number, jdbcType=INTEGER}
+      #{pid, jdbcType=VARCHAR}, #{uid, jdbcType=VARCHAR}, #{record_date, jdbcType=DATE},#{record_number, jdbcType=INTEGER},
+      #{public_activity_id, jdbcType=VARCHAR},#{private_activity_id, jdbcType=VARCHAR}
     </trim>
     ON DUPLICATE KEY UPDATE
     	uid = #{uid, jdbcType=VARCHAR},
-    	record_date = #{record_date, jdbcType=DATE},
     	record_number = #{record_number, jdbcType=INTEGER}
     ;
   </insert>
@@ -121,6 +121,43 @@
 	ORDER BY
 		p.record_date DESC
 	LIMIT 0, 100
+  </select>
+  
+  <select id="selectPublicActivityCountNumber" resultType="java.lang.Integer">
+  	SELECT
+		SUM(record_number)
+	FROM
+		personal_countoff
+	WHERE
+		public_activity_id = #{public_activity_id}
+  </select>
+  
+  <select id="selectPrivateActivityCountNumber" resultType="java.lang.Integer">
+  	SELECT
+		SUM(record_number)
+	FROM
+		personal_countoff
+	WHERE
+		private_activity_id = #{private_activity_id}
+  </select>
+  
+  <select id="selectActivityJoinNumber" resultType="java.lang.Integer">
+  	SELECT
+		COUNT(*)
+	FROM
+		(
+			SELECT
+				COUNT(1)
+			FROM
+				personal_countoff
+			<where>
+				<if test=" public_activity_id != null and public_activity_id != '' ">
+					public_activity_id = #{public_activity_id}
+				</if>
+			</where>
+			GROUP BY
+				uid
+		) p;
   </select>
   
 </mapper>

@@ -42,4 +42,34 @@ public interface PersonalCountOffService {
 	 */
 	List<PersonalCountOff> selectTop100();
 	
+	/**
+	 * @Title: selectPublicActivityCountNumber  
+	 * @Description: 根据公共活动ID查询某公共活动的当前报数总量  
+	 * @param public_activity_id
+	 * @return
+	 * int
+	 * @throws
+	 */
+	int selectPublicActivityCountNumber(String public_activity_id);
+	
+	/**
+	 * @Title: selectPrivateActivityCountNumber  
+	 * @Description: 根据私有活动ID查询某私有活动的当前报数总量   
+	 * @param private_activity_id
+	 * @return
+	 * int
+	 * @throws
+	 */
+	int selectPrivateActivityCountNumber(String private_activity_id);
+	
+	/**
+	 * @Title: selectActivityJoinNumber  
+	 * @Description: 根据公共活动ID查询某公共活动的参与用户总量，参数为空时则查询所有参与过报数的用户
+	 * @param public_activity_id
+	 * @return
+	 * int
+	 * @throws
+	 */
+	int selectActivityJoinNumber(String public_activity_id);
+	
 }

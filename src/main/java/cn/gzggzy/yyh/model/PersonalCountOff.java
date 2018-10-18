@@ -7,9 +7,6 @@ import cn.gzggzy.yyh.util.DateUtils;
 
 public class PersonalCountOff implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
 	private String pid;
@@ -17,6 +14,8 @@ public class PersonalCountOff implements Serializable {
 	private String uName;
 	private Date record_date;
 	private int record_number;
+	private String public_activity_id;
+	private String private_activity_id;
 	
 	public PersonalCountOff() {
 		super();
@@ -57,7 +56,6 @@ public class PersonalCountOff implements Serializable {
 	public void setuName(String uName) {
 		this.uName = uName;
 	}
-
 	public Date getRecord_date() {
 		return record_date;
 	}
@@ -70,7 +68,22 @@ public class PersonalCountOff implements Serializable {
 	public void setRecord_number(int record_number) {
 		this.record_number = record_number;
 	}
-	
+	public String getPublic_activity_id() {
+		return public_activity_id;
+	}
+
+	public void setPublic_activity_id(String public_activity_id) {
+		this.public_activity_id = public_activity_id;
+	}
+
+	public String getPrivate_activity_id() {
+		return private_activity_id;
+	}
+
+	public void setPrivate_activity_id(String private_activity_id) {
+		this.private_activity_id = private_activity_id;
+	}
+
 	@Override
 	public String toString() {
 		return "PersonalCountOff: ["
