@@ -111,7 +111,7 @@ public class UserInfoController {
 			String uid = userInfo.getUser_id();
 			List<PersonalCountOff> personalCountOffTopFive = personalCountOffService.handleTopFive(uid, randomId);
 			Date date = new Date();
-			String dateStr = DateUtils.parseDateToStr(date, "yyyyMMdd");
+			String dateStr = DateUtils.parseDateToStr(date, "yyyy-MM-dd");
 			//获取当前日期所在周、月、年的报数汇总
 			Map<String, Object> statisticMap = personalStatisticService.personalTotal(uid, randomId, date, dateStr);
 			//获取当前日期各项指标的排名情况
@@ -132,7 +132,6 @@ public class UserInfoController {
 				year_avg = (double) Math.round(year_avg * 100) / 100;
 				log.info("year_avg: {}", year_avg);
 			}
-			
 			model.addAttribute("userInfo", userInfo);
 			model.addAttribute("personalCountOffTopFive", personalCountOffTopFive);
 			model.addAttribute("statisticMap", statisticMap);

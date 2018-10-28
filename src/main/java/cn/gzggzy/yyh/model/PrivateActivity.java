@@ -19,8 +19,8 @@ public class PrivateActivity {
 	private String private_activity_id;
 	private String private_activity_creator_id;
 	private String private_activity_name;
-	private Date private_activity_begin_time;
-	private Date private_activity_end_time;
+	private String private_activity_begin_time;
+	private String private_activity_end_time;
 	private int private_activity_target;
 	private Date private_activity_create_time;
 	private int private_activity_enable;
@@ -45,16 +45,16 @@ public class PrivateActivity {
 	public void setPrivate_activity_name(String private_activity_name) {
 		this.private_activity_name = private_activity_name;
 	}
-	public Date getPrivate_activity_begin_time() {
+	public String getPrivate_activity_begin_time() {
 		return private_activity_begin_time;
 	}
-	public void setPrivate_activity_begin_time(Date private_activity_begin_time) {
+	public void setPrivate_activity_begin_time(String private_activity_begin_time) {
 		this.private_activity_begin_time = private_activity_begin_time;
 	}
-	public Date getPrivate_activity_end_time() {
+	public String getPrivate_activity_end_time() {
 		return private_activity_end_time;
 	}
-	public void setPrivate_activity_end_time(Date private_activity_end_time) {
+	public void setPrivate_activity_end_time(String private_activity_end_time) {
 		this.private_activity_end_time = private_activity_end_time;
 	}
 	public int getPrivate_activity_target() {

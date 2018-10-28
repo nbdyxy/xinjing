@@ -1,362 +1,414 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>个人共修</title>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>个人共修</title>
 
-	<link rel="stylesheet" type="text/css" media="all" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}"/>
-	<link rel="stylesheet" type="text/css" media="all" href="../static/css/bootstrap-datetimepicker.min.css" th:href="@{/css/bootstrap-datetimepicker.min.css}"/>
+<link rel="stylesheet" type="text/css" media="all"
+	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../static/css/bootstrap-datetimepicker.min.css"
+	th:href="@{/css/bootstrap-datetimepicker.min.css}" />
 
-	<!--[if lt IE 9]>
+<!--[if lt IE 9]>
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<style type="text/css">
-    	body {
-    		max-width: 768px;
-    		min-width: 320px;
-    		margin: 0 auto;
-    		display: block;
-    		font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', SimSun, 'Segoe UI', Tahoma, Helvetica, Sans-Serif;
-    		font-size: 18px;
-    		/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif";*/
-    	}
-    	.header {
-    		 background-color: #f7ebde;
-    	}
-		.logo {
-			height: 300px;
-			width: 100%;
-			text-align: center; 
-			vertical-align: middle;
-		}
-		.logo_mid {
-			display: block; 
-			max-width: 100%; 
-			height: 90px; 
-			margin:0 auto;
-		}
-    	.title {
- 			background-size: 100% 100%;
-			background-position: center;
-			border-radius: 5px;
-			margin: 0 auto;
-			height: 90px;
-			width: 100%;
-		}
-		.my-activity {
-			height: 30px;
-			font-size: 20px;
-			width: 100%;
-		}
-    	.nav-header {
-    		top: 0;
-    		min-height: 60px;
-		    margin-bottom: 0;
-		    border-width: 0;
-		    border-radius: 0;
-		    transition-property: color, background-color, box-shadow;
-		    transition-duration: .25s;
-		    transition-timing-function: ease-in-out;
-		    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
-		    z-index: 10;
-		    background-color: #e2bb86;
-		    color: black;
-		    position: relative;
-    	}
-    	.my-nav {
-    		list-style: none;
-    		padding-left: 0;
-		    margin-bottom: 0;
-		    background-color: #f3ebe0;
-    	}
-    	.my-nav li {
-    		float: left;
-    		line-height: 60px;
-    		font-size: 20px;
-    		text-align: center;
-    		border-radius: 5px;
-    	}
-    	.my-nav li a {
-    		text-decoration: none;
-    		color: black;
-    	}
-    	.my-nav .active {
-		    background-color: #82350c;
-		    color: #fff;
-    	}
-    	.my-nav .active a{
-		    color: #fff;
-    	}
-    	.content {
-    		 background-color: #f7ebde;
-    	}
-    	.figure {
-			background-size: 100% 100%;
-			background-position: center;
-			border-radius: 5px;
-			margin: 0 auto;
-			background-color: #f7ebde;
-			padding: 10px;
-		}
-		.my-panel {
-			border: 1px solid #bbb6b6; 
-			border-radius: 5px; 
-			margin-bottom: 10px;
-		} 
-		.my-panel-title {
-			margin-bottom: 5px; 
-			padding-left: 15px; 
-			font-size: 20px; 
-			line-height: 36px; 
-			border-bottom: 1px solid #bbb6b6;
-		}
-		.container {
-			width: 100%;
-		}
-		.my-col-left {
-			padding: 2px 0; 
-			text-align: left;
-		}
-		.my-col-center {
-			padding: 2px 0; 
-			text-align: center;
-		}
-		.my-col-right {
-			padding: 2px 0; 
-			text-align: right;
-		}
-		.progress {
-			background-color: rgba(255, 255, 255, 0);
-		}
-		.my-divider {
-			margin: 0 auto; 
-			width: 98%; 
-			border: .5px dashed grey; 
-			opacity: .52;
-		}
-		.my-row {
-			width: 100%; 
-			margin: 5px 0; 
-			text-align: center;
-		}
-		.form-control, input {
-			background-color: rgba(0, 0, 0, 0);
-			font-size: 18px;
-		}
-		.input-group-addon {
-			background-color: rgba(0, 0, 0, 0);
-		}
-		a {
-			text-decoration: none;
-			background-color: transparent;
-		}
-		/* .modal-open {
-			overflow: inherit;
-			padding-right: 0px !important;
-		} */
-		.modal-header {
-			padding: 15px;
-			border-bottom: 1px solid #cc3d3d;
-			background-color: #f5580d;
-			border-radius: 5px;
-			color: #fff;
-		}
-		#dailyValue {
-			width: 50%; 
-			text-align: center; 
-			background-color: rgba(0, 0, 0, 0); 
-			border: none; 
-			border-bottom: 1px solid #ff7500;
-		}
-		#dailyConfirm {
-			background-color: #4d89d4; 
-			border-color: #4d89d4;
-		}
-		.footer {
-			height: 50px;
-			bottom: 0;
-			zoom: 1;
-			background-repeat: no-repeat;
-			background-position: center 0;
-			background-image: url(../static/images/zongzhi_min.png);
-			background-color: #f7ebde;
-		}
-		.list-group-item {
-			background-color: rgba(255, 255, 255, 0) !important;
-			border: 1px solid #d6a218;
-		}
-		.badge {
-			background-color: #d29133;
-		}
-		.fold {
-			position: absolute;
-			top: -9999px;
-		}
-		@media (max-width:1024px) {
-			.logo {
-				height: 300px;
-			}
-			.my-table {
-				font-size: 20px;
-			}
-			.password-help {
-				font-size: 18px;
-			}
-		}
-		@media (max-width:768px) {
-			.logo {
-				height: 260px;
-			}
-			.my-table {
-				font-size: 20px;
-			}
-			.password-help {
-				font-size: 15px;
-			}
-		}
-		@media (max-width:500px) {
-			.logo {
-				height: 180px;
-			}
-			.my-table {
-				font-size: 15px;
-			}
-			.password-help {
-				font-size: 13px;
-			}
-		}
-		.mod_aside_v2 {
-		    position: fixed;
-		    z-index: 10;
-		    right: 0;
-		}
-		.mod_aside_v2_mask {
-		    position: fixed;
-		    left: 0;
-		    right: 0;
-		    top: 0;
-		    bottom: 0;
-		    background: rgba(0,0,0,.3);
-		    opacity: 0;
-		    display: none;
-		    transition: opacity .3s;
-		}
-		.mod_aside_v2_nav {
-		    position: absolute;
-		    bottom: 0;
-		    right: 200px;
-		    width: 102px;
-		    padding: 15px 0 5px;
-		    background: #fff;
-		    border-radius: 4px 0 0 4px;
-		    height: 260px;
-		    z-index: 1;
-		    transform: translate3d(100%,0,0);
-		    transition: transform .3s,-webkit-transform .3s;
-		}
-		.mod_aside_v2_nav_btn {
-		    width: 55px;
-		    height: 60px;
-		    background: rgba(0,0,0,.7);
-		    position: absolute;
-		    left: -55px;
-		    top: 50%;
-		    margin-top: -20px;
-		    border-radius: 4px 0 0 4px;
-		}
-		.mod_aside_v2_nav_btn:before {
-		    content: "";
-		    position: absolute;
-		    left: 2px;
-		    top: 50%;
-		    width: 20px;
-		    height: 20px;
-		    margin-top: -10px;
-/* 		    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAABGdBT…Rn09psIeQEkmOWuEpBkAwt7ItkXPCyGk4Uv/IVnvmNeQF/yATH2rqnlQAAAABJRU5ErkJggg==) no-repeat 0 0;
- */		    background-size: 100%;
-		}
-		.mod_aside_v2_nav_btn i {
-		    color: #fff;
-		    font-size: 18px;
-		    width: 2.2em;
-		    line-height: 1.3em;
-		    position: absolute;
-		    top: 50%;
-		    left: 15px;
-		    transform: translateY(-50%);
-		}
-		em, i {
-		    font-style: normal;
-		}
-		.mod_aside_v2_nav_item {
-		    float: left;
-		    width: 33%;
-		    text-align: center;
-		    padding: 5px 0;
-		    position: relative;
-		    text-decoration: none;
-		    color: #333;
-		}
-		.mod_aside_v2_nav_item img {
-		    display: block;
-		    width: 24px;
-		    height: 24px;
-		    margin: 0 auto;
-		    fill: #666;
-		}
-		.btn-disabled {
-			background-color: #455a6b;
-		}
-		.btn-active {
-			background-color: #52a3e8;
-		}
-		.error {
-			color: red;
-			font-weight: bold;
-		}
-		.dialog {
-			position: fixed;
-			width: 180px;
-			height: 70px;
-			top: 50%;
-			margin-top: -35px;
-			left: 50%;
-			margin-left: -90px;
-			background: rgba(0, 0, 0, .7);
-			border-radius: 10px;
-			text-align: center;
-			vertical-align: top;
-			z-index: 999;
-		}
-		
-		.dialog .dialog-wrap {
-			display: table;
-			width: 100%;
-			height: 100%;
-		}
-		
-		.dialog .dialog-mid {
-			display: table-cell;
-			vertical-align: middle;
-		}
-		
-		.dialog .warn {
-			color: #fff;
-			font-size: 18px;
-			vertical-align: middle;
-		}
-		
-		.hide {
-			display: none;
-		}
-    </style>
-  </head>
-  <body>
-  	<div class="dialog hide" id="tips">
+<style type="text/css">
+body {
+	max-width: 768px;
+	min-width: 320px;
+	margin: 0 auto;
+	display: block;
+	font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', SimSun, 'Segoe UI',
+		Tahoma, Helvetica, Sans-Serif;
+	font-size: 18px;
+	/*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif";*/
+}
+
+.header {
+	background-color: #f7ebde;
+}
+
+.logo {
+	height: 300px;
+	width: 100%;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.logo_mid {
+	display: block;
+	max-width: 100%;
+	height: 90px;
+	margin: 0 auto;
+}
+
+.title {
+	background-size: 100% 100%;
+	background-position: center;
+	border-radius: 5px;
+	margin: 0 auto;
+	height: 90px;
+	width: 100%;
+}
+
+.my-activity {
+	height: 30px;
+	font-size: 20px;
+	width: 100%;
+}
+
+.nav-header {
+	top: 0;
+	min-height: 60px;
+	margin-bottom: 0;
+	border-width: 0;
+	border-radius: 0;
+	transition-property: color, background-color, box-shadow;
+	transition-duration: .25s;
+	transition-timing-function: ease-in-out;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+	z-index: 10;
+	background-color: #e2bb86;
+	color: black;
+	position: relative;
+}
+
+.my-nav {
+	list-style: none;
+	padding-left: 0;
+	margin-bottom: 0;
+	background-color: #f3ebe0;
+}
+
+.my-nav li {
+	float: left;
+	line-height: 60px;
+	font-size: 20px;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.my-nav li a {
+	text-decoration: none;
+	color: black;
+}
+
+.my-nav .active {
+	background-color: #82350c;
+	color: #fff;
+}
+
+.my-nav .active a {
+	color: #fff;
+}
+
+.content {
+	background-color: #f7ebde;
+}
+
+.figure {
+	background-size: 100% 100%;
+	background-position: center;
+	border-radius: 5px;
+	margin: 0 auto;
+	background-color: #f7ebde;
+	padding: 10px;
+}
+
+.my-panel {
+	border: 1px solid #bbb6b6;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
+
+.my-panel-title {
+	margin-bottom: 5px;
+	padding-left: 15px;
+	font-size: 20px;
+	line-height: 36px;
+	border-bottom: 1px solid #bbb6b6;
+}
+
+.container {
+	width: 100%;
+}
+
+.my-col-left {
+	padding: 2px 0;
+	text-align: left;
+}
+
+.my-col-center {
+	padding: 2px 0;
+	text-align: center;
+}
+
+.my-col-right {
+	padding: 2px 0;
+	text-align: right;
+}
+
+.progress {
+	background-color: rgba(255, 255, 255, 0);
+}
+
+.my-divider {
+	margin: 0 auto;
+	width: 98%;
+	border: .5px dashed grey;
+	opacity: .52;
+}
+
+.my-row {
+	width: 100%;
+	margin: 5px 0;
+	text-align: center;
+}
+
+.form-control, input {
+	background-color: rgba(0, 0, 0, 0);
+	font-size: 18px;
+}
+
+.input-group-addon {
+	background-color: rgba(0, 0, 0, 0);
+}
+
+a {
+	text-decoration: none;
+	background-color: transparent;
+}
+.modal-open {
+	padding-right: 0px !important;
+}
+.modal-header {
+	padding: 15px;
+	border-bottom: 1px solid #cc3d3d;
+	background-color: #f5580d;
+	border-radius: 5px;
+	color: #fff;
+}
+
+#dailyValue {
+	width: 50%;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+	border-bottom: 1px solid #ff7500;
+}
+
+#dailyConfirm {
+	background-color: #4d89d4;
+	border-color: #4d89d4;
+}
+
+.footer {
+	height: 50px;
+	bottom: 0;
+	zoom: 1;
+	background-repeat: no-repeat;
+	background-position: center 0;
+	background-image: url(../static/images/zongzhi_min.png);
+	background-color: #f7ebde;
+}
+
+.list-group-item {
+	background-color: rgba(255, 255, 255, 0) !important;
+	border: 1px solid #d6a218;
+}
+
+.badge {
+	background-color: #d29133;
+}
+
+.fold {
+	position: absolute;
+	top: -9999px;
+}
+
+@media ( max-width :1024px) {
+	.logo {
+		height: 300px;
+	}
+	.my-table {
+		font-size: 20px;
+	}
+	.password-help {
+		font-size: 18px;
+	}
+}
+
+@media ( max-width :768px) {
+	.logo {
+		height: 260px;
+	}
+	.my-table {
+		font-size: 20px;
+	}
+	.password-help {
+		font-size: 15px;
+	}
+}
+
+@media ( max-width :500px) {
+	.logo {
+		height: 180px;
+	}
+	.my-table {
+		font-size: 15px;
+	}
+	.password-help {
+		font-size: 13px;
+	}
+}
+
+.mod_aside_v2 {
+	position: fixed;
+	z-index: 10;
+	right: 0;
+}
+
+.mod_aside_v2_mask {
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, .3);
+	opacity: 0;
+	display: none;
+	transition: opacity .3s;
+}
+
+.mod_aside_v2_nav {
+	position: absolute;
+	bottom: 0;
+	right: 200px;
+	width: 102px;
+	padding: 15px 0 5px;
+	background: #fff;
+	border-radius: 4px 0 0 4px;
+	height: 260px;
+	z-index: 1;
+	transform: translate3d(100%, 0, 0);
+	transition: transform .3s, -webkit-transform .3s;
+}
+
+.mod_aside_v2_nav_btn {
+	width: 55px;
+	height: 60px;
+	background: rgba(0, 0, 0, .7);
+	position: absolute;
+	left: -55px;
+	top: 50%;
+	margin-top: -20px;
+	border-radius: 4px 0 0 4px;
+}
+
+.mod_aside_v2_nav_btn:before {
+	content: "";
+	position: absolute;
+	left: 2px;
+	top: 50%;
+	width: 20px;
+	height: 20px;
+	margin-top: -10px;
+	/* 		    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAABGdBT…Rn09psIeQEkmOWuEpBkAwt7ItkXPCyGk4Uv/IVnvmNeQF/yATH2rqnlQAAAABJRU5ErkJggg==) no-repeat 0 0;
+ */
+	background-size: 100%;
+}
+
+.mod_aside_v2_nav_btn i {
+	color: #fff;
+	font-size: 18px;
+	width: 2.2em;
+	line-height: 1.3em;
+	position: absolute;
+	top: 50%;
+	left: 15px;
+	transform: translateY(-50%);
+}
+
+em, i {
+	font-style: normal;
+}
+
+.mod_aside_v2_nav_item {
+	float: left;
+	width: 33%;
+	text-align: center;
+	padding: 5px 0;
+	position: relative;
+	text-decoration: none;
+	color: #333;
+}
+
+.mod_aside_v2_nav_item img {
+	display: block;
+	width: 24px;
+	height: 24px;
+	margin: 0 auto;
+	fill: #666;
+}
+
+.btn-disabled {
+	background-color: #455a6b;
+}
+
+.btn-active {
+	background-color: #52a3e8;
+}
+
+.error {
+	color: red;
+	font-weight: bold;
+}
+
+.dialog {
+	position: fixed;
+	width: 180px;
+	height: 70px;
+	top: 50%;
+	margin-top: -35px;
+	left: 50%;
+	margin-left: -90px;
+	background: rgba(0, 0, 0, .7);
+	border-radius: 10px;
+	text-align: center;
+	vertical-align: top;
+	z-index: 999;
+}
+
+.dialog .dialog-wrap {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.dialog .dialog-mid {
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.dialog .warn {
+	color: #fff;
+	font-size: 18px;
+	vertical-align: middle;
+}
+
+.hide {
+	display: none;
+}
+</style>
+</head>
+<body>
+	<div class="dialog hide" id="tips">
 		<div class="dialog-wrap">
 			<div class="dialog-mid">
 				<span class="warn"></span>
@@ -367,7 +419,9 @@
 		<div class="info">
 			<div class="logo hide"></div>
 			<div class="title">
-				<img class="img-responsive logo_mid" src="../static/images/pingtai.png" th:src="@{/images/pingtai.png}" alt="共修平台">
+				<img class="img-responsive logo_mid"
+					src="../static/images/pingtai.png" th:src="@{/images/pingtai.png}"
+					alt="共修平台">
 			</div>
 			<marquee scrolldelay="220" class="my-activity">第五次百万《心经》共修活动</marquee>
 		</div>
@@ -375,8 +429,10 @@
 			<ul class="my-nav">
 				<li id="jianjie"><a href="index.html" th:href="@{/index}">简介</a></li>
 				<li id="dongtai"><a href="dongtai.html" th:href="@{/dongtai}">动态</a></li>
-				<li id="huixiang"><a href="huixiang.html" th:href="@{/huixiang}">回向</a></li>
-				<li id="gongxiu" class="active"><a href="gongxiu_personally.html" th:href="@{/login}">共修</a></li>
+				<li id="huixiang"><a href="huixiang.html"
+					th:href="@{/huixiang}">回向</a></li>
+				<li id="gongxiu" class="active"><a
+					href="gongxiu_personally.html" th:href="@{/login}">共修</a></li>
 			</ul>
 		</nav>
 	</div>
@@ -384,10 +440,10 @@
 		<div class="figure">
 			<div class="row my-row">
 				<div class="col-xs-8 col-xs-offset-4 my-col-right">
-					<div style="line-height: 34px; position: absolute; right: 90px; width: 100px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-						<a th:text="${userInfo.username}" href="/user/info" th:href="@{/user/info}">
-							用户名
-						</a>
+					<div
+						style="line-height: 34px; position: absolute; right: 90px; width: 100px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+						<a th:text="${userInfo.username}" href="/user/info"
+							th:href="@{/user/info}"> 用户名 </a>
 					</div>
 					<!-- <button type="button" 
 						class="btn btn-default" data-toggle="modal"
@@ -402,57 +458,62 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					<a tabindex="0" class="btn btn-lg btn-danger" placement="bottom" role="button" data-toggle="popover" data-trigger="focus" title="Dismissible popover" data-content="And here's some amazing content. It's very engaging. Right?"><b th:text="${userInfo.username}" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">用户名</b></a>
 					 -->
 					<!-- <span th:text="${userInfo.username}" style="line-height: 34px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">用户名</span> -->
-					<a href="/logout" th:href="@{/logout}" class="btn btn-danger" role="button">
-						退出登录
-					</a>
+					<a href="/logout" th:href="@{/logout}" class="btn btn-danger"
+						role="button"> 退出登录 </a>
 				</div>
 			</div>
 			<div class="my-panel">
 				<div class="my-panel-title">个人动态</div>
 				<div class="container">
 					<div class="col-xs-6 my-col-left"></div>
-					<div class="col-xs-4 my-col-center"
-						style="font-weight: bold;">遍数</div>
-					<div class="col-xs-2 my-col-right"
-						style="font-weight: bold;">排名</div>
+					<div class="col-xs-4 my-col-center" style="font-weight: bold;">遍数</div>
+					<div class="col-xs-2 my-col-right" style="font-weight: bold;">排名</div>
 				</div>
 				<div class="my-divider"></div>
 				<div class="container">
 					<div class="row my-row">
 						<div class="col-xs-6 my-col-left">本日报数</div>
-						<div id="today-count" class="col-xs-4 my-col-center" th:with="today=${personalCountOffTopFive[0]}" th:text="${today.record_number}">10</div>
-						<div id="daily-rank" class="col-xs-2 my-col-right" th:text="${rankMap['daily_rank']}">-</div>
+						<div id="today-count" class="col-xs-4 my-col-center"
+							th:with="today=${personalCountOffTopFive[0]}"
+							th:text="${today.record_number}">10</div>
+						<div id="daily-rank" class="col-xs-2 my-col-right"
+							th:text="${rankMap['daily_rank']}">-</div>
 					</div>
 					<div class="row my-row" th:with="ws_map=${statisticMap['ws_map']}">
 						<div class="col-xs-6 my-col-left">本周汇总</div>
-						<div id="weekly-total" class="col-xs-4 my-col-center" th:text="${ws_map['weekly_total']}">89</div>
-						<div id="week-rank" class="col-xs-2 my-col-right" th:text="${rankMap['week_rank']}">-</div>
+						<div id="weekly-total" class="col-xs-4 my-col-center"
+							th:text="${ws_map['weekly_total']}">89</div>
+						<div id="week-rank" class="col-xs-2 my-col-right"
+							th:text="${rankMap['week_rank']}">-</div>
 					</div>
 					<div class="row my-row" th:with="ms=${statisticMap['ms']}">
 						<div class="col-xs-6 my-col-left">本月汇总</div>
-						<div id="month-total" class="col-xs-4 my-col-center" th:text="${ms} ? ${ms.month_total} : 0">325</div>
-						<div id="month-rank" class="col-xs-2 my-col-right" th:text="${rankMap['month_rank']}">-</div>
+						<div id="month-total" class="col-xs-4 my-col-center"
+							th:text="${ms} ? ${ms.month_total} : 0">325</div>
+						<div id="month-rank" class="col-xs-2 my-col-right"
+							th:text="${rankMap['month_rank']}">-</div>
 					</div>
 					<div class="row my-row" th:with="ys=${statisticMap['ys']}">
 						<div class="col-xs-6 my-col-left">本年总计</div>
-						<div id="year-total" class="col-xs-4 my-col-center" th:text="${ys} ? ${ys.year_total}: 0">2661</div>
-						<div id="year-rank" class="col-xs-2 my-col-right" th:text="${rankMap['year_rank']}">-</div>
+						<div id="year-total" class="col-xs-4 my-col-center"
+							th:text="${ys} ? ${ys.year_total}: 0">2661</div>
+						<div id="year-rank" class="col-xs-2 my-col-right"
+							th:text="${rankMap['year_rank']}">-</div>
 					</div>
 					<div class="row my-row">
 						<div class="col-xs-6 my-col-left">本年日均</div>
-						<div id="year-avg" class="col-xs-4 my-col-center" th:text="${year_avg} > 0 ? ${year_avg} : '-'">2661</div>
+						<div id="year-avg" class="col-xs-4 my-col-center"
+							th:text="${year_avg} > 0 ? ${year_avg} : '-'">2661</div>
 						<div id="year-avg-rank" class="col-xs-2 my-col-right">-</div>
 					</div>
 				</div>
 			</div>
-			<button type="button"
-				class="btn btn-primary btn-block"
+			<button type="button" class="btn btn-primary btn-block"
 				data-toggle="modal" data-target=".bs-example-modal-sm"
 				style="background-color: #5b9def; border-color: #5b9def; font-size: 18px; margin-bottom: 5px;">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <b>新建个人活动</b>
 			</button>
-			<button type="button"
-				class="btn btn-primary btn-block"
+			<button type="button" class="btn btn-primary btn-block"
 				data-toggle="modal" data-target=".bs-example-modal-sm"
 				style="background-color: #ef5b69; border-color: #ef5b69; font-size: 18px; margin-bottom: 5px;">
 				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <b>管理个人活动</b>
@@ -471,40 +532,46 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					<div class="col-xs-6 my-col-left">共修时间进度</div>
 					<div class="col-xs-6 my-col-right">
 						<div class="progress">
-						  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 60%; font-size: 18px;">
-						  60%
-						  </div>
+							<div class="progress-bar progress-bar-warning" role="progressbar"
+								aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
+								style="width: 60%; font-size: 18px;">60%</div>
 						</div>
 					</div>
 					<div class="col-xs-6 my-col-left">共修完成进度</div>
 					<div class="col-xs-6 my-col-right">
 						<div class="progress">
-						  <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%; font-size: 18px;" >
-						  60%
-						  </div>
+							<div class="progress-bar progress-bar-info" role="progressbar"
+								aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+								style="width: 60%; font-size: 18px;">60%</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="my-panel">
 				<div class="my-panel-title">今日报数</div>
-				<div class="container" style="margin: 5px 0;" th:with="today=${personalCountOffTopFive[0]}">
-					<div id="textToday" class="col-xs-7 my-col-left" th:text="${today.record_number}" style="text-align: center;">123</div>
+				<div class="container" style="margin: 5px 0;"
+					th:with="today=${personalCountOffTopFive[0]}">
+					<div id="textToday" class="col-xs-7 my-col-left"
+						th:text="${today.record_number}" style="text-align: center;">123</div>
 					<div id="inputToday" class="col-xs-7 my-col-center hide">
-						<input type="number" style="text-align: center; width: 80%; border: 0; border-bootom: 1px solid #bda0a0" value="0" />
+						<input type="number"
+							style="text-align: center; width: 80%; border: 0; border-bootom: 1px solid #bda0a0"
+							value="0" />
 					</div>
 					<div class="col-xs-5 my-col-right">
-						<button type="button" id="changeToday" class="btn btn-danger btn-xs" style="font-size: 18px;">修改</button>
-						<button type="button" id="updateToday" disabled="disabled" class="btn btn-disabled btn-xs hide" style="color: white; font-size: 18px;">确认</button>
-						<button type="button" id="cancelToday" class="btn btn-danger btn-xs hide" style="font-size: 18px;">取消</button>
+						<button type="button" id="changeToday"
+							class="btn btn-danger btn-xs" style="font-size: 18px;">修改</button>
+						<button type="button" id="updateToday" disabled="disabled"
+							class="btn btn-disabled btn-xs hide"
+							style="color: white; font-size: 18px;">确认</button>
+						<button type="button" id="cancelToday"
+							class="btn btn-danger btn-xs hide" style="font-size: 18px;">取消</button>
 					</div>
 				</div>
 				<div class="col-xs-offset-2 error"></div>
 			</div>
 			<div class="my-panel">
-				<div class="my-panel-title">
-					报数记录
-				</div>
+				<div class="my-panel-title">报数记录</div>
 				<div class="container" style="margin: 5px 0;">
 					<div class="col-xs-5 my-col-left my-col-center"
 						style="font-weight: bold;">时间</div>
@@ -535,7 +602,8 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 						</div>
 					</div>
 					 -->
-					<div class="row my-row" th:each="p, pStat : ${personalCountOffTopFive}">
+					<div class="row my-row"
+						th:each="p, pStat : ${personalCountOffTopFive}">
 						<!-- 
 						<div th:if="${pStat.first}" class="col-xs-5 my-col-left" th:text="${#dates.format(p.record_date, 'yyyy-MM-dd')}">
 							2018-06-28
@@ -557,15 +625,18 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 						<div th:unless="${pStat.first}" class="col-xs-5 my-col-left" th:text="${#dates.format(p.record_date, 'yyyy-MM-dd')}">2018-06-28</div>
 						<div th:unless="${pStat.first}" class="col-xs-3 my-col-center" th:text="${p.record_number}">10</div>
 						 -->
-						<div class="col-xs-5 my-col-left" th:text="${#dates.format(p.record_date, 'yyyy-MM-dd')}">2018-06-28</div>
-						<div th:id="${pStat.index} == 0 ? first : other" class="col-xs-5 col-xs-offset-2  my-col-center" th:text="${p.record_number}">10</div>
+						<div class="col-xs-5 my-col-left"
+							th:text="${#dates.format(p.record_date, 'yyyy-MM-dd')}">2018-06-28</div>
+						<div th:id="${pStat.index} == 0 ? first : other"
+							class="col-xs-5 col-xs-offset-2  my-col-center"
+							th:text="${p.record_number}">10</div>
 					</div>
 					<div th:if="${personalCountOffTopFive.size()}  == 5">
 						<div class="my-divider"></div>
 						<div class="col-xs-6 col-xs-offset-6 my-col-right">
 							<a href="/history" th:href="@{/personalcountoff/history}">查看历史报数</a>
 						</div>
-					</div>	
+					</div>
 				</div>
 			</div>
 			<div>
@@ -577,53 +648,67 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					<b>提交报数</b>
 				</button>
 				 -->
-				<button type="button"
-					class="btn btn-primary btn-block daily-commit"
+				<button type="button" class="btn btn-primary btn-block daily-commit"
 					style="background-color: #efab5b; border-color: #efab5b; font-size: 18px; margin-bottom: 5px;">
 					<b>提交报数</b>
 				</button>
 			</div>
 		</div>
 	</div>
-	<!-- <div class="hide">
-		<input th:field="${serverTime}" />
-	</div> -->
-	<div class="footer" th:attr="style='background:url('+@{/images/zongzhi_min.png}+');background-color:#f7ebde; background-repeat: no-repeat; background-position: center 0'"></div>
-	
-	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="exampleModalLabel">新建个人活动</h4>
-	      </div>
-	      <div class="modal-body">
-	        <form>
-	          <div class="form-group">
-	            <label for="message-text" class="control-label">开始时间:</label>
-	            <input type="text" class="form-control time" id="begin">
-	          </div>
-	          <div class="form-group">
-	            <label for="message-text" class="control-label">结束时间:</label>
-	            <input type="text" class="form-control time" id="end">
-	          </div>
-        	  <div class="form-group">
-	            <label for="recipient-name" class="control-label">活动名称:</label>
-	            <input type="text" class="form-control" id="recipient-name">
-	          </div>
-	          <div class="form-group">
-	            <label for="recipient-name" class="control-label">报数目标:</label>
-	            <input type="number" class="form-control" id="recipient-name">
-	          </div>
-	        </form>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	        <button type="button" class="btn btn-primary">创建</button>
-	      </div>
-	    </div><!-- /.modal-content -->
-	  </div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+	<div class="hide">
+		<input th:value="${serverTime}" id="serverTime" />
+	</div>
+	<div class="footer"
+		th:attr="style='background:url('+@{/images/zongzhi_min.png}+');background-color:#f7ebde; background-repeat: no-repeat; background-position: center 0'"></div>
+
+	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+		aria-labelledby="gridSystemModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">新建个人活动</h4>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="form-group" id="set-my-activity-begin">
+							<label for="message-text" class="control-label">开始时间:</label> 
+							<input size="18" class="form-control time" id="begin" type="text" value="" readonly>
+							<div class="error"></div>
+							<!-- <input type="text" class="form-control time" id="begin">
+	            <span class="add-on"><i class="icon-th"></i></span> -->
+						</div>
+						<div class="form-group" id="set-my-activity-end">
+							<label for="message-text" class="control-label">结束时间:</label> 
+							<input size="18" class="form-control time" id="end" type="text" value="" readonly>
+							<div class="error"></div>
+						</div>
+						<div class="form-group" id="set-my-activity-name">
+							<label for="recipient-name" class="control-label">活动名称:</label> 
+							<input type="text" class="form-control">
+							<div class="error"></div>
+						</div>
+						<div class="form-group" id="set-my-activity-number">
+							<label for="recipient-name" class="control-label">报数目标:</label> 
+							<input type="number" class="form-control">
+							<div class="error"></div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="create-my-activity-button" type="button"
+						class="btn btn-primary" disabled>创建</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 	<!-- 
 	Modal 报数
 	<div class="modal fade" id="baoshuDialog" tabindex="-1" role="dialog"
@@ -645,17 +730,16 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 		</div>
 	</div>
 	 -->
-	
+
 	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
 	<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 	<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 	<script
 		src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script
-		th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
-	<script
-		th:src="@{/js/bootstrap-datetimepicker.zh-CN.js}"></script>
+	<script th:src="@{/js/bootstrap-datetimepicker.min.js}"></script>
+	<script th:src="@{/js/bootstrap-datetimepicker.zh-CN.js}"></script>
 	<script type="text/javascript">
+		var serverTime = $("#serverTime").val();
     	var countoffReg = /^([1-9]\d{0,3})$/;
 	    function commit() {
 			if (todayNumber) {
@@ -836,7 +920,6 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					console.log('stageValue 不合法!');
 				} */
 			});
-			
 			$("#inputToday input").keyup(function() {
 				newCount = $(this).val();
 				console.log("newCount:" + newCount);
@@ -882,21 +965,127 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 				*/
 			});
 			
-			$(".time").datetimepicker({//选择年月日
+			/*-----创建个人活动 begin-----*/
+			var myActivityNameReg = /^.{2,20}$/;
+			var myActivityTargetNumberReg = /^([1-9]\d{0,7})$/;
+			var begin, end, name, number;
+			function buttonActive() {
+				begin = $("#begin").val().trim();
+				end = $("#end").val().trim();
+				name = $("#set-my-activity-name input").val().trim();
+				number = $("#set-my-activity-number input").val().trim();
+				if(begin == '' || end == '' || !myActivityNameReg.test(name) || !myActivityTargetNumberReg.test(number)) {
+					$("#create-my-activity-button").attr("disabled", "disabled");
+				} else {
+					$("#create-my-activity-button").removeAttr("disabled");
+				}
+			}
+			
+			$(".time").datetimepicker({
 		　　　　　　format: 'yyyy-mm-dd',
 		　　　　　　language: 'zh-CN',
 		　　　　　　weekStart: 1,
-		　　　　　　todayBtn: 1,//显示‘今日’按钮
 		　　　　　　autoclose: 1,
-		　　　　　　todayHighlight: 1,
 		　　　　　　startView: 2,
-		　　　　　　minView: 2,  //Number, String. 默认值：0, 'hour'，日期时间选择器所能够提供的最精确的时间选择视图。
-
-		　　　　　　clearBtn:true,//清除按钮
-
+		　　　　　　minView: 2,  
+				pickerPosition: 'bottom-left',
 		　　　　　　forceParse: 0
 		　　　　});
+			 $(".time").datetimepicker('setStartDate', serverTime);
+			 $("#begin").datetimepicker().on('changeDate', function(ev) {
+				 var year = ev.date.getFullYear();
+				 var month = ev.date.getMonth() + 1;
+				 var day = ev.date.getDate();
+				 var date = year + "-" + month + "-" + day;
+				 $("#end").datetimepicker('setStartDate', date);
+				 if ($(this).val() == '') {
+					$("#set-my-activity-begin .error").text("活动开始时间不能为空"); 
+				 } else {
+					$("#set-my-activity-begin .error").text(""); 
+				 }
+				 buttonActive();
+			 });
+			 $("#end").datetimepicker().on('changeDate', function(ev) {
+				 var year = ev.date.getFullYear();
+				 var month = ev.date.getMonth() + 1;
+				 var day = ev.date.getDate();
+				 var date = year + "-" + month + "-" + day;
+				 $("#begin").datetimepicker('setEndDate', date);
+				 if ($(this).val() == '') {
+					$("#set-my-activity-end .error").text("活动开始时间不能为空"); 
+				 } else {
+					$("#set-my-activity-end .error").text(""); 
+				 }
+				 buttonActive();
+			 });
+			 /*
+			 $("#begin").blur(function() {
+				 if ($(this).val() == '') {
+					$("#set-my-activity-begin .error").text("活动开始时间不能为空"); 
+				 } else {
+					$("#set-my-activity-begin .error").text(""); 
+				 }
+				 buttonActive();
+			 });
+			 $("#begin").change(function() {
+				 if ($(this).val() == '') {
+					$("#set-my-activity-begin .error").text("活动开始时间不能为空"); 
+				 } else {
+					$("#set-my-activity-begin .error").text(""); 
+				 }
+			 });
+			 $("#end").blur(function() {
+				 if ($(this).val() == '') {
+					$("#set-my-activity-end .error").text("活动结束时间不能为空"); 
+				 } else {
+					$("#set-my-activity-end .error").text("");
+				 }
+				 buttonActive();
+			 });
+			 $("#end").change(function() {
+				 if ($(this).val() == '') {
+					$("#set-my-activity-end .error").text("活动结束时间不能为空"); 
+				 } else {
+					$("#set-my-activity-end .error").text("");
+				 }
+			 });
+			 */
+			 
+			 $("#set-my-activity-name input").keyup(function() {
+				 if (myActivityNameReg.test($(this).val().trim())) {
+					 $("#set-my-activity-name .error").text("");
+				 } else {
+					 $("#set-my-activity-name .error").text("活动名称仅支持2-20位");
+				 }
+				 buttonActive();
+			 }); 
+			 
+			 $("#set-my-activity-number input").keyup(function() {
+				 if (myActivityTargetNumberReg.test($(this).val().trim())) {
+					$("#set-my-activity-number .error").text("");
+				} else {
+					$("#set-my-activity-number .error").text("请输入1-99999999之间的正整数!");
+				}
+				buttonActive();
+			 });
+			 
+			 $("#create-my-activity-button").click(function() {
+				 $.ajax({
+					 url: '/privateActivity/add',
+					 method: 'POST',
+					 type: 'JSON',
+					 data: {'private_activity_name': name, 'private_activity_begin_time': begin, 'private_activity_end_time': end, 'private_activity_target': number},
+					 success: function(data) {
+						 console.log(data);
+					 },
+					 error: function() {
+						 alert('创建异常');
+					 }
+					 
+				 });
+			 });
+			 /*-----创建个人活动 end-----*/
 		});
 	</script>
-  </body>
+</body>
 </html>
