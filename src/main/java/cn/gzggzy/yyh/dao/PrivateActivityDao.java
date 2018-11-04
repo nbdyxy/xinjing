@@ -36,7 +36,7 @@ public interface PrivateActivityDao {
 	 * List<PrivateActivity>
 	 * @throws
 	 */
-	List<PrivateActivity> selectActivityEnable();
+	List<PrivateActivity> selectActivityEnable(@Param("uid") String uid);
 	
 	/**
 	 * @Title: selectActivityById  

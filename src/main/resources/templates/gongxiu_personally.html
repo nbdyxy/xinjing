@@ -508,41 +508,49 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					</div>
 				</div>
 			</div>
-			<button type="button" class="btn btn-primary btn-block"
-				data-toggle="modal" data-target=".bs-example-modal-sm"
-				style="background-color: #5b9def; border-color: #5b9def; font-size: 18px; margin-bottom: 5px;">
-				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <b>新建个人活动</b>
-			</button>
+			<div th:if="${#lists.isEmpty(paList)}">
+				<button type="button" class="btn btn-primary btn-block"
+					data-toggle="modal" data-target=".bs-example-modal-sm"
+					style="background-color: #5b9def; border-color: #5b9def; font-size: 18px; margin-bottom: 5px;">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> <b>新建个人活动</b>
+				</button>
+			</div>
+			<!-- 
 			<button type="button" class="btn btn-primary btn-block"
 				data-toggle="modal" data-target=".bs-example-modal-sm"
 				style="background-color: #ef5b69; border-color: #ef5b69; font-size: 18px; margin-bottom: 5px;">
 				<span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <b>管理个人活动</b>
 			</button>
-			<div class="my-panel">
-				<div class="my-panel-title">第5次百万《心经》共修活动</div>
-				<div class="container">
-					<div class="col-xs-6 my-col-left">共修活动</div>
-					<div class="col-xs-6 my-col-right">第20日</div>
-					<div class="col-xs-6 my-col-left">目标共修发愿</div>
-					<div class="col-xs-6 my-col-right">810 遍</div>
-					<div class="col-xs-6 my-col-left">当前共修发愿</div>
-					<div class="col-xs-6 my-col-right">810 遍</div>
-					<div class="col-xs-6 my-col-left">共修参与人数</div>
-					<div class="col-xs-6 my-col-right">810 遍</div>
-					<div class="col-xs-6 my-col-left">共修时间进度</div>
-					<div class="col-xs-6 my-col-right">
-						<div class="progress">
-							<div class="progress-bar progress-bar-warning" role="progressbar"
-								aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
-								style="width: 60%; font-size: 18px;">60%</div>
+			 -->
+			<div th:unless="${#lists.isEmpty(paList)}" th:with="pa = ${paList[0]}">
+				<div class="my-panel">
+					<div class="my-panel-title" th:text="${pa.private_activity_name}">第5次百万《心经》共修活动</div>
+					<div class="container">
+						<div class="col-xs-6 my-col-left">个人活动</div>
+						<div class="col-xs-6 my-col-right" th:text="'第' + ${#numbers.formatDecimal(days,0,'COMMA',0,'POINT')} + ' 日'">第20日</div>
+						<div class="col-xs-6 my-col-left">开始时间</div>
+						<div class="col-xs-6 my-col-right" th:text="${#strings.substring(pa.private_activity_begin_time, 0, 10)}">第20日</div>
+						<div class="col-xs-6 my-col-left">结束时间</div>
+						<div class="col-xs-6 my-col-right" th:text="${#strings.substring(pa.private_activity_end_time, 0, 10)}">第20日</div>
+						<div class="col-xs-6 my-col-left">目标发愿</div>
+						<div class="col-xs-6 my-col-right" th:text="${#numbers.formatDecimal(targetNumber,0,'COMMA',0,'POINT')} + ' 遍'">810 遍</div>
+						<div class="col-xs-6 my-col-left">当前发愿</div>
+						<div class="col-xs-6 my-col-right" th:text="${#numbers.formatDecimal(nowNumber,0,'COMMA',0,'POINT')} + ' 遍'">810 遍</div>
+						<div class="col-xs-6 my-col-left">时间进度</div>
+						<div class="col-xs-6 my-col-right">
+							<div class="progress">
+							  <div th:text="${timePercentINT} + '%'" th:style="'width:' + ${timePercentINT} + '%; font-size: 18px; color: black;'" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width: 60%; font-size: 18px;">
+							  60%
+							  </div>
+							</div>
 						</div>
-					</div>
-					<div class="col-xs-6 my-col-left">共修完成进度</div>
-					<div class="col-xs-6 my-col-right">
-						<div class="progress">
-							<div class="progress-bar progress-bar-info" role="progressbar"
-								aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-								style="width: 60%; font-size: 18px;">60%</div>
+						<div class="col-xs-6 my-col-left">报数进度</div>
+						<div class="col-xs-6 my-col-right">
+							<div class="progress">
+							  <div th:text="${countPercentINT} + '%'" th:style="'width:' + ${countPercentINT} + '%; font-size: 18px; color: black;'" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%; font-size: 18px;" >
+							  60%
+							  </div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -662,7 +670,7 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 		th:attr="style='background:url('+@{/images/zongzhi_min.png}+');background-color:#f7ebde; background-repeat: no-repeat; background-position: center 0'"></div>
 
 	<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
-		aria-labelledby="gridSystemModalLabel">
+		aria-labelledby="gridSystemModalLabel" id="createActivityModal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -1077,6 +1085,15 @@ sagittis lacus vel augue laoreet rutrum faucibus.">
 					 data: {'private_activity_name': name, 'private_activity_begin_time': begin, 'private_activity_end_time': end, 'private_activity_target': number},
 					 success: function(data) {
 						 console.log(data);
+						 $(".warn").text(data.message);
+						 $("#tips").removeClass("hide");
+						 if ("200" == data.code) {
+							 $('#createActivityModal').modal('hide');
+							 $("#createActivityModal input").val("");
+						 }
+						 setTimeout(function() {
+							 $("#tips").addClass("hide");
+						 }, 2000);
 					 },
 					 error: function() {
 						 alert('创建异常');

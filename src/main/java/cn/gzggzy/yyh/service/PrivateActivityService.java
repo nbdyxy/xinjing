@@ -40,7 +40,7 @@ public interface PrivateActivityService {
 	 * List<PrivateActivity>
 	 * @throws
 	 */
-	List<PrivateActivity> selectActivityEnable(int pageNum, int pageSize, String orderBy, boolean page);
+	List<PrivateActivity> selectActivityEnable(int pageNum, int pageSize, String orderBy, boolean page, String uid);
 	
 	/**
 	 * @Title: selectActivityById  

@@ -1,6 +1,7 @@
 package cn.gzggzy.yyh;
 
 import java.text.ParseException;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -14,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import cn.gzggzy.yyh.model.PrivateActivity;
 import cn.gzggzy.yyh.service.DynamicsService;
 import cn.gzggzy.yyh.service.MonthlyStatisticService;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
@@ -94,18 +96,20 @@ public class XinjingApplicationTests {
 	@Test
 	public void insert() throws ParseException {
 		
-		int result = personalCountOffService.selectPublicActivityCountNumber("2e955926-c28f-429e-a2b5-97e1b44db7f3");
-		System.out.println("公共活动报数总量: " + result);
+//		int result = personalCountOffService.selectPublicActivityCountNumber("2e955926-c28f-429e-a2b5-97e1b44db7f3");
+//		System.out.println("公共活动报数总量: " + result);
+//		
+//		result = personalCountOffService.selectPrivateActivityCountNumber("d17273df-2457-4c30-9194-6ddcf6b10b2d");
+//		System.out.println("私有活动报数总量: " + result);
+//		
+//		result = personalCountOffService.selectActivityJoinNumber("");
+//		System.out.println("所有活动参与人数： " + result);
+//		
+//		result = personalCountOffService.selectPublicActivityCountNumber("2e955926-c28f-429e-a2b5-97e1b44db7f3");
+//		System.out.println("某公共活动参与人数： " + result);
 		
-		result = personalCountOffService.selectPrivateActivityCountNumber("d17273df-2457-4c30-9194-6ddcf6b10b2d");
-		System.out.println("私有活动报数总量: " + result);
-		
-		result = personalCountOffService.selectActivityJoinNumber("");
-		System.out.println("所有活动参与人数： " + result);
-		
-		result = personalCountOffService.selectPublicActivityCountNumber("2e955926-c28f-429e-a2b5-97e1b44db7f3");
-		System.out.println("某公共活动参与人数： " + result);
-		
+		List<PrivateActivity> result = privateActivityService.selectActivityEnable(0, 0, "asc", false, "3d2a0751868c4470a94fb0fe90ad36c9");
+		System.out.println(result.size());
 		
 //		int i = 1;
 //		int count = 0;

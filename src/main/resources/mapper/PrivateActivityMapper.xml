@@ -42,10 +42,13 @@
 	FROM
 		private_activity p,
 		user_info u
-	WHERE
+	<where>
 		p.private_activity_creator_id = u.user_id
 	AND 
 		p.private_activity_enable = 1
+		
+		<if test="uid != null"> AND p.private_activity_creator_id = #{uid}</if>
+	</where>
   </select>
   
   <select id="selectActivityById" resultType="cn.gzggzy.yyh.model.PrivateActivity">

@@ -1,5 +1,6 @@
 package cn.gzggzy.yyh.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -63,16 +64,26 @@ public class PrivateActivityController {
 	public RestResponseHashMap add(PrivateActivity pa) {
 		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
 		
+		UserInfo user = (UserInfo) userInfoRedis.get("userInfo");
 		log.info(pa.getPrivate_activity_name());
 		log.info(pa.getPrivate_activity_begin_time());
 		log.info(pa.getPrivate_activity_end_time());
 		log.info(pa.getPrivate_activity_target() + "--");
-//		if (0 != userInfoRedis.size()) {
-//			int result = privateActivityService.insertPrivateActivity(pa);
-//			if (1 == result) {
-//				return RestResponseHashMap.success("个人活动创建成功", true);
-//			}
-//		}
+		
+		String pid = UUID.randomUUID().toString();
+		String creatorId = user.getUser_id();
+		String creatorName = user.getUsername();
+		pa.setPrivate_activity_id(pid);
+		pa.setPrivate_activity_creator_id(creatorId);
+		pa.setPrivate_activity_creator_name(creatorName);
+		pa.setPrivate_activity_create_time(Calendar.getInstance().getTime());
+		
+		if (0 != userInfoRedis.size()) {
+			int result = privateActivityService.insertPrivateActivity(pa);
+			if (1 == result) {
+				return RestResponseHashMap.success("个人活动创建成功", true);
+			}
+		}
 		return RestResponseHashMap.success("个人活动创建失败", true);
 	}
 	

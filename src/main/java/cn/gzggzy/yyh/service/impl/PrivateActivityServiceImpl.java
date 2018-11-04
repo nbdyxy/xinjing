@@ -17,7 +17,6 @@ import com.github.pagehelper.PageHelper;
 
 import cn.gzggzy.yyh.dao.PrivateActivityDao;
 import cn.gzggzy.yyh.model.PrivateActivity;
-import cn.gzggzy.yyh.model.PublicActivity;
 import cn.gzggzy.yyh.service.PrivateActivityService;
 
 /**
@@ -42,11 +41,11 @@ public class PrivateActivityServiceImpl implements PrivateActivityService {
 	 * @see cn.gzggzy.yyh.service.PrivateActivityService#selectActivityEnable()
 	 */
 	@Override
-	public List<PrivateActivity> selectActivityEnable(int pageNum, int pageSize, String orderBy, boolean page) {
+	public List<PrivateActivity> selectActivityEnable(int pageNum, int pageSize, String orderBy, boolean page, String uid) {
 		if (page) {
 			PageHelper.startPage(pageNum, pageSize, orderBy);
 		}
-		return privateActivityDao.selectActivityEnable();
+		return privateActivityDao.selectActivityEnable(uid);
 	}
 
 	/* 

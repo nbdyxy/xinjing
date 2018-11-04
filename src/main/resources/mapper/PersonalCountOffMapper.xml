@@ -125,7 +125,7 @@
   
   <select id="selectPublicActivityCountNumber" resultType="java.lang.Integer">
   	SELECT
-		SUM(record_number)
+  		IFNULL(SUM(record_number), 0)
 	FROM
 		personal_countoff
 	WHERE
@@ -134,7 +134,7 @@
   
   <select id="selectPrivateActivityCountNumber" resultType="java.lang.Integer">
   	SELECT
-		SUM(record_number)
+  		IFNULL(SUM(record_number), 0)
 	FROM
 		personal_countoff
 	WHERE

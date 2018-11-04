@@ -1,5 +1,6 @@
 package cn.gzggzy.yyh.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +25,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import cn.gzggzy.yyh.config.Configuration;
 import cn.gzggzy.yyh.filter.LoginFilter;
 import cn.gzggzy.yyh.model.PersonalCountOff;
+import cn.gzggzy.yyh.model.PrivateActivity;
 import cn.gzggzy.yyh.model.RegisterUserInfo;
 import cn.gzggzy.yyh.model.UserInfo;
 import cn.gzggzy.yyh.model.YearlyStatistic;
 import cn.gzggzy.yyh.response.bean.RestResponseHashMap;
 import cn.gzggzy.yyh.service.PersonalCountOffService;
 import cn.gzggzy.yyh.service.PersonalStatisticService;
+import cn.gzggzy.yyh.service.PrivateActivityService;
 import cn.gzggzy.yyh.service.RankService;
 import cn.gzggzy.yyh.service.UserInfoService;
 import cn.gzggzy.yyh.util.CookieUtil;
@@ -48,6 +51,9 @@ public class UserInfoController {
 	
 	@Autowired
 	private PersonalCountOffService personalCountOffService;
+	
+	@Autowired
+	private PrivateActivityService privateActivityService;
 	
 	@Autowired
 	private PersonalStatisticService personalStatisticService;
@@ -104,6 +110,7 @@ public class UserInfoController {
 	@GetMapping
 	public String userDetailInfo(Model model, UserInfo userInfo, BindingResult bindingResult) {
 		long start = System.currentTimeMillis();
+		Calendar c = Calendar.getInstance();
 		Map<String, Object> userInfoRedis = loginFilter.checkLogin();
 		if (0 != userInfoRedis.size()) {
 			userInfo = (UserInfo) userInfoRedis.get("userInfo");
@@ -131,6 +138,41 @@ public class UserInfoController {
 				year_avg = total / day;
 				year_avg = (double) Math.round(year_avg * 100) / 100;
 				log.info("year_avg: {}", year_avg);
+			}
+			//查询当前是否有正在进行的个人活动
+			List<PrivateActivity> paList = privateActivityService.selectActivityEnable(0, 0, null, false, uid);
+			if (paList.size() != 0) {
+				PrivateActivity pa = paList.get(0);
+				String private_activity_id = pa.getPrivate_activity_id(); 
+				//当前天数以及时间进度的计算
+				String begin = pa.getPrivate_activity_begin_time();
+				String end = pa.getPrivate_activity_end_time();
+				String now = DateUtils.parseDateToStr(c.getTime(), DateUtils.DATE_TIME_FORMAT_YYYY_MM_DD_HH_MI_SS);
+				Long days = null, totalDays;
+				Double timePercent;
+				int timePercentINT = 0;
+				try {
+					days = DateUtils.getDistanceDays(begin, now) + 1;
+					totalDays = DateUtils.getDistanceDays(begin, end) + 1;
+					timePercent = days.doubleValue() / totalDays.doubleValue() * 100;
+					timePercentINT = (int) Math.ceil(timePercent);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				//报数总量
+				Double targetNumber = pa.getPrivate_activity_target() + 0d;
+				Double nowNumber = personalCountOffService.selectPrivateActivityCountNumber(private_activity_id) + 0d;
+				Double countPercent = nowNumber / targetNumber * 100; 
+				int countPercentINT = (int) Math.ceil(countPercent);
+
+				model.addAttribute("paList", paList);
+				model.addAttribute("days", days);
+				model.addAttribute("targetNumber", targetNumber.intValue());
+				model.addAttribute("nowNumber", nowNumber.intValue());
+				model.addAttribute("timePercentINT", timePercentINT);
+				model.addAttribute("countPercentINT", countPercentINT);
 			}
 			model.addAttribute("userInfo", userInfo);
 			model.addAttribute("personalCountOffTopFive", personalCountOffTopFive);
